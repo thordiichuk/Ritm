@@ -96,7 +96,7 @@ export function Schedule({ date, variant, onEdit, onAddAt }: {
           content = <ContCard b={r.cont!} variant={variant} onEdit={onEdit} />;
         } else {
           content = (
-            <FreeSlot date={date} hour={r.hour} variant={variant} onAdd={() => onAddAt(r.freeFrom ?? r.hour * 60)}
+            <FreeSlot date={date} hour={r.hour} start={r.freeFrom ?? r.hour * 60} variant={variant} onAdd={() => onAddAt(r.freeFrom ?? r.hour * 60)}
               hint={variant === 'desktop' && r === firstFreeAfterNow && s.tasks.some((t) => t.location === 'inbox')} />
           );
         }
@@ -200,7 +200,7 @@ function NowCard({ b, variant, nowMin, s, now }: { b: Block; variant: Variant; n
   );
 }
 
-function FreeSlot({ date, hour, variant, hint, onAdd }: { date: string; hour: number; variant: Variant; hint?: boolean; onAdd: () => void }) {
+function FreeSlot({ date, hour, start, variant, hint, onAdd }: { date: string; hour: number; start: number; variant: Variant; hint?: boolean; onAdd: () => void }) {
   const [over, setOver] = useState(false);
   const accept = (e: DragEvent) => {
     if ([...e.dataTransfer.types].some((t) => t.startsWith('text/ritm-'))) {
@@ -213,12 +213,12 @@ function FreeSlot({ date, hour, variant, hint, onAdd }: { date: string; hour: nu
     setOver(false);
     const task = e.dataTransfer.getData('text/ritm-task');
     const blk = e.dataTransfer.getData('text/ritm-block');
-    if (task) scheduleTask(task, date, hour * 60);
-    else if (blk) moveBlock(blk, date, hour * 60);
+    if (task) scheduleTask(task, date, start);
+    else if (blk) moveBlock(blk, date, start);
   };
   return (
     <button className={`free${over ? ' over' : ''}`} onClick={onAdd} onDragOver={accept} onDragEnter={accept}
-      onDragLeave={() => setOver(false)} onDrop={drop} aria-label={`Додати блок о ${hour}:00`}>
+      onDragLeave={() => setOver(false)} onDrop={drop} aria-label={`Додати блок о ${hhmm(start)}`} data-hour-slot={hour}>
       + вільна година{hint && variant === 'desktop' ? ' · киньте сюди задачу з вхідних' : ''}
     </button>
   );
