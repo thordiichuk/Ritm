@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ритм · Звички та статистика</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&amp;family=Onest:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0F0F11}
+a{color:#D7FF4F}a:hover{color:#ECFFB0}
+.wrap{display:grid;grid-template-columns:88px minmax(0,1fr);gap:16px;padding:16px;min-height:1000px;box-sizing:border-box}
+.rail{background:#18181C;border-radius:28px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 0}
+.ri{width:52px;height:52px;border-radius:18px;display:flex;align-items:center;justify-content:center;color:#A1A1AA;text-decoration:none}
+.ri:hover{background:#26262B;color:#fff}
+.ri.on{background:#D7FF4F;color:#0F0F11}
+.tile{background:#18181C;border-radius:28px;padding:24px;box-sizing:border-box}
+.k{margin:0;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#A1A1AA}
+.disp{font-family:'Dela Gothic One',sans-serif;font-weight:400}
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.hm{display:grid;grid-template-columns:repeat(14,1fr);gap:5px}
+.hm i{display:block;aspect-ratio:1;border-radius:8px;background:#26262B}
+.hm i.a{background:#D7FF4F}
+.hm i.t{background:transparent;border:2px dashed #D7FF4F;box-sizing:border-box}
+.hab{display:grid;grid-template-columns:220px 1fr 90px;gap:20px;align-items:center;padding:12px 0;border-top:1px solid #26262B}
+.pill{font-family:inherit;font-size:14px;font-weight:800;border-radius:999px;padding:0 20px;min-height:46px;border:0;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+@media (max-width:1100px){.wrap{grid-template-columns:1fr}.rail{flex-direction:row;justify-content:center;padding:10px}.bento{grid-template-columns:1fr 1fr}.hab{grid-template-columns:1fr}.span2{grid-column:span 2 !important}}
+</style>
+
+</head>
+<body>
+<div style="font-family: Onest, system-ui, sans-serif; color: #F4F4F5; width: 100%">
+<div class="wrap">
+<nav class="rail" aria-label="Розділи">
+<div style="width: 52px; height: 52px; border-radius: 50%; border: 3px solid #D7FF4F; box-sizing: border-box; display: flex; align-items: center; justify-content: center; margin-bottom: 20px" aria-hidden="true"><div style="width: 14px; height: 14px; border-radius: 50%; background: #D7FF4F"></div></div>
+<a class="ri" href="#" aria-label="Сьогодні"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></a>
+<a class="ri" href="#" aria-label="Тиждень"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg></a>
+<a class="ri on" href="#" aria-label="Звички"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 3c1 4 5 5 5 10a5 5 0 01-10 0c0-3 2-4 2-6 2 1 3 2 3 4"></path></svg></a>
+<a class="ri" href="#" aria-label="Фокус"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="4"></circle></svg></a>
+<a class="ri" href="#" aria-label="Статистика"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg></a>
+</nav>
+
+<main style="display: flex; flex-direction: column; gap: 16px; min-width: 0">
+<header class="tile" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px; padding: 28px">
+<div>
+<p class="k">29 жовтня – 11 листопада</p>
+<h1 class="disp" style="margin: 10px 0 0; font-size: 56px; line-height: 1">Звички</h1>
+</div>
+<div style="display: flex; gap: 10px; flex-wrap: wrap">
+<div style="display: flex; background: #26262B; border-radius: 999px; padding: 4px" role="tablist" aria-label="Період">
+<button class="pill" role="tab" aria-selected="true" style="background: #F4F4F5; color: #0F0F11; min-height: 38px">2 тижні</button>
+<button class="pill" role="tab" aria-selected="false" style="background: transparent; color: #A1A1AA; min-height: 38px">Місяць</button>
+<button class="pill" role="tab" aria-selected="false" style="background: transparent; color: #A1A1AA; min-height: 38px">Рік</button>
+</div>
+<button class="pill" style="background: #D7FF4F; color: #0F0F11"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Нова звичка</button>
+</div>
+</header>
+
+<div class="bento">
+<section class="tile" style="background: #D7FF4F; color: #0F0F11"><p class="k" style="color: #3B4A00">Виконання</p><p class="disp" style="margin: 14px 0 6px; font-size: 64px; line-height: .9">78%</p><p style="margin: 0; font-size: 14px; font-weight: 800">+6% до минулих 2 тижнів</p></section>
+<section class="tile" style="background: #FFB38A; color: #0F0F11"><p class="k" style="color: #5A2A0C">Найдовша серія</p><p class="disp" style="margin: 14px 0 6px; font-size: 64px; line-height: .9">21</p><p style="margin: 0; font-size: 14px; font-weight: 800">день · зарядка</p></section>
+<section class="tile" style="background: #B9A4FF; color: #0F0F11"><p class="k" style="color: #2E1F66">Фокус за тиждень</p><p class="disp" style="margin: 14px 0 6px; font-size: 64px; line-height: .9">7<span style="font-size: 32px"> год</span></p><p style="margin: 0; font-size: 14px; font-weight: 800">ціль 12 год</p></section>
+<section class="tile"><p class="k">План виконано</p><p class="disp" style="margin: 14px 0 6px; font-size: 64px; line-height: .9">64%</p><p style="margin: 0; font-size: 14px; font-weight: 700; color: #A1A1AA">блоків цього тижня</p></section>
+</div>
+
+<section class="tile">
+<div style="display: grid; grid-template-columns: 220px 1fr 90px; gap: 20px; padding-bottom: 12px">
+<p class="k">Звичка</p>
+<div style="display: grid; grid-template-columns: repeat(14, 1fr); gap: 5px; font-size: 12px; font-weight: 700; color: #8A8A93; text-align: center"><span>29</span><span>30</span><span>31</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span style="color: #D7FF4F">11</span></div>
+<p class="k" style="text-align: right">Серія</p>
+</div>
+<div class="hab"><span style="font-size: 17px; font-weight: 800">Зарядка 10 хв</span><div class="hm"><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i></div><span class="disp" style="text-align: right; font-size: 28px; color: #FFB38A">21</span></div>
+<div class="hab"><span style="font-size: 17px; font-weight: 800">Без телефона до 9:00</span><div class="hm"><i class="a"></i><i class="a"></i><i></i><i class="a"></i><i class="a"></i><i></i><i class="a"></i><i></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i></div><span class="disp" style="text-align: right; font-size: 28px; color: #FFB38A">6</span></div>
+<div class="hab"><span style="font-size: 17px; font-weight: 800">10 000 кроків</span><div class="hm"><i class="a"></i><i></i><i class="a"></i><i class="a"></i><i></i><i class="a"></i><i class="a"></i><i></i><i></i><i class="a"></i><i class="a"></i><i></i><i class="a"></i><i class="t"></i></div><span class="disp" style="text-align: right; font-size: 28px; color: #FFB38A">1</span></div>
+<div class="hab"><span style="font-size: 17px; font-weight: 800">Читання 30 сторінок</span><div class="hm"><i></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="t"></i></div><span class="disp" style="text-align: right; font-size: 28px; color: #FFB38A">12</span></div>
+<div class="hab"><span style="font-size: 17px; font-weight: 800">Сон до 23:30</span><div class="hm"><i class="a"></i><i></i><i></i><i class="a"></i><i class="a"></i><i></i><i class="a"></i><i class="a"></i><i class="a"></i><i></i><i class="a"></i><i class="a"></i><i></i><i class="t"></i></div><span class="disp" style="text-align: right; font-size: 28px; color: #71717A">0</span></div>
+</section>
+
+<div class="bento">
+<section class="tile span2" style="grid-column: span 2">
+<p class="k">Куди йде час · цей тиждень</p>
+<div style="display: flex; height: 64px; border-radius: 18px; overflow: hidden; margin-top: 18px; gap: 4px" role="img" aria-label="Робота 14,5 год, здоров'я 6, навчання 5, особисте 4,5, справи 2">
+<div style="flex: 14.5; background: #8EC9FF"></div><div style="flex: 6; background: #7EE6B8"></div><div style="flex: 5; background: #B9A4FF"></div><div style="flex: 4.5; background: #FFB38A"></div><div style="flex: 2; background: #3A3A42"></div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 18px; margin-top: 16px; font-size: 14px; font-weight: 700">
+<span style="display: flex; align-items: center; gap: 8px"><i style="width: 12px; height: 12px; border-radius: 4px; background: #8EC9FF; display: block"></i>Робота 14,5 год</span>
+<span style="display: flex; align-items: center; gap: 8px"><i style="width: 12px; height: 12px; border-radius: 4px; background: #7EE6B8; display: block"></i>Здоров'я 6</span>
+<span style="display: flex; align-items: center; gap: 8px"><i style="width: 12px; height: 12px; border-radius: 4px; background: #B9A4FF; display: block"></i>Навчання 5</span>
+<span style="display: flex; align-items: center; gap: 8px"><i style="width: 12px; height: 12px; border-radius: 4px; background: #FFB38A; display: block"></i>Особисте 4,5</span>
+<span style="display: flex; align-items: center; gap: 8px"><i style="width: 12px; height: 12px; border-radius: 4px; background: #3A3A42; display: block"></i>Справи 2</span>
+</div>
+</section>
+<section class="tile span2" style="grid-column: span 2; display: flex; gap: 20px; align-items: center; border: 2px solid #D7FF4F; background: transparent">
+<div class="disp" style="font-size: 48px; color: #D7FF4F; line-height: 1; flex: none">+30%</div>
+<div>
+<p style="margin: 0; font-size: 16px; font-weight: 700; line-height: 1.5">Стільки більше блоків ви закриваєте після ночі, коли лягли до 23:30.</p>
+<a href="#" style="display: inline-block; margin-top: 8px; font-size: 14px; font-weight: 800">Нагадувати о 22:45 →</a>
+</div>
+</section>
+</div>
+</main>
+</div>
+</div>
+</body>
+</html>
