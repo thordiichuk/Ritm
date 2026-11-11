@@ -1,6 +1,7 @@
 import { useLocation } from './lib/router';
 import { TodayScreen } from './screens/Today';
 import { HabitsScreen } from './screens/Habits';
+import { FocusScreen } from './screens/Focus';
 import { ToastHost } from './components/ui/Modal';
 import { useBackgroundTicker } from './lib/ticker';
 
@@ -11,6 +12,9 @@ export function App() {
   switch (route) {
     case 'habits':
       screen = <HabitsScreen />;
+      break;
+    case 'focus':
+      screen = <FocusScreen />;
       break;
     default:
       screen = <TodayScreen />;

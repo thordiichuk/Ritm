@@ -123,6 +123,8 @@ export interface Settings {
   workMin: number;
   breakMin: number;
   notifications: boolean;
+  /** глушити нагадування, поки йде фокус-сесія */
+  focusMute: boolean;
   reviewAt: string; // 'HH:MM'
 }
 

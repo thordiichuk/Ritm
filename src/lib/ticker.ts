@@ -22,7 +22,7 @@ export function useBackgroundTicker() {
         notify('Ритм', msg);
       }
       // нагадування звичок (поза фокусом, якщо сповіщення не вимкнено)
-      if (s.settings.notifications && !s.timer?.running) {
+      if (s.settings.notifications && !(s.timer?.running && s.settings.focusMute)) {
         const now = hhmm(nowMinutes());
         const today = todayISO();
         for (const h of s.habits) {

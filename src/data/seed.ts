@@ -200,6 +200,7 @@ export function createSeed(): AppState {
       workMin: 25,
       breakMin: 5,
       notifications: true,
+      focusMute: true,
       reviewAt: '21:00',
     },
   };
