@@ -143,4 +143,5 @@ textarea.input { padding: 14px 16px; min-height: 96px; resize: vertical; line-he
   background: var(--c-text); color: var(--c-ink); font-weight: 800; font-size: 14px;
   padding: 12px 18px; border-radius: var(--r-pill); animation: rise .18s ease-out; max-width: calc(100vw - 40px);
 }
+@media (max-width: 759px) { .toast { bottom: auto; top: calc(16px + env(safe-area-inset-top)); } }
 @media (min-width: 760px) { .toast { bottom: 32px; } }

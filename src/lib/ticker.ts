@@ -34,7 +34,7 @@ export function useBackgroundTicker() {
           }
         }
         const rkey = `review:${today}`;
-        if (s.settings.reviewAt === now && !s.reviews[today]?.closedAt && !fired.has(rkey)) {
+        if (s.settings.reviewAt === now && !s.reviews[today]?.closedAt && !fired.has(rkey) && !location.hash.startsWith('#/review')) {
           fired.add(rkey);
           toast('Час вечірнього підсумку');
           notify('Ритм', 'Час вечірнього підсумку — 5 хвилин');

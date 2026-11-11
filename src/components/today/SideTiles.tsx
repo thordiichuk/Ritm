@@ -33,6 +33,11 @@ export function ProgressTile({ date }: { date: string }) {
         {bs.map((b, i) => <span key={b.id} className={i < done ? 'on' : ''} />)}
         {!bs.length && <span />}
       </div>
+      {(!isToday || nowMinutes() >= parseHHMM(s.settings.reviewAt) - 60) && (
+        <a className="pill pill-ink" style={{ marginTop: 18, width: '100%', justifyContent: 'center' }} href={href('review', isToday ? undefined : { d: date })}>
+          Вечірній підсумок →
+        </a>
+      )}
     </section>
   );
 }

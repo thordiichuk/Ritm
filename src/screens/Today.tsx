@@ -11,6 +11,7 @@ import { addDays, cap, dayMonth, fromISO, isoWeekNumber, nowMinutes, todayISO, w
 import { href, navigate, useLocation } from '../lib/router';
 import { useIsPhone } from '../lib/hooks';
 import { applyTemplate, findFreeSlot, saveTemplate } from '../data/actions';
+import { isReviewBlock } from './Review';
 
 function useSelectedDate(): string {
   const { params } = useLocation();
@@ -34,7 +35,8 @@ export function TodayScreen() {
     addAt(findFreeSlot(date, 60, from) ?? from);
   };
   const editor = editing && <BlockEditor block={editing.block} isNew={editing.isNew} onClose={() => setEditing(null)} />;
-  const edit = (b: Block) => setEditing({ block: b, isNew: false });
+  const edit = (b: Block) =>
+    isReviewBlock(b.title) ? navigate('review', date === todayISO() ? undefined : { d: date }) : setEditing({ block: b, isNew: false });
 
   if (phone) {
     return (
@@ -48,6 +50,7 @@ export function TodayScreen() {
             <Top3Tile date={date} />
             <WaterTile date={date} />
             <InboxTile date={date} phone />
+            <a className="pill pill-dark" style={{ justifyContent: 'center', minHeight: 56 }} href={href('review', date === todayISO() ? undefined : { d: date })}>Вечірній підсумок →</a>
           </div>
         </PhoneScroller>
         <BottomNav active="today" onAdd={addNext} />
