@@ -1,0 +1,56 @@
+/* Дизайн-токени «Ритм» — зняті з макетів у mockups/ */
+:root {
+  /* Поверхні */
+  --c-bg: #0F0F11;
+  --c-surface: #18181C;
+  --c-surface-2: #26262B;
+  --c-nav: #1E1E23;
+  --c-ash: #2C2C32;
+  --c-line: #222227;
+  --c-outline: #3A3A42;
+  --c-check-border: #4A4A52;
+  --c-backdrop: #000;
+
+  /* Текст */
+  --c-text: #F4F4F5;
+  --c-text-2: #E6E6EA;
+  --c-muted: #A1A1AA;
+  --c-muted-2: #8A8A93;
+  --c-muted-3: #71717A;
+  --c-muted-4: #55555E;
+  --c-ink: #0F0F11;
+
+  /* Акценти */
+  --c-lime: #D7FF4F;
+  --c-lime-hover: #ECFFB0;
+  --c-lime-ink: #3B4A00;
+  --c-mint: #7EE6B8;
+  --c-sky: #8EC9FF;
+  --c-lilac: #B9A4FF;
+  --c-lilac-ink: #2E1F66;
+  --c-peach: #FFB38A;
+  --c-peach-ink: #5A2A0C;
+
+  --c-ink-track: rgba(15, 15, 17, .18);
+  --c-ink-track-2: rgba(15, 15, 17, .15);
+
+  /* Шрифти */
+  --f-display: 'Dela Gothic One', sans-serif;
+  --f-body: Onest, system-ui, sans-serif;
+
+  /* Радіуси */
+  --r-xs: 4px;
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 18px;
+  --r-xl: 20px;
+  --r-2xl: 24px;
+  --r-3xl: 26px;
+  --r-tile: 28px;
+  --r-pill: 999px;
+
+  /* Відступи */
+  --gap: 16px;
+  --tile-pad: 24px;
+  --phone-pad: 20px;
+}
