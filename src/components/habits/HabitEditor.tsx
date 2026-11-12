@@ -68,7 +68,7 @@ export function HabitEditor({ habit, onClose }: { habit?: Habit; onClose: () => 
           <span>Нагадування (необов'язково)</span>
           <input className="input" type="time" value={reminder} onChange={(e) => setReminder(e.target.value)} />
         </label>
-        {error && <p role="alert" style={{ color: '#FF8A8A', fontWeight: 700, margin: '0 0 12px' }}>{error}</p>}
+        {error && <p role="alert" style={{ color: 'var(--danger-fg)', fontWeight: 700, margin: '0 0 12px' }}>{error}</p>}
         <div className="modal-actions">
           <button type="submit" className="pill pill-lime grow">{habit ? 'Зберегти' : 'Додати звичку'}</button>
           {habit && (

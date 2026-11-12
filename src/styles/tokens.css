@@ -1,6 +1,20 @@
-/* Дизайн-токени «Ритм» — зняті з макетів у mockups/ */
-:root {
-  /* Поверхні */
+/*
+ * Дизайн-токени «Ритм».
+ *
+ * Дві теми: «dark» (оригінал, за замовчуванням) і «bloom» (світла блакитна квіткова).
+ * Тема задається атрибутом data-theme на <html>. Селектор [data-theme] працює на будь-якому
+ * елементі, тому прев'ю теми в налаштуваннях може «одягти» іншу тему локально.
+ *
+ * Шар 1 — палітра (--c-*): сирі кольори з макетів.
+ * Шар 2 — семантика (--accent, --tile-*, --cat-* …): ролі, на які посилаються компоненти.
+ *         У темній темі семантика посилається на палітру й дає рівно ті самі значення, що й раніше.
+ */
+
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* ---------- Палітра ---------- */
   --c-bg: #0F0F11;
   --c-surface: #18181C;
   --c-surface-2: #26262B;
@@ -11,7 +25,6 @@
   --c-check-border: #4A4A52;
   --c-backdrop: #000;
 
-  /* Текст */
   --c-text: #F4F4F5;
   --c-text-2: #E6E6EA;
   --c-muted: #A1A1AA;
@@ -19,8 +32,8 @@
   --c-muted-3: #71717A;
   --c-muted-4: #55555E;
   --c-ink: #0F0F11;
+  --c-white: #fff;
 
-  /* Акценти */
   --c-lime: #D7FF4F;
   --c-lime-hover: #ECFFB0;
   --c-lime-ink: #3B4A00;
@@ -34,11 +47,13 @@
   --c-ink-track: rgba(15, 15, 17, .18);
   --c-ink-track-2: rgba(15, 15, 17, .15);
 
-  /* Шрифти */
-  --f-display: 'Dela Gothic One', sans-serif;
-  --f-body: Onest, system-ui, sans-serif;
+  /* ---------- Шрифти ---------- */
+  --font-display: 'Dela Gothic One', sans-serif;
+  --font-display-weight: 400;
+  --display-tracking: normal;
+  --font-body: Onest, system-ui, sans-serif;
 
-  /* Радіуси */
+  /* ---------- Радіуси й відступи ---------- */
   --r-xs: 4px;
   --r-sm: 12px;
   --r-md: 16px;
@@ -49,8 +64,284 @@
   --r-tile: 28px;
   --r-pill: 999px;
 
-  /* Відступи */
   --gap: 16px;
   --tile-pad: 24px;
   --phone-pad: 20px;
+
+  /* ---------- Семантика: сторінка й поверхні ---------- */
+  --page-bg: var(--c-bg);
+  --tile-bg: var(--c-surface);
+  --tile-border: 0 solid transparent;
+  --tile-shadow: none;
+  --tile-outline: var(--c-ash);          /* плитка-контур («Енергія») */
+  --cell-empty: var(--c-surface-2);       /* порожня клітинка трекера */
+  --dash: var(--c-outline);               /* пунктир «вільна година» */
+  --hour: var(--c-outline);               /* великі номери годин */
+  --now: var(--c-lime);                   /* поточна година */
+  --focus-ring: var(--c-lime);
+  --link: var(--c-lime);
+  --link-hover: var(--c-lime-hover);
+  --nav-bg: var(--c-nav);
+  --nav-border: 0 solid transparent;
+  --nav-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+  --menu-shadow: 0 16px 40px rgba(0, 0, 0, .5);
+  --backdrop: rgba(0, 0, 0, .6);
+  --toast-bg: var(--c-text);
+  --toast-fg: var(--c-ink);
+  --chip-on-bg: var(--c-text);
+  --chip-on-fg: var(--c-ink);
+  --hover-strong: var(--c-white);          /* іконка рейки при наведенні */
+  --done-opacity: .45;
+  --meta-opacity: .72;          /* час під назвою блоку */
+  --meta-opacity-phone: .7;
+  --now-sub-opacity: .6;        /* «ще 40 хв» */
+
+  /* ---------- Семантика: акцент ---------- */
+  --accent: var(--c-lime);                  /* суцільний: текст, рамки, лінії */
+  --accent-bg: var(--c-lime);               /* заливка: може бути градієнтом */
+  --accent-bg-hover: var(--c-lime-hover);
+  --accent-shadow: none;
+  --on-accent: var(--c-ink);                /* текст на акценті */
+  --on-accent-k: var(--c-lime-ink);         /* підпис-«капс» на акценті */
+  --on-accent-muted: var(--c-ink);
+  --on-accent-btn-bg: var(--c-ink);         /* кнопка всередині акцентної картки */
+  --on-accent-btn-fg: var(--c-lime);
+  --on-accent-btn-fg-hover: var(--c-lime-hover);
+  --on-accent-track: var(--c-ink-track);
+  --on-accent-fill: var(--c-ink);
+  --accent-wash: rgba(215, 255, 79, .06);   /* підсвітка зони перетягування */
+
+  /* ---------- Семантика: відмітки й трекер ---------- */
+  --check-bg: var(--c-lime);
+  --check-fg: var(--c-ink);
+  --cell-done: var(--c-lime);
+  --heat: var(--c-lime);
+  --today-dash: var(--c-lime);
+  --today-bg: transparent;
+  --streak: var(--c-peach);
+  --streak-text: var(--c-peach);
+
+  /* ---------- Семантика: кольорові плитки ---------- */
+  --streak-tile-bg: var(--c-peach);
+  --streak-tile-fg: var(--c-ink);
+  --streak-tile-k: var(--c-peach-ink);
+  --focus-tile-bg: var(--c-lilac);
+  --focus-tile-fg: var(--c-ink);
+  --focus-tile-k: var(--c-lilac-ink);
+  --focus-strong: var(--c-lilac);           /* «3г фокусу» у підсумку */
+
+  /* ---------- Вода ---------- */
+  --cup-bg: var(--c-surface-2);
+  --cup-bg-hover: var(--c-ash);
+  --cup-border: 0 solid transparent;
+  --cup-full: var(--c-sky);
+
+  /* ---------- Категорії: тло / текст / графіки ---------- */
+  --cat-work-bg: var(--c-sky);       --cat-work-fg: var(--c-ink);      --cat-work-chart: var(--c-sky);
+  --cat-health-bg: var(--c-mint);    --cat-health-fg: var(--c-ink);    --cat-health-chart: var(--c-mint);
+  --cat-study-bg: var(--c-lilac);    --cat-study-fg: var(--c-ink);     --cat-study-chart: var(--c-lilac);
+  --cat-personal-bg: var(--c-peach); --cat-personal-fg: var(--c-ink);  --cat-personal-chart: var(--c-peach);
+  --cat-errands-bg: var(--c-ash);    --cat-errands-fg: var(--c-text-2); --cat-errands-chart: var(--c-outline);
+  --week-block-border: 0 solid transparent;
+  --week-errands-bg: var(--c-outline);
+  --week-errands-fg: var(--c-text);
+
+  /* ---------- Кольори звичок: заливка / текст на заливці / «сильний» для чисел ---------- */
+  --habit-peach: var(--c-peach); --habit-peach-fg: var(--c-ink); --habit-peach-strong: var(--c-peach);
+  --habit-mint: var(--c-mint);   --habit-mint-fg: var(--c-ink);  --habit-mint-strong: var(--c-mint);
+  --habit-sky: var(--c-sky);     --habit-sky-fg: var(--c-ink);   --habit-sky-strong: var(--c-sky);
+  --habit-lilac: var(--c-lilac); --habit-lilac-fg: var(--c-ink); --habit-lilac-strong: var(--c-lilac);
+  --habit-lime: var(--c-lime);   --habit-lime-fg: var(--c-ink);  --habit-lime-strong: var(--c-lime);
+  --habit-bar-off: var(--c-surface-2);
+
+  /* ---------- Настрій: заливка / текст / кільце вибору ---------- */
+  --mood-1: var(--c-outline); --mood-1-fg: var(--c-text); --mood-1-ring: var(--c-outline);
+  --mood-2: var(--c-peach);   --mood-2-fg: var(--c-ink);  --mood-2-ring: var(--c-peach);
+  --mood-3: var(--c-sky);     --mood-3-fg: var(--c-ink);  --mood-3-ring: var(--c-sky);
+  --mood-4: var(--c-mint);    --mood-4-fg: var(--c-ink);  --mood-4-ring: var(--c-mint);
+  --mood-5: var(--c-lime);    --mood-5-fg: var(--c-ink);  --mood-5-ring: var(--c-lime);
+
+  /* ---------- Графіки ---------- */
+  --chart-focus: var(--c-lilac);
+  --chart-plan: var(--c-sky);
+  --chart-habit: var(--c-peach);
+  --chart-today: var(--c-lime);
+
+  /* ---------- Фокус-екран ---------- */
+  --fx-bg: var(--c-lime);
+  --fx-break-bg: var(--c-mint);
+  --fx-fg: var(--c-ink);
+  --fx-btn-bg: var(--c-ink);
+  --fx-btn-fg: var(--c-lime);
+  --fx-btn-fg-break: var(--c-mint);
+  --fx-btn-fg-hover: var(--c-lime-hover);
+  --fx-track: var(--c-ink-track-2);
+  --fx-hover: rgba(15, 15, 17, .08);
+  --fx-shadow: none;
+
+  /* ---------- Небезпечні дії ---------- */
+  --danger-fg: #FF8A8A;
+  --danger-border: #3A2A2E;
+  --danger-hover-bg: #2A1C1F;
+  --danger-hover-fg: #FFB0B0;
+
+  /* ---------- Квіти (видно лише в «bloom») ---------- */
+  --flower-line: var(--c-lime);
+  --flower-line-inverse: var(--c-white);
+  --flower-fill-from: var(--c-surface);
+  --flower-fill-to: var(--c-surface);
+  --flower-fill-inverse-from: rgba(255, 255, 255, .38);
+  --flower-fill-inverse-to: rgba(255, 255, 255, .06);
+}
+
+/* ======================================================================
+   Блакитна квіткова тема
+   ====================================================================== */
+[data-theme='bloom'] {
+  color-scheme: light;
+
+  /* Базові поверхні й текст */
+  --c-bg: #F3EDE3;
+  --c-surface: #FFFDF9;
+  --c-surface-2: #F1EADF;
+  --c-nav: #FFFDF9;
+  --c-ash: #EEE6D8;
+  --c-line: #EAE2D4;
+  --c-outline: #CFC3AF;
+  --c-check-border: #B9C8DA;
+  --c-text: #1C2733;
+  --c-text-2: #1C2733;
+  --c-muted: #5D6878;
+  --c-muted-2: #5D6878;
+  --c-muted-3: #525D6D;
+  --c-muted-4: #6B7686;
+  --c-ink: #1C2733;
+  --c-white: #FFFFFF;
+  --c-lime: #3567A8;
+
+  --font-display: Commissioner, 'Golos Text', sans-serif;
+  --font-display-weight: 700;
+  --display-tracking: -0.03em;
+  --font-body: 'Golos Text', system-ui, sans-serif;
+
+  --r-tile: 26px;
+
+  --page-bg:
+    radial-gradient(ellipse 70% 35% at 100% 0%, rgba(111, 152, 204, .28), transparent 70%),
+    radial-gradient(ellipse 60% 30% at 0% 100%, rgba(168, 195, 224, .35), transparent 70%),
+    #F3EDE3;
+  --tile-bg: #FFFDF9;
+  --tile-border: 1px solid #EAE2D4;
+  --tile-shadow: 0 2px 6px rgba(28, 39, 51, .04);
+  --tile-outline: #EAE2D4;
+  --cell-empty: #EFE8DC;
+  --dash: #CFC3AF;
+  --hour: #C5D3E4;
+  --now: #3567A8;
+  --focus-ring: #3567A8;
+  --link: #2F5E9C;
+  --link-hover: #1F4373;
+  --nav-bg: #FFFDF9;
+  --nav-border: 1px solid #EAE2D4;
+  --nav-shadow: 0 10px 30px rgba(28, 39, 51, .12);
+  --menu-shadow: 0 16px 40px rgba(28, 39, 51, .16);
+  --backdrop: rgba(28, 39, 51, .35);
+  --toast-bg: #1C2733;
+  --toast-fg: #FFFDF9;
+  --chip-on-bg: #3567A8;
+  --chip-on-fg: #FFFFFF;
+  --hover-strong: #1C2733;
+  --done-opacity: .6;
+  --meta-opacity: .92;
+  --meta-opacity-phone: .92;
+  --now-sub-opacity: .92;
+
+  --accent: #3567A8;
+  /* Світлий кінець #A8C3E0 дає білому тексту лише 1.8:1, тому в елементах з текстом градієнт
+     закінчується на #5F8CC6, а світла частина відсунута в самий кут (див. перевірку контрасту). */
+  --accent-bg: linear-gradient(135deg, #2F5E9C 0%, #3567A8 70%, #5F8CC6 100%);
+  --accent-bg-hover: linear-gradient(135deg, #29548C 0%, #2F5E9C 70%, #5583BF 100%);
+  --accent-shadow: 0 12px 28px rgba(53, 103, 168, .25);
+  --on-accent: #FFFFFF;
+  --on-accent-k: rgba(255, 255, 255, .95);
+  --on-accent-muted: rgba(255, 255, 255, .9);
+  --on-accent-btn-bg: #FFFDF9;
+  --on-accent-btn-fg: #2F5E9C;
+  --on-accent-btn-fg-hover: #1F4373;
+  --on-accent-track: rgba(255, 255, 255, .32);
+  --on-accent-fill: #FFFFFF;
+  --accent-wash: rgba(53, 103, 168, .06);
+
+  --check-bg: #3567A8;
+  --check-fg: #FFFFFF;
+  --cell-done: linear-gradient(140deg, #3567A8, #7FA3D2);
+  --heat: #3567A8;
+  --today-dash: #3567A8;
+  --today-bg: #FFFDF9;
+  --streak: #B4602A;
+  --streak-text: #9A5020;           /* дрібний текст: #B4602A дає лише 4.45:1 */
+
+  --streak-tile-bg: #F1E4D3;
+  --streak-tile-fg: #5A3618;
+  --streak-tile-k: #5A3618;
+  --focus-tile-bg: linear-gradient(150deg, #E8E3F1, #D6DFEF);
+  --focus-tile-fg: #2E2650;
+  --focus-tile-k: #2E2650;
+  --focus-strong: #5B4C93;
+
+  --cup-bg: #F6F0E6;
+  --cup-bg-hover: #EFE6D8;
+  --cup-border: 1px solid #C5D7EB;
+  --cup-full: linear-gradient(180deg, #A8C3E0, #3567A8);
+
+  --cat-work-bg: #DCE7F3;     --cat-work-fg: #244F8A;     --cat-work-chart: #7FA3D2;
+  --cat-health-bg: #E2EADB;   --cat-health-fg: #3F5C31;   --cat-health-chart: #9DB58C;
+  --cat-study-bg: #E8E3F1;    --cat-study-fg: #4E4078;    --cat-study-chart: #A99BD0;
+  --cat-personal-bg: #F1E4D3; --cat-personal-fg: #7A4C24; --cat-personal-chart: #D9A574;
+  --cat-errands-bg: #EEE8DE;  --cat-errands-fg: #4A453D;  --cat-errands-chart: #BDB3A3;
+  --week-block-border: 1.5px solid currentColor;
+  --week-errands-bg: #EEE8DE;
+  --week-errands-fg: #4A453D;
+
+  --habit-peach: #F1E4D3; --habit-peach-fg: #5A3618; --habit-peach-strong: #B4602A;
+  --habit-mint: #E2EADB;  --habit-mint-fg: #3F5C31;  --habit-mint-strong: #4F7340;
+  --habit-sky: #DCE7F3;   --habit-sky-fg: #244F8A;   --habit-sky-strong: #3567A8;
+  --habit-lilac: #E8E3F1; --habit-lilac-fg: #4E4078; --habit-lilac-strong: #5B4C93;
+  --habit-lime: linear-gradient(135deg, #2F5E9C 0%, #3567A8 70%, #5F8CC6 100%);
+  --habit-lime-fg: #FFFFFF; --habit-lime-strong: #3567A8;
+  --habit-bar-off: #EFE8DC;
+
+  --mood-1: #E4DED3; --mood-1-fg: #4A453D; --mood-1-ring: #B9AE9D;
+  --mood-2: #F1E4D3; --mood-2-fg: #7A4C24; --mood-2-ring: #D9A574;
+  --mood-3: #DCE7F3; --mood-3-fg: #244F8A; --mood-3-ring: #7FA3D2;
+  --mood-4: #E2EADB; --mood-4-fg: #3F5C31; --mood-4-ring: #9DB58C;
+  --mood-5: linear-gradient(135deg, #2F5E9C 0%, #3567A8 70%, #5F8CC6 100%); --mood-5-fg: #FFFFFF; --mood-5-ring: #3567A8;
+
+  --chart-focus: #A99BD0;
+  --chart-plan: #7FA3D2;
+  --chart-habit: #D9A574;
+  --chart-today: #3567A8;
+
+  --fx-bg: linear-gradient(160deg, #2F5E9C, #3567A8 65%, #4676B4);
+  --fx-break-bg: linear-gradient(160deg, #3A6450, #46755F 65%, #4E7D69);
+  --fx-fg: #FFFFFF;
+  --fx-btn-bg: #FFFDF9;
+  --fx-btn-fg: #2F5E9C;
+  --fx-btn-fg-break: #3F5C31;
+  --fx-btn-fg-hover: #1F4373;
+  --fx-track: rgba(255, 255, 255, .3);
+  --fx-hover: rgba(255, 255, 255, .15);
+  --fx-shadow: 0 12px 28px rgba(28, 39, 51, .18);
+
+  --danger-fg: #A3231B;
+  --danger-border: #E9C9C4;
+  --danger-hover-bg: #FBEDEB;
+  --danger-hover-fg: #7E1A14;
+
+  --flower-line: #3567A8;
+  --flower-line-inverse: #FFFFFF;
+  --flower-fill-from: #C9D9EC;
+  --flower-fill-to: #FFFFFF;
+  --flower-fill-inverse-from: rgba(255, 255, 255, .38);
+  --flower-fill-inverse-to: rgba(255, 255, 255, .06);
 }

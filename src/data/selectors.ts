@@ -2,20 +2,38 @@ import type { AppState, Block, Category, Habit, ISODate } from './types';
 import { addDays, parseHHMM, rangeDays, todayISO, weekStart } from '../lib/date';
 
 export const CATEGORY_META: Record<Category, { label: string; cls: string; color: string }> = {
-  work: { label: 'Робота', cls: 'sky', color: 'var(--c-sky)' },
-  health: { label: "Здоров'я", cls: 'mint', color: 'var(--c-mint)' },
-  study: { label: 'Навчання', cls: 'lilac', color: 'var(--c-lilac)' },
-  personal: { label: 'Особисте', cls: 'peach', color: 'var(--c-peach)' },
-  errands: { label: 'Справи', cls: 'ash', color: 'var(--c-outline)' },
+  work: { label: 'Робота', cls: 'sky', color: 'var(--cat-work-chart)' },
+  health: { label: "Здоров'я", cls: 'mint', color: 'var(--cat-health-chart)' },
+  study: { label: 'Навчання', cls: 'lilac', color: 'var(--cat-study-chart)' },
+  personal: { label: 'Особисте', cls: 'peach', color: 'var(--cat-personal-chart)' },
+  errands: { label: 'Справи', cls: 'ash', color: 'var(--cat-errands-chart)' },
 };
 export const CATEGORIES = Object.keys(CATEGORY_META) as Category[];
 
 export const HABIT_COLOR: Record<Habit['color'], string> = {
-  peach: 'var(--c-peach)',
-  mint: 'var(--c-mint)',
-  sky: 'var(--c-sky)',
-  lilac: 'var(--c-lilac)',
-  lime: 'var(--c-lime)',
+  peach: 'var(--habit-peach)',
+  mint: 'var(--habit-mint)',
+  sky: 'var(--habit-sky)',
+  lilac: 'var(--habit-lilac)',
+  lime: 'var(--habit-lime)',
+};
+
+/** Текст на заливці кольору звички */
+export const HABIT_FG: Record<Habit['color'], string> = {
+  peach: 'var(--habit-peach-fg)',
+  mint: 'var(--habit-mint-fg)',
+  sky: 'var(--habit-sky-fg)',
+  lilac: 'var(--habit-lilac-fg)',
+  lime: 'var(--habit-lime-fg)',
+};
+
+/** Колір числа серії та смужки прогресу на нейтральній плитці */
+export const HABIT_STRONG: Record<Habit['color'], string> = {
+  peach: 'var(--habit-peach-strong)',
+  mint: 'var(--habit-mint-strong)',
+  sky: 'var(--habit-sky-strong)',
+  lilac: 'var(--habit-lilac-strong)',
+  lime: 'var(--habit-lime-strong)',
 };
 
 export function blocksOn(s: AppState, date: ISODate): Block[] {

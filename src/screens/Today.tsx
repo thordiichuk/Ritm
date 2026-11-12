@@ -11,6 +11,7 @@ import { addDays, cap, dayMonth, fromISO, isoWeekNumber, nowMinutes, todayISO, w
 import { href, navigate, useLocation } from '../lib/router';
 import { useIsPhone } from '../lib/hooks';
 import { applyTemplate, findFreeSlot, saveTemplate } from '../data/actions';
+import { BotanicalSpray } from '../components/flora/Botanical';
 import { isReviewBlock } from './Review';
 
 function useSelectedDate(): string {
@@ -64,6 +65,7 @@ export function TodayScreen() {
       <Rail active="today" />
       <main>
         <header className="tile page-head">
+          <BotanicalSpray className="flora-head" />
           <div>
             <p className="k">{cap(weekdayName(date))} · {isoWeekNumber(date)}-й тиждень</p>
             <h1 className="disp">{dayMonth(date)}</h1>

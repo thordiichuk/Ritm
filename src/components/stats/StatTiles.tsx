@@ -6,6 +6,7 @@ import { addDays, num, plural } from '../../lib/date';
 import type { ISODate } from '../../data/types';
 import { saveHabit } from '../../data/actions';
 import { toast } from '../ui/Modal';
+import { BotanicalSpray, BotanicalSprig } from '../flora/Botanical';
 
 export function CompletionTile({ days }: { days: ISODate[] }) {
   const s = useStore((x) => x);
@@ -13,8 +14,9 @@ export function CompletionTile({ days }: { days: ISODate[] }) {
   const prev = habitRate(s, days.map((d) => addDays(d, -days.length)));
   const delta = Math.round((rate - prev) * 100);
   return (
-    <section className="tile stat" style={{ background: 'var(--c-lime)', color: 'var(--c-ink)' }}>
-      <p className="k" style={{ color: 'var(--c-lime-ink)' }}>Виконання</p>
+    <section className="tile stat flora-host" style={{ background: 'var(--accent-bg)', color: 'var(--on-accent)', boxShadow: 'var(--accent-shadow)' }}>
+      <BotanicalSprig inverse className="flora flora-sprig-corner" />
+      <p className="k" style={{ color: 'var(--on-accent-k)' }}>Виконання</p>
       <p className="disp stat-big">{Math.round(rate * 100)}%</p>
       <p className="stat-sub">{delta >= 0 ? '+' : '−'}{Math.abs(delta)}% до {periodPrev(days.length)}</p>
     </section>
@@ -32,8 +34,8 @@ export function LongestStreakTile() {
   const s = useStore((x) => x);
   const best = s.habits.map((h) => ({ h, n: streak(h) })).sort((a, b) => b.n - a.n)[0];
   return (
-    <section className="tile stat" style={{ background: 'var(--c-peach)', color: 'var(--c-ink)' }}>
-      <p className="k" style={{ color: 'var(--c-peach-ink)' }}>Найдовша серія</p>
+    <section className="tile stat" style={{ background: 'var(--streak-tile-bg)', color: 'var(--streak-tile-fg)' }}>
+      <p className="k" style={{ color: 'var(--streak-tile-k)' }}>Найдовша серія</p>
       <p className="disp stat-big">{best?.n ?? 0}</p>
       <p className="stat-sub">{best ? `${plural(best.n, ['день', 'дні', 'днів'])} · ${best.h.name.split(' ')[0].toLowerCase()}` : 'додайте першу звичку'}</p>
     </section>
@@ -44,8 +46,9 @@ export function FocusWeekTile() {
   const s = useStore((x) => x);
   const hours = focusMinutesIn(s, weekDays()) / 60;
   return (
-    <section className="tile stat" style={{ background: 'var(--c-lilac)', color: 'var(--c-ink)' }}>
-      <p className="k" style={{ color: 'var(--c-lilac-ink)' }}>Фокус за тиждень</p>
+    <section className="tile stat flora-host" style={{ background: 'var(--focus-tile-bg)', color: 'var(--focus-tile-fg)' }}>
+      <BotanicalSpray className="flora flora-spray-br" />
+      <p className="k" style={{ color: 'var(--focus-tile-k)' }}>Фокус за тиждень</p>
       <p className="disp stat-big">{num(hours, hours < 10 ? 1 : 0)}<span style={{ fontSize: 32 }}> год</span></p>
       <p className="stat-sub">ціль {s.settings.focusGoalHours} год</p>
     </section>

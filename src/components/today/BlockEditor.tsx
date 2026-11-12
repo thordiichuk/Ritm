@@ -87,7 +87,7 @@ export function BlockEditor({ block, isNew, onClose }: { block: Block; isNew: bo
           </button>
           Готово
         </label>
-        {error && <p role="alert" style={{ color: '#FF8A8A', fontWeight: 700, margin: '0 0 12px' }}>{error}</p>}
+        {error && <p role="alert" style={{ color: 'var(--danger-fg)', fontWeight: 700, margin: '0 0 12px' }}>{error}</p>}
         <div className="modal-actions">
           <button type="submit" className="pill pill-lime grow">{isNew ? 'Додати блок' : 'Зберегти'}</button>
           {!isNew && (

@@ -116,7 +116,7 @@ export function FocusScreen() {
             const n = i + 1;
             const fill = n < timer.session || (n === timer.session && isBreak) ? 1 : n === timer.session ? progress : 0;
             const pct = `${Math.round(fill * 100)}%`;
-            return <span key={i} style={{ background: `linear-gradient(90deg, var(--c-ink) ${pct}, var(--c-ink-track-2) ${pct})` }} />;
+            return <span key={i} style={{ background: `linear-gradient(90deg, var(--fx-fg) ${pct}, var(--fx-track) ${pct})` }} />;
           })}
         </div>
         <p className="fx-meta">{elapsedLabel} · {nextLabel}</p>

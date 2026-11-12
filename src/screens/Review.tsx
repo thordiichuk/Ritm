@@ -10,12 +10,12 @@ import { Rail } from '../components/layout/Nav';
 import { toast } from '../components/ui/Modal';
 import { Icon } from '../components/ui/Icon';
 
-const MOODS: Array<{ v: Mood; label: string; bg: string; fg?: string; h: number }> = [
-  { v: 1, label: 'Важко', bg: 'var(--c-outline)', fg: 'var(--c-text)', h: 64 },
-  { v: 2, label: 'Так собі', bg: 'var(--c-peach)', h: 72 },
-  { v: 3, label: 'Норм', bg: 'var(--c-sky)', h: 80 },
-  { v: 4, label: 'Добре', bg: 'var(--c-mint)', h: 84 },
-  { v: 5, label: 'Чудово', bg: 'var(--c-lime)', h: 88 },
+const MOODS: Array<{ v: Mood; label: string; h: number }> = [
+  { v: 1, label: 'Важко', h: 64 },
+  { v: 2, label: 'Так собі', h: 72 },
+  { v: 3, label: 'Норм', h: 80 },
+  { v: 4, label: 'Добре', h: 84 },
+  { v: 5, label: 'Чудово', h: 88 },
 ];
 
 export const isReviewBlock = (title: string) => /^вечірній підсумок/i.test(title.trim());
@@ -53,9 +53,9 @@ export function ReviewScreen() {
       <h1 className="disp rv-title">День<br />закрито</h1>
 
       <div className="rv-stats">
-        <div><p className="disp" style={{ color: 'var(--c-lime)' }}>{doneBlocks}/{blocks.length}</p><p>блоків</p></div>
-        <div><p className="disp" style={{ color: 'var(--c-peach)' }}>{habits.done}/{habits.total}</p><p>звичок</p></div>
-        <div><p className="disp" style={{ color: 'var(--c-lilac)' }}>{focusLabel(focus)}</p><p>фокусу</p></div>
+        <div><p className="disp" style={{ color: 'var(--accent)' }}>{doneBlocks}/{blocks.length}</p><p>блоків</p></div>
+        <div><p className="disp" style={{ color: 'var(--streak)' }}>{habits.done}/{habits.total}</p><p>звичок</p></div>
+        <div><p className="disp" style={{ color: 'var(--focus-strong)' }}>{focusLabel(focus)}</p><p>фокусу</p></div>
       </div>
 
       <section className="rv-sec">
@@ -65,7 +65,7 @@ export function ReviewScreen() {
             const on = review?.mood === m.v;
             return (
               <button key={m.v} className="mood" role="radio" aria-checked={on} onClick={() => setMood(date, m.v)}
-                style={{ background: m.bg, color: m.fg ?? 'var(--c-ink)', minHeight: on ? 104 : m.h, boxShadow: on ? `0 0 0 3px var(--c-bg), 0 0 0 5px ${m.bg}` : undefined }}>
+                style={{ background: `var(--mood-${m.v})`, color: `var(--mood-${m.v}-fg)`, minHeight: on ? 104 : m.h, boxShadow: on ? `0 0 0 3px var(--c-bg), 0 0 0 5px var(--mood-${m.v}-ring)` : undefined }}>
                 {m.label}
               </button>
             );
@@ -79,7 +79,7 @@ export function ReviewScreen() {
           {left.map((b) => (
             <div className="left" key={b.id}>
               <span className="left-t">{b.title}</span>
-              <button className="sw" style={{ background: 'var(--c-lime)', color: 'var(--c-ink)' }}
+              <button className="sw sw-accent"
                 onClick={() => { blockToTomorrow(b.id, date); toast(`«${b.title}» → завтра`); }}>→ завтра</button>
               <button className="sw sw-dark"
                 onClick={() => { blockToInbox(b.id, date); toast(`«${b.title}» → у вхідні`); }}>у вхідні</button>

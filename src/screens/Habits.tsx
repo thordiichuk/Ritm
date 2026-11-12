@@ -1,13 +1,14 @@
 import { useRef, useState, type CSSProperties, type ReactNode, type MouseEvent } from 'react';
 import { useStore } from '../data/store';
 import type { Habit } from '../data/types';
-import { HABIT_COLOR, habitDone, habitRate, habitsDoneOn, lastDays, streak } from '../data/selectors';
+import { HABIT_COLOR, HABIT_FG, HABIT_STRONG, habitDone, habitRate, habitsDoneOn, lastDays, streak } from '../data/selectors';
 import { toggleHabit } from '../data/actions';
 import { addDays, cap, dayMonth, fromISO, MONTHS_SHORT, plural, todayISO, toISO, weekdayName } from '../lib/date';
 import { useIsPhone } from '../lib/hooks';
 import { BottomNav, Rail } from '../components/layout/Nav';
 import { Icon } from '../components/ui/Icon';
 import { CountEditor, HabitEditor } from '../components/habits/HabitEditor';
+import { BotanicalSpray } from '../components/flora/Botanical';
 import { CompletionTile, FocusWeekTile, InsightTile, LongestStreakTile, PlanTile, TimeSplitTile } from '../components/stats/StatTiles';
 
 type Editing = { kind: 'habit'; habit?: Habit } | { kind: 'count'; habit: Habit } | null;
@@ -38,10 +39,11 @@ function PhoneHabits({ setEditing, modal }: { setEditing: (e: Editing) => void; 
   const rate = habitRate(s, days);
   return (
     <div className="phone">
+      <BotanicalSpray className="flora-head-phone" />
       <p className="k">{cap(weekdayName(today))}, {dayMonth(today)}</p>
       <div className="ph-head">
         <h1 className="disp">Звички</h1>
-        <p className="disp" style={{ color: 'var(--c-lime)' }}>{done}<span style={{ color: 'var(--c-muted-4)' }}>/{total}</span></p>
+        <p className="disp" style={{ color: 'var(--accent)' }}>{done}<span style={{ color: 'var(--c-muted-4)' }}>/{total}</span></p>
       </div>
 
       <div className="ph-heat" role="img" aria-label={`Виконання всіх звичок за 14 днів: ${Math.round(rate * 100)}%`}>
@@ -50,8 +52,8 @@ function PhoneHabits({ setEditing, modal }: { setEditing: (e: Editing) => void; 
           const v = r.total ? r.done / r.total : 0;
           const isToday = d === today;
           const style: CSSProperties = isToday && v < 1
-            ? { border: '2px dashed var(--c-lime)', background: v ? `rgba(215,255,79,${v * 0.35})` : undefined }
-            : v ? { background: 'var(--c-lime)', opacity: heatOpacity(v) } : { background: 'var(--c-surface-2)' };
+            ? { border: '2px dashed var(--today-dash)', background: v ? `color-mix(in srgb, var(--heat) ${Math.round(v * 35)}%, var(--today-bg))` : 'var(--today-bg)' }
+            : v ? { background: 'var(--heat)', opacity: heatOpacity(v) } : { background: 'var(--cell-empty)' };
           return <i key={d} style={style} title={`${dayMonth(d)}: ${r.done}/${r.total}`} />;
         })}
       </div>
@@ -108,14 +110,14 @@ function HabitTile({ h, setEditing }: { h: Habit; setEditing: (e: Editing) => vo
           <div><div className="n">{h.name}</div><div className="s">торкніться, щоб додати</div></div>
           <span className="big" style={{ fontSize: 30 }}>{v.toLocaleString('uk-UA')}</span>
         </div>
-        <div className="bar"><div style={{ width: `${pct}%`, background: HABIT_COLOR[h.color] }} /></div>
+        <div className="bar"><div style={{ width: `${pct}%`, background: HABIT_STRONG[h.color] }} /></div>
       </button>
     );
   }
 
   if (done) {
     return (
-      <button className={`ht${h.kind === 'count' ? ' wide' : ''}`} style={{ background: HABIT_COLOR[h.color], color: 'var(--c-ink)' }} aria-pressed onClick={click} {...handlers}>
+      <button className={`ht${h.kind === 'count' ? ' wide' : ''}`} style={{ background: HABIT_COLOR[h.color], color: HABIT_FG[h.color] }} aria-pressed onClick={click} {...handlers}>
         <div><div className="n">{h.name}</div><div className="s">виконано{entry?.at ? ` · ${entry.at}` : ''}</div></div>
         <div className="ht-foot"><span className="big">{n}</span><span className="lbl">{plural(n, ['день', 'дні', 'днів'])}<br />поспіль</span></div>
       </button>
@@ -127,7 +129,7 @@ function HabitTile({ h, setEditing }: { h: Habit; setEditing: (e: Editing) => vo
     <button className="ht off" aria-pressed={false} onClick={click} {...handlers}>
       <div><div className="n">{h.name}</div><div className="s">{hint}</div></div>
       <div className="ht-foot">
-        <span className="big" style={{ color: n ? HABIT_COLOR[h.color] : 'var(--c-muted-4)' }}>{n}</span>
+        <span className="big" style={{ color: n ? HABIT_STRONG[h.color] : 'var(--c-muted-4)' }}>{n}</span>
         <span className="lbl" style={{ color: 'var(--c-muted)' }}>{n ? <>серія<br />під загрозою</> : <>почнімо<br />сьогодні</>}</span>
       </div>
     </button>
@@ -152,6 +154,7 @@ function DesktopHabits({ setEditing, modal }: { setEditing: (e: Editing) => void
       <Rail active="habits" />
       <main>
         <header className="tile page-head">
+          <BotanicalSpray className="flora-head" />
           <div>
             <p className="k">{dayMonth(days[0])} – {dayMonth(today)}</p>
             <h1 className="disp">Звички</h1>
@@ -180,7 +183,7 @@ function DesktopHabits({ setEditing, modal }: { setEditing: (e: Editing) => void
               {period === 365
                 ? months.map((m) => <span key={m.key}>{MONTHS_SHORT[m.month]}</span>)
                 : shown.map((d, i) => (
-                  <span key={d} style={d === today ? { color: 'var(--c-lime)' } : undefined}>
+                  <span key={d} style={d === today ? { color: 'var(--accent)' } : undefined}>
                     {period === 30 && i % 2 && d !== today ? '' : fromISO(d).getDate()}
                   </span>
                 ))}
@@ -209,7 +212,7 @@ function DesktopHabits({ setEditing, modal }: { setEditing: (e: Editing) => void
                       );
                     })}
                 </div>
-                <span className="disp hab-streak" style={{ color: n ? 'var(--c-peach)' : 'var(--c-muted-3)' }}>{n}</span>
+                <span className="disp hab-streak" style={{ color: n ? 'var(--streak)' : 'var(--c-muted-3)' }}>{n}</span>
               </div>
             );
           })}

@@ -5,17 +5,18 @@ import { cap, dayMonth, durationLabel, fromISO, todayISO, weekdayName, WEEKDAYS_
 import { useIsPhone } from '../lib/hooks';
 import { BottomNav, Rail } from '../components/layout/Nav';
 import { CompletionTile, FocusWeekTile, InsightTile, LongestStreakTile, PlanTile, TimeSplitTile } from '../components/stats/StatTiles';
+import { BotanicalSpray } from '../components/flora/Botanical';
 import type { ISODate } from '../data/types';
 
 type Period = 7 | 14 | 30;
 const PERIODS: Array<[Period, string]> = [[7, 'Тиждень'], [14, '2 тижні'], [30, 'Місяць']];
 
 const MOOD_META = [
-  { label: 'Важко', color: 'var(--c-outline)' },
-  { label: 'Так собі', color: 'var(--c-peach)' },
-  { label: 'Норм', color: 'var(--c-sky)' },
-  { label: 'Добре', color: 'var(--c-mint)' },
-  { label: 'Чудово', color: 'var(--c-lime)' },
+  { label: 'Важко', color: 'var(--mood-1)' },
+  { label: 'Так собі', color: 'var(--mood-2)' },
+  { label: 'Норм', color: 'var(--mood-3)' },
+  { label: 'Добре', color: 'var(--mood-4)' },
+  { label: 'Чудово', color: 'var(--mood-5)' },
 ];
 
 function dayLabel(d: ISODate, period: Period, i: number) {
@@ -35,12 +36,12 @@ function Bars({ days, values, format, period, color }: {
       <div className="bars" role="img" aria-label={days.map((d, i) => `${dayMonth(d)}: ${format(values[i])}`).join('; ')}>
         {days.map((d, i) => (
           <div key={d} className="bar-col" tabIndex={0} data-tip={`${dayMonth(d)} · ${format(values[i])}`}>
-            <div className="bar" style={{ height: `${(values[i] / max) * 100}%`, background: d === today ? 'var(--c-lime)' : color }} />
+            <div className="bar" style={{ height: `${(values[i] / max) * 100}%`, background: d === today ? 'var(--chart-today)' : color }} />
           </div>
         ))}
       </div>
       <div className="bar-axis" aria-hidden="true">
-        {days.map((d, i) => <span key={d} style={d === today ? { color: 'var(--c-lime)' } : undefined}>{dayLabel(d, period, i)}</span>)}
+        {days.map((d, i) => <span key={d} style={d === today ? { color: 'var(--accent)' } : undefined}>{dayLabel(d, period, i)}</span>)}
       </div>
     </>
   );
@@ -56,7 +57,7 @@ function FocusChart({ days, period }: { days: ISODate[]; period: Period }) {
         <p className="k">Фокус по днях</p>
         <span>{durationLabel(total)} · у середньому {durationLabel(Math.round(total / days.length))}</span>
       </div>
-      <Bars days={days} values={mins} format={(v) => (v ? durationLabel(v) : 'без фокусу')} period={period} color="var(--c-lilac)" />
+      <Bars days={days} values={mins} format={(v) => (v ? durationLabel(v) : 'без фокусу')} period={period} color="var(--chart-focus)" />
     </section>
   );
 }
@@ -74,7 +75,7 @@ function PlanChart({ days, period }: { days: ISODate[]; period: Period }) {
         <p className="k">Закриті блоки</p>
         <span>{p.done} з {p.total} · {p.total ? Math.round((p.done / p.total) * 100) : 0}%</span>
       </div>
-      <Bars days={days} values={rates} format={(v) => `${v}% блоків`} period={period} color="var(--c-sky)" />
+      <Bars days={days} values={rates} format={(v) => `${v}% блоків`} period={period} color="var(--chart-plan)" />
     </section>
   );
 }
@@ -97,7 +98,7 @@ function MoodChart({ days, period }: { days: ISODate[]; period: Period }) {
             {moods[i] ? (
               <div className="bar mood-bar" style={{ height: `${moods[i] * 20}%`, background: MOOD_META[moods[i] - 1].color }} />
             ) : (
-              <div className="bar bar-empty" style={{ height: '20%', outline: d === today ? '2px dashed var(--c-lime)' : undefined }} />
+              <div className="bar bar-empty" style={{ height: '20%', outline: d === today ? '2px dashed var(--today-dash)' : undefined }} />
             )}
           </div>
         ))}
@@ -170,6 +171,7 @@ export function StatsScreen() {
   if (phone) {
     return (
       <div className="phone st-phone">
+        <BotanicalSpray className="flora-head-phone" />
         <p className="k">{cap(weekdayName(today))}, {dayMonth(today)}</p>
         <h1 className="disp st-title">Статистика</h1>
         <div style={{ margin: '16px 0' }}>{tabs}</div>
@@ -184,6 +186,7 @@ export function StatsScreen() {
       <Rail active="stats" />
       <main>
         <header className="tile page-head">
+          <BotanicalSpray className="flora-head" />
           <div>
             <p className="k">{dayMonth(days[0])} – {dayMonth(today)}</p>
             <h1 className="disp">Статистика</h1>

@@ -6,6 +6,7 @@ import { hhmm, pad, shortRange, todayISO } from '../../lib/date';
 import { moveBlock, scheduleTask } from '../../data/actions';
 import { navigate } from '../../lib/router';
 import { useNow } from '../../lib/hooks';
+import { BotanicalSpray } from '../flora/Botanical';
 import { timerRemaining, fmtClock } from '../focus/timer';
 
 type Variant = 'phone' | 'desktop';
@@ -181,6 +182,7 @@ function NowCard({ b, variant, nowMin, s, now }: { b: Block; variant: Variant; n
   if (variant === 'phone') {
     return (
       <div className="now-card">
+        <BotanicalSpray inverse className="flora-now" />
         <div className="now-top"><span className="now-k">Зараз {hhmm(nowMin)}</span><span>ще {left} хв</span></div>
         <p className="now-title">{short} — сесія {session} з {total}</p>
         <button className="now-btn" onClick={open}>Відкрити таймер</button>
@@ -189,8 +191,9 @@ function NowCard({ b, variant, nowMin, s, now }: { b: Block; variant: Variant; n
   }
   return (
     <div className="now-card">
+      <BotanicalSpray inverse className="flora-now" />
       <div className="now-main">
-        <div className="now-top"><span>Зараз {hhmm(nowMin)}</span><span style={{ opacity: 0.6 }}>ще {left} хв</span></div>
+        <div className="now-top"><span>Зараз {hhmm(nowMin)}</span><span style={{ opacity: 'var(--now-sub-opacity)' }}>ще {left} хв</span></div>
         <p className="now-title">{short} — сесія {session} з {total}</p>
         <div className="now-bar"><div style={{ width: `${pct}%` }} /></div>
       </div>

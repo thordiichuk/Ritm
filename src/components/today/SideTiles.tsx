@@ -8,6 +8,7 @@ import { Icon } from '../ui/Icon';
 import { toast } from '../ui/Modal';
 import { fmtClock, timerRemaining } from '../focus/timer';
 import { useNow } from '../../lib/hooks';
+import { BotanicalSpray, BotanicalSprig } from '../flora/Botanical';
 import type { Task } from '../../data/types';
 
 export function ProgressTile({ date }: { date: string }) {
@@ -20,8 +21,9 @@ export function ProgressTile({ date }: { date: string }) {
   const from = isToday ? nowMinutes() : s.settings.dayStart * 60;
   const free = freeMinutes(s, date, from);
   return (
-    <section className="tile" style={{ background: 'var(--c-lime)', color: 'var(--c-ink)' }}>
-      <p className="k" style={{ color: 'var(--c-lime-ink)' }}>Прогрес дня</p>
+    <section className="tile flora-host" style={{ background: 'var(--accent-bg)', color: 'var(--on-accent)', boxShadow: 'var(--accent-shadow)' }}>
+      <BotanicalSprig inverse className="flora flora-sprig-corner" />
+      <p className="k" style={{ color: 'var(--on-accent-k)' }}>Прогрес дня</p>
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginTop: 8 }}>
         <span className="disp" style={{ fontSize: 88, lineHeight: 0.9 }}>{pct}<span style={{ fontSize: 40 }}>%</span></span>
         <span style={{ fontSize: 14, fontWeight: 800, textAlign: 'right', lineHeight: 1.4 }}>
@@ -85,7 +87,7 @@ export function HabitsMini({ date }: { date: string }) {
     <a className="tile mini" href={href('habits')}>
       <p className="k">Звички</p>
       <p className="disp big">{done}<span style={{ color: 'var(--c-muted-3)' }}>/{total}</span></p>
-      <p className="sub" style={{ color: 'var(--c-peach)' }}>{best ? `серія ${best} ${plural(best, ['день', 'дні', 'днів'])}` : 'почніть серію'}</p>
+      <p className="sub" style={{ color: 'var(--streak-text)' }}>{best ? `серія ${best} ${plural(best, ['день', 'дні', 'днів'])}` : 'почніть серію'}</p>
     </a>
   );
 }
@@ -106,9 +108,10 @@ export function FocusMini() {
     sub = `сесія ${Math.min(total, completedSessionsForBlock(s, active.id, active.date, active.title) + 1)} з ${total}`;
   }
   return (
-    <a className="tile mini" href={href('focus', t?.blockId ? { block: t.blockId } : active ? { block: active.id } : undefined)}
-      style={{ background: 'var(--c-lilac)', color: 'var(--c-ink)' }}>
-      <p className="k" style={{ color: 'var(--c-lilac-ink)' }}>Фокус</p>
+    <a className="tile mini flora-host" href={href('focus', t?.blockId ? { block: t.blockId } : active ? { block: active.id } : undefined)}
+      style={{ background: 'var(--focus-tile-bg)', color: 'var(--focus-tile-fg)' }}>
+      <BotanicalSpray className="flora flora-spray-br" />
+      <p className="k" style={{ color: 'var(--focus-tile-k)' }}>Фокус</p>
       <p className="disp big">{clock}</p>
       <p className="sub" style={{ fontWeight: 800 }}>{sub}</p>
     </a>
@@ -174,7 +177,7 @@ export function InboxTile({ date, phone }: { date: string; phone?: boolean }) {
             </button>
             {open === t.id && (
               <>
-                <button className="ib" style={{ background: 'var(--c-lime)', color: 'var(--c-ink)', cursor: 'pointer' }} onClick={() => autoSchedule(t)}>У розклад</button>
+                <button className="ib ib-accent" onClick={() => autoSchedule(t)}>У розклад</button>
                 <button className="ib" style={{ cursor: 'pointer' }} aria-label="Видалити задачу" onClick={() => deleteTask(t.id)}><Icon name="trash" size={16} /></button>
               </>
             )}
@@ -199,7 +202,7 @@ export function EnergyTile({ date }: { date: string }) {
   const peak = energyPeak(s);
   const isToday = date === todayISO();
   return (
-    <section className="tile" style={{ border: '1px solid var(--c-ash)', background: 'transparent' }}>
+    <section className="tile" style={{ border: '1px solid var(--tile-outline)', background: 'transparent', boxShadow: 'none' }}>
       <p className="k">{isToday ? 'Енергія зараз' : 'Енергія'}</p>
       <div className="energy" role="radiogroup" aria-label="Рівень енергії">
         {[1, 2, 3, 4, 5].map((n) => (

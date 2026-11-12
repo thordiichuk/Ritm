@@ -4,7 +4,9 @@ import { setNote } from '../data/actions';
 import { dayMonth, todayISO } from '../lib/date';
 import { Rail } from '../components/layout/Nav';
 import { toast } from '../components/ui/Modal';
+import { BotanicalSpray } from '../components/flora/Botanical';
 import type { Settings } from '../data/types';
+import { setTheme, useTheme, type Theme } from '../lib/theme';
 
 export function NotesScreen() {
   const today = todayISO();
@@ -24,6 +26,7 @@ export function NotesScreen() {
       <Rail active="notes" />
       <main>
         <header className="tile page-head">
+          <BotanicalSpray className="flora-head" />
           <div>
             <p className="k">{dayMonth(today)}</p>
             <h1 className="disp">Нотатки</h1>
@@ -38,6 +41,7 @@ export function NotesScreen() {
         </section>
         <section className="tile">
           <p className="k" style={{ marginBottom: 18 }}>Налаштування</p>
+          <ThemePicker />
           <div className="settings-grid">
             {numField('waterGoal', 'Вода, склянок по 250 мл', 1, 16)}
             {numField('focusGoalHours', 'Ціль фокусу, год/тиждень', 1, 80)}
@@ -72,6 +76,40 @@ export function NotesScreen() {
           </div>
         </section>
       </main>
+    </div>
+  );
+}
+
+const THEMES: Array<{ id: Theme; label: string; hint: string }> = [
+  { id: 'dark', label: 'Темна', hint: 'лаймова, за замовчуванням' },
+  { id: 'bloom', label: 'Блакитна квіткова', hint: 'світла, з ботанічною графікою' },
+];
+
+/** Вибір теми. Кожне прев'ю «одягає» свою тему через data-theme і малює її власними змінними. */
+function ThemePicker() {
+  const theme = useTheme();
+  return (
+    <div className="field">
+      <span id="theme-h">Тема</span>
+      <div className="theme-picker" role="radiogroup" aria-labelledby="theme-h">
+        {THEMES.map((t) => (
+          <button key={t.id} className="theme-opt" role="radio" aria-checked={theme === t.id} onClick={() => setTheme(t.id)}>
+            <span className="theme-prev" data-theme={t.id} aria-hidden="true">
+              <span className="tp-tile">
+                <span className="tp-title">Аа</span>
+                <span className="tp-row">
+                  <i style={{ background: 'var(--cat-work-bg)' }} />
+                  <i style={{ background: 'var(--cat-health-bg)' }} />
+                  <i style={{ background: 'var(--cat-study-bg)' }} />
+                  <i style={{ background: 'var(--cat-personal-bg)' }} />
+                </span>
+              </span>
+              <span className="tp-accent" />
+            </span>
+            <span className="theme-label">{t.label}<small>{t.hint}</small></span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
