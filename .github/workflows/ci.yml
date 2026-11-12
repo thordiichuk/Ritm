@@ -1,0 +1,76 @@
+name: Перевірка і деплой
+
+# Перевірки — на кожен pull request і push у main.
+# Деплой на GitHub Pages — лише з main і лише якщо перевірки пройшли.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# новий запуск для тієї самої гілки скасовує попередній незавершений
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Тести й збірка
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Встановити залежності
+        run: npm ci
+
+      - name: Перевірка типів
+        run: npm run typecheck
+
+      - name: Юніт-тести
+        run: npm test
+
+      - name: Встановити браузер для Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Наскрізні тести і знімки екрана
+        run: npm run test:e2e
+
+      - name: Звіт Playwright (якщо щось упало)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
+      - name: Зібрати сайт для GitHub Pages
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Деплой на GitHub Pages
+    needs: test
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

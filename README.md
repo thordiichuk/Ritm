@@ -9,6 +9,28 @@ npm run dev      # http://localhost:5173
 npm run build    # збірка в dist/
 ```
 
+## Тести
+
+```bash
+npm test                  # юніт-тести (Vitest): підрахунки, дати, контраст квіткової теми
+npm run test:e2e          # наскрізні тести (Playwright) у справжньому браузері + знімки екрана
+npm run check             # усе разом: типи, юніт- і наскрізні тести
+```
+
+Перед першим запуском наскрізних тестів установіть браузер: `npx playwright install chromium`.
+
+Знімки екрана (`tests/e2e/visual.spec.ts-snapshots/`) зроблені в Linux, як у CI. На Windows чи macOS
+шрифти згладжуються інакше, тому локально знімки можуть «падати» — орієнтуйтеся на результат CI.
+Якщо вигляд змінено навмисно, оновіть знімки: `npm run test:e2e:update`.
+
+## CI і деплой
+
+`.github/workflows/ci.yml` на кожен pull request перевіряє типи, запускає юніт- і наскрізні тести.
+Після злиття в `main` той самий workflow публікує сайт на GitHub Pages:
+https://thordiichuk.github.io/Ritm/
+
+Одноразове налаштування: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
 - Макети: `mockups/` (телефон — `phone-*.html`, комп'ютер — `desktop-*.html`)
 - План, структура й модель даних: `docs/PLAN.md`
 - Дизайн-токени: `src/styles/tokens.css`

@@ -7,7 +7,7 @@ import { Icon } from '../components/ui/Icon';
 import { toast } from '../components/ui/Modal';
 import { back, navigate, useLocation } from '../lib/router';
 import { useNow } from '../lib/hooks';
-import { nowMinutes, todayISO } from '../lib/date';
+import { nowMinutes, plural, todayISO } from '../lib/date';
 
 export function FocusScreen() {
   const { params } = useLocation();
@@ -107,7 +107,7 @@ export function FocusScreen() {
         <h1 className="fx-title">{isBreak ? 'Встаньте, розімніться, попийте води' : timer.title}</h1>
 
         <div className="disp fx-clock" role="timer" aria-live="off"
-          aria-label={`Залишилось ${Number(clock[0])} хвилин ${Number(clock[1])} секунд`}>
+          aria-label={`Залишилось ${Number(clock[0])} ${plural(Number(clock[0]), ['хвилина', 'хвилини', 'хвилин'])} ${Number(clock[1])} ${plural(Number(clock[1]), ['секунда', 'секунди', 'секунд'])}`}>
           {clock[0]}<br />{clock[1]}
         </div>
 
