@@ -60,6 +60,7 @@
   .wl-h2 { margin-top: 20px; }
   .ts-label { display: none; }
   .wl-final { padding: 26px 22px; }
+  [data-theme='bloom'] .wl-final h2 { padding-right: 48px; } /* місце для гілочки в куті */
   .wl-final a { width: 100%; justify-content: center; }
   .wl-top-actions .pill { min-height: 38px; padding: 0 14px; }
 }
