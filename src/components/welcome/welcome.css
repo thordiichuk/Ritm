@@ -22,13 +22,14 @@
 .wl-shot-front { left: 10%; top: 0; z-index: 1; }
 .wl-shot-back { left: 46%; top: 54px; transform: rotate(4deg); opacity: .96; }
 
-.wl-sec-k { margin: 18px 4px 0; }
-.wl-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin-top: 14px; }
+.wl-h2 { margin: 28px 4px 0; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.05; }
+.wl-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin-top: 18px; }
 .wl-feat h3 { margin: 18px 0 8px; font-size: 20px; font-weight: 800; }
 .wl-feat p { margin: 0; color: var(--c-muted); font-weight: 600; line-height: 1.55; }
 .wl-ic { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
 
-.wl-how { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.wl-how-sec { margin-bottom: 36px; }
+.wl-how { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin: 18px 0 0; padding: 0; list-style: none; }
 .wl-step { display: flex; gap: 16px; align-items: flex-start; }
 .wl-step b { font-size: 40px; line-height: 1; color: var(--accent); flex: none; min-width: 32px; }
 .wl-step p { margin: 0; line-height: 1.55; font-weight: 600; color: var(--c-muted); }
@@ -37,7 +38,7 @@
 .wl-final { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; padding: 36px 48px; }
 .wl-final h2 { margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.05; }
 
-.wl-foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 4px; color: var(--c-muted); font-size: 14px; font-weight: 600; }
+.wl-foot { margin-top: 8px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 4px; color: var(--c-muted); font-size: 14px; font-weight: 600; }
 .wl-foot a { color: var(--c-text); }
 
 @media (max-width: 1000px) {
@@ -54,7 +55,10 @@
   .wl-shot-front { left: 4%; top: 18px; }
   .wl-shot-back { left: auto; right: 4%; top: 40px; }
   .wl-grid { grid-template-columns: 1fr; gap: 12px; }
-  .wl-how { gap: 12px; }
+  .wl-how { gap: 12px; margin-top: 14px; }
+  .wl-how-sec { margin-bottom: 24px; }
+  .wl-h2 { margin-top: 20px; }
+  .ts-label { display: none; }
   .wl-final { padding: 26px 22px; }
   .wl-final a { width: 100%; justify-content: center; }
   .wl-top-actions .pill { min-height: 38px; padding: 0 14px; }
@@ -75,4 +79,64 @@
   .login-card { padding: 26px 22px; }
   .login-card h1 { font-size: 38px; }
   .login-card .modal-actions .pill { flex: 1 1 auto; justify-content: center; }
+}
+
+/* ---------- Перемикач теми ---------- */
+.theme-switch {
+  display: inline-flex; align-items: center; gap: 10px; padding: 4px 14px 4px 4px; min-height: 44px;
+  border: 0; border-radius: var(--r-pill); background: var(--c-surface-2); color: var(--c-text);
+  font: inherit; font-size: 14px; font-weight: 800; cursor: pointer;
+}
+.theme-switch:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.ts-track { position: relative; display: flex; width: 72px; height: 36px; border-radius: var(--r-pill); background: var(--c-bg); }
+.ts-ic { position: relative; z-index: 1; flex: 1; display: flex; align-items: center; justify-content: center; color: var(--c-muted); transition: color .3s ease; }
+.ts-knob {
+  position: absolute; top: 3px; left: 3px; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--accent-bg); box-shadow: var(--accent-shadow);
+  transition: transform .35s cubic-bezier(.3, 1.4, .5, 1);
+}
+.theme-switch[aria-checked='false'] .ts-moon, .theme-switch[aria-checked='true'] .ts-flower { color: var(--on-accent); }
+.theme-switch[aria-checked='true'] .ts-knob { transform: translateX(36px); }
+.theme-switch:hover .ts-knob { filter: brightness(1.06); }
+@media (max-width: 759px) { .theme-switch { padding: 4px; } }
+
+/* ---------- Анімації (лише якщо людина не вимкнула рух у системі) ---------- */
+@keyframes wl-rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@keyframes wl-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes wl-float-back { 0%, 100% { transform: rotate(4deg) translateY(0); } 50% { transform: rotate(3deg) translateY(8px); } }
+@keyframes wl-shot-in { from { opacity: 0; transform: translateY(40px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes wl-shot-back-in { from { opacity: 0; transform: rotate(10deg) translateY(50px); } to { opacity: .96; transform: rotate(4deg); } }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* поява першого екрана одразу після завантаження, по черзі */
+  .wl-top { animation: wl-rise .6s ease both; }
+  .wl-hero-text > * { animation: wl-rise .7s cubic-bezier(.2, .7, .2, 1) both; }
+  .wl-hero-text > :nth-child(1) { animation-delay: .05s; }
+  .wl-hero-text > :nth-child(2) { animation-delay: .15s; }
+  .wl-hero-text > :nth-child(3) { animation-delay: .28s; }
+  .wl-hero-text > :nth-child(4) { animation-delay: .4s; }
+  .wl-hero-text > :nth-child(5) { animation-delay: .5s; }
+  .wl-shot-front { animation: wl-shot-in .9s .25s cubic-bezier(.2, .7, .2, 1) both, wl-float 6s 1.2s ease-in-out infinite; }
+  .wl-shot-back { animation: wl-shot-back-in 1s .45s cubic-bezier(.2, .7, .2, 1) both, wl-float-back 7s 1.5s ease-in-out infinite; }
+
+  /* блоки нижче з'являються, коли до них докрутили */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1); transition-delay: var(--d, 0ms); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* відгук на наведення */
+  /* підйом картки — окремою властивістю translate, щоб не заважати появі (transform) */
+  .wl-feat {
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1), translate .25s ease, box-shadow .25s ease;
+    transition-delay: var(--d, 0ms), var(--d, 0ms), 0ms, 0ms;
+  }
+  .wl-feat:hover { translate: 0 -6px; box-shadow: var(--tile-shadow), 0 18px 40px rgba(0, 0, 0, .18); }
+  .wl-ic { transition: transform .35s cubic-bezier(.3, 1.6, .5, 1); }
+  .wl-feat:hover .wl-ic { transform: rotate(-8deg) scale(1.12); }
+  .wl-big svg { transition: transform .2s ease; }
+  .wl-big:hover svg { transform: translateX(4px); }
+  .pill-lime.wl-big { transition: transform .2s ease, background .2s ease; }
+  .pill-lime.wl-big:hover { transform: translateY(-2px); }
+  .wl-step b { display: inline-block; transition: transform .3s cubic-bezier(.3, 1.6, .5, 1); }
+  .wl-step:hover b { transform: scale(1.18) rotate(-6deg); }
+  .login-card { animation: wl-rise .6s cubic-bezier(.2, .7, .2, 1) both; }
 }
