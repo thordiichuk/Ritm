@@ -45,6 +45,20 @@ test('з головної — на вхід і реєстрацію', async ({ p
 
 test('перемикач теми на головній', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Увімкнути квіткову тему' }).click();
+  const sw = page.getByRole('switch', { name: 'Квіткова тема' });
+  await expect(sw).toHaveAttribute('aria-checked', 'false');
+  await sw.click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'bloom');
+  await expect(sw).toHaveAttribute('aria-checked', 'true');
+  await sw.click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+});
+
+test('блоки з’являються під час прокручування', async ({ page }) => {
+  await page.goto('/');
+  const last = page.locator('.wl-final');
+  await expect(last).not.toHaveClass(/\bin\b/); // ще не докрутили
+  await last.scrollIntoViewIfNeeded();
+  await expect(last).toHaveClass(/\bin\b/);
+  await expect(last).toHaveCSS('opacity', '1');
 });

@@ -11,6 +11,9 @@ import { DESKTOP, EVENING, PHONE, open } from './helpers';
 const DESKTOP_ROUTES = ['today', 'week', 'habits', 'focus', 'review', 'stats', 'notes', 'welcome', 'login'];
 const PHONE_ROUTES = ['today', 'habits', 'focus', 'review', 'stats', 'notes', 'welcome', 'login'];
 
+// анімації появи вимкнено (як у людини з вимкненим рухом у системі) — знімок має бути однаковим щоразу
+test.use({ reducedMotion: 'reduce' });
+
 for (const t of ['dark', 'bloom'] as const) {
   test.describe(`знімки: ${t}`, () => {
     for (const route of DESKTOP_ROUTES) {
