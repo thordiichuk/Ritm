@@ -20,6 +20,37 @@ function load(): AppState {
 let state: AppState = load();
 const listeners = new Set<() => void>();
 
+/**
+ * Звідки зміна: 'local' — людина щось зробила на цьому пристрої (її треба синхронізувати);
+ * 'remote' — прийшло з акаунта або службова заміна (синхронізувати не треба); 'tab' — з іншої вкладки.
+ */
+export type ChangeSource = 'local' | 'remote' | 'tab';
+type ChangeListener = (prev: AppState, next: AppState, source: ChangeSource) => void;
+const changeListeners = new Set<ChangeListener>();
+
+/** Підписатися на кожну зміну стану (для синхронізації) */
+export function onStateChange(l: ChangeListener) {
+  changeListeners.add(l);
+  return () => void changeListeners.delete(l);
+}
+
+function commit(next: AppState, source: ChangeSource, save = true) {
+  const prev = state;
+  state = next;
+  if (save) persist();
+  changeListeners.forEach((l) => l(prev, next, source));
+  listeners.forEach((l) => l());
+}
+
+/** Чи вже щось збережено на цьому пристрої (демо-дані, яких ніхто не чіпав, не зберігаються) */
+export function hasSavedState(): boolean {
+  try {
+    return localStorage.getItem(KEY) !== null;
+  } catch {
+    return false;
+  }
+}
+
 function persist() {
   try {
     localStorage.setItem(KEY, JSON.stringify(state));
@@ -36,15 +67,11 @@ export function getState(): AppState {
 export function update(recipe: (draft: AppState) => void) {
   const draft = structuredClone(state);
   recipe(draft);
-  state = draft;
-  persist();
-  listeners.forEach((l) => l());
+  commit(draft, 'local');
 }
 
-export function replaceState(next: AppState) {
-  state = next;
-  persist();
-  listeners.forEach((l) => l());
+export function replaceState(next: AppState, source: ChangeSource = 'local') {
+  commit(next, source);
 }
 
 function subscribe(l: () => void) {
@@ -55,10 +82,7 @@ function subscribe(l: () => void) {
 // синхронізація між вкладками
 if (typeof window !== 'undefined') {
   window.addEventListener('storage', (e) => {
-    if (e.key === KEY) {
-      state = load();
-      listeners.forEach((l) => l());
-    }
+    if (e.key === KEY) commit(load(), 'tab', false);
   });
 }
 
@@ -107,17 +131,11 @@ export function resetToDemo() {
   replaceState(createSeed());
 }
 
-export function resetToEmpty() {
-  const seed = createSeed();
-  replaceState({
-    ...seed,
-    blocks: [],
-    tasks: [],
-    habits: [],
-    sessions: [],
-    timer: null,
-    days: {},
-    reviews: {},
-    template: null,
-  });
+/** Порожній стан: без жодних записів, налаштування за замовчуванням */
+export function emptyState(): AppState {
+  return { ...createSeed(), blocks: [], tasks: [], habits: [], sessions: [], timer: null, days: {}, reviews: {}, template: null };
+}
+
+export function resetToEmpty(source: ChangeSource = 'local') {
+  replaceState(emptyState(), source);
 }

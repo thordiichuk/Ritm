@@ -27,5 +27,7 @@ export default defineConfig({
     url: 'http://localhost:4173',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
+    // тести не ходять у справжній Supabase: адресу підмінено, а відповіді дає несправжній сервер (tests/e2e/fake-supabase.ts)
+    env: { VITE_SUPABASE_URL: 'https://ritm-test.supabase.co', VITE_SUPABASE_KEY: 'test-publishable-key' },
   },
 });

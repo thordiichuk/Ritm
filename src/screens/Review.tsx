@@ -5,7 +5,7 @@ import { blockToInbox, blockToTomorrow, closeDay, setMood, setWin } from '../dat
 import type { Mood } from '../data/types';
 import { addDays, dayMonth, hhmm, nowMinutes, num, todayISO, weekdayName } from '../lib/date';
 import { navigate, useLocation } from '../lib/router';
-import { useIsPhone } from '../lib/hooks';
+import { useIsPhone, useOuterValue } from '../lib/hooks';
 import { Rail } from '../components/layout/Nav';
 import { toast } from '../components/ui/Modal';
 import { Icon } from '../components/ui/Icon';
@@ -31,6 +31,7 @@ export function ReviewScreen() {
   const date = params.get('d') ?? todayISO();
   const s = useStore((x) => x);
   const review = s.reviews[date];
+  const winRef = useOuterValue<HTMLInputElement>(review?.win ?? '');
   const blocks = blocksOn(s, date);
   const doneBlocks = blocks.filter((b) => b.done).length;
   const habits = habitsDoneOn(s, date);
@@ -91,7 +92,7 @@ export function ReviewScreen() {
 
       <section className="rv-sec">
         <label htmlFor="win" className="k rv-k" style={{ display: 'block' }}>Одна перемога дня</label>
-        <input id="win" className="input rv-win" key={date} defaultValue={review?.win ?? ''} placeholder="Що вийшло найкраще?"
+        <input ref={winRef} id="win" className="input rv-win" key={date} defaultValue={review?.win ?? ''} placeholder="Що вийшло найкраще?"
           onChange={(e) => setWin(date, e.target.value)} />
       </section>
 

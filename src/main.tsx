@@ -9,9 +9,12 @@ import './components/review/review.css';
 import './components/stats/stats.css';
 import './components/flora/flora.css';
 import { App } from './App';
+import { initAccount } from './sync/account';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
   </StrictMode>,
 );
+
+void initAccount();
