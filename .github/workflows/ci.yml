@@ -55,7 +55,19 @@ jobs:
             test-results/
           retention-days: 14
 
-      - name: Зібрати сайт для GitHub Pages
+      # збираємо начисто, зі справжніми налаштуваннями (тести збирають свою версію окремо, у dist-e2e)
+      - name: Зібрати сайт
+        run: npm run build
+
+      - name: Перевірити, що в збірці немає тестових налаштувань
+        run: |
+          if grep -rq "ritm-test.supabase.co" dist; then
+            echo "::error::У dist потрапила тестова адреса Supabase — деплой зупинено"
+            exit 1
+          fi
+          grep -rq "kzsmytotsdpazhylyjrs.supabase.co" dist || { echo "::error::У dist немає адреси проєкту Supabase"; exit 1; }
+
+      - name: Підготувати сайт для GitHub Pages
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
