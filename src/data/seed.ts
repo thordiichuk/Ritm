@@ -1,4 +1,4 @@
-import type { AppState, Block, Category, DayReview, FocusSession, Habit, Mood } from './types';
+import type { AppState, Block, Category, DayReview, FocusSession, Habit, Mood, Settings } from './types';
 import { addDays, todayISO, weekdayIdx } from '../lib/date';
 
 /** Детермінований генератор — демо-дані однакові при кожному скиданні */
@@ -192,19 +192,21 @@ export function createSeed(): AppState {
     days,
     reviews,
     template: null,
-    settings: {
-      dayStart: 7,
-      dayEnd: 22,
-      waterGoal: 8,
-      focusGoalHours: 12,
-      workMin: 25,
-      breakMin: 5,
-      notifications: true,
-      focusMute: true,
-      reviewAt: '21:00',
-    },
+    settings: { ...DEFAULT_SETTINGS },
   };
 }
+
+export const DEFAULT_SETTINGS: Settings = {
+  dayStart: 7,
+  dayEnd: 22,
+  waterGoal: 8,
+  focusGoalHours: 12,
+  workMin: 25,
+  breakMin: 5,
+  notifications: true,
+  focusMute: true,
+  reviewAt: '21:00',
+};
 
 function entry(def: { kind: string; target?: number }, rand: () => number) {
   return def.kind === 'count' ? { done: true, value: (def.target ?? 0) + Math.floor(rand() * 2500) } : { done: true };
