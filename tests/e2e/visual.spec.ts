@@ -8,8 +8,8 @@ import { DESKTOP, EVENING, PHONE, open } from './helpers';
  * Якщо зміна навмисна, оновіть знімки: npm run test:e2e:update
  */
 
-const DESKTOP_ROUTES = ['today', 'week', 'habits', 'focus', 'review', 'stats', 'notes'];
-const PHONE_ROUTES = ['today', 'habits', 'focus', 'review', 'stats', 'notes'];
+const DESKTOP_ROUTES = ['today', 'week', 'habits', 'focus', 'review', 'stats', 'notes', 'welcome', 'login'];
+const PHONE_ROUTES = ['today', 'habits', 'focus', 'review', 'stats', 'notes', 'welcome', 'login'];
 
 for (const t of ['dark', 'bloom'] as const) {
   test.describe(`знімки: ${t}`, () => {

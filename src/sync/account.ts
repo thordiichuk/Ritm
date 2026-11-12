@@ -61,7 +61,7 @@ function getClient(): Promise<SupabaseClient> {
 const redirectUrl = () => location.origin + location.pathname;
 
 /** Чи на цьому пристрої вже є сеанс входу Supabase (тоді бібліотеку варто завантажити одразу) */
-function hasStoredSession(): boolean {
+export function hasStoredSession(): boolean {
   try {
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i) ?? '';

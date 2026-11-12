@@ -6,6 +6,7 @@ import {
 import type { Counts, SyncStatus } from '../../sync/engine';
 import { plural } from '../../lib/date';
 import { Modal, toast } from '../ui/Modal';
+import { href } from '../../lib/router';
 
 const MIN_PASSWORD = 8;
 
@@ -39,7 +40,7 @@ export function AccountPanel() {
   return (
     <>
       {noticeMsg && <p className="acc-note" role="status">{noticeMsg}</p>}
-      {!acc.ready ? <p className="acc-muted">Перевіряємо вхід…</p> : acc.user ? <SignedIn email={acc.user.email} status={acc.sync} /> : <SignInForm />}
+      {!acc.ready ? <p className="acc-muted">Перевіряємо вхід…</p> : acc.user ? <SignedIn email={acc.user.email} status={acc.sync} /> : <SignedOut />}
     </>
   );
 }
@@ -73,8 +74,23 @@ function SignedIn({ email, status }: { email: string; status: SyncStatus | null 
   );
 }
 
-function SignInForm() {
-  const [mode, setMode] = useState<'in' | 'up'>('in');
+function SignedOut() {
+  return (
+    <div>
+      <p className="acc-muted" style={{ marginTop: 0 }}>
+        Увійдіть, щоб ваші записи були однакові на телефоні й комп’ютері. Без акаунта все працює як раніше — лише в цьому браузері.
+      </p>
+      <div className="modal-actions">
+        <a className="pill pill-lime" href={href('login')}>Увійти</a>
+        <a className="pill pill-dark" href={href('login', { m: 'up' })}>Створити акаунт</a>
+      </div>
+    </div>
+  );
+}
+
+/** Форма входу й реєстрації (сторінка «Вхід») */
+export function SignInForm({ mode, onModeChange }: { mode: 'in' | 'up'; onModeChange: (m: 'in' | 'up') => void }) {
+  const setMode = onModeChange;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
@@ -106,14 +122,11 @@ function SignInForm() {
 
   return (
     <form onSubmit={(e) => void submit(e)} noValidate>
-      <p className="acc-muted" style={{ marginTop: 0 }}>
-        Увійдіть, щоб ваші записи були однакові на телефоні й комп’ютері. Без акаунта все працює як раніше — лише в цьому браузері.
-      </p>
       <div className="seg-tabs acc-tabs" role="tablist" aria-label="Вхід або реєстрація">
         <button type="button" className="pill" role="tab" aria-selected={mode === 'in'} onClick={() => { setMode('in'); setError(''); setMessage(''); }}>Увійти</button>
         <button type="button" className="pill" role="tab" aria-selected={mode === 'up'} onClick={() => { setMode('up'); setError(''); setMessage(''); }}>Створити акаунт</button>
       </div>
-      <div className="settings-grid">
+      <div className="login-fields">
         <label className="field">
           <span>Пошта</span>
           <input className="input" type="email" autoComplete="email" inputMode="email" required value={email} onChange={(e) => setEmail(e.target.value)} />

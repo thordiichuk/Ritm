@@ -1,0 +1,78 @@
+/* ---------- Головна сторінка-представлення ---------- */
+.welcome { max-width: 1180px; margin: 0 auto; padding: var(--gap) var(--gap) 40px; display: flex; flex-direction: column; gap: var(--gap); }
+.wl-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 4px 4px 0; }
+.wl-logo { display: inline-flex; align-items: center; gap: 12px; color: var(--c-text); text-decoration: none; font-size: 26px; }
+.wl-mark { margin: 0; width: 44px; height: 44px; flex: none; }
+.wl-top-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.wl-top-actions a, .wl-cta a, .wl-final a { text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+
+.wl-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 32px; align-items: center; padding: 48px; overflow: hidden; }
+[data-theme='bloom'] .wl-hero, [data-theme='bloom'] .wl-final, [data-theme='bloom'] .login-card { position: relative; isolation: isolate; }
+.wl-hero h1 { margin: 14px 0 18px; font-size: clamp(44px, 6.4vw, 84px); line-height: .98; letter-spacing: -.01em; }
+.wl-lead { margin: 0 0 28px; font-size: 19px; font-weight: 600; line-height: 1.55; color: var(--c-text-2, var(--c-text)); max-width: 34em; }
+.wl-cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.wl-big { min-height: 54px; padding: 0 24px; font-size: 16px; }
+.wl-small { margin: 16px 0 0; color: var(--c-muted); font-weight: 600; font-size: 14px; }
+
+.wl-shots { position: relative; height: 520px; }
+.wl-shot {
+  position: absolute; width: 230px; height: auto; border-radius: 30px; border: 6px solid var(--c-surface-2);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .28); background: var(--page-bg);
+}
+.wl-shot-front { left: 10%; top: 0; z-index: 1; }
+.wl-shot-back { left: 46%; top: 54px; transform: rotate(4deg); opacity: .96; }
+
+.wl-sec-k { margin: 18px 4px 0; }
+.wl-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin-top: 14px; }
+.wl-feat h3 { margin: 18px 0 8px; font-size: 20px; font-weight: 800; }
+.wl-feat p { margin: 0; color: var(--c-muted); font-weight: 600; line-height: 1.55; }
+.wl-ic { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+
+.wl-how { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.wl-step { display: flex; gap: 16px; align-items: flex-start; }
+.wl-step b { font-size: 40px; line-height: 1; color: var(--accent); flex: none; min-width: 32px; }
+.wl-step p { margin: 0; line-height: 1.55; font-weight: 600; color: var(--c-muted); }
+.wl-step strong { color: var(--c-text); font-weight: 800; }
+
+.wl-final { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; padding: 36px 48px; }
+.wl-final h2 { margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.05; }
+
+.wl-foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 4px; color: var(--c-muted); font-size: 14px; font-weight: 600; }
+.wl-foot a { color: var(--c-text); }
+
+@media (max-width: 1000px) {
+  .wl-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wl-how { grid-template-columns: 1fr; }
+}
+@media (max-width: 759px) {
+  .welcome { padding: 16px 16px 32px; gap: 12px; }
+  .wl-hero { grid-template-columns: 1fr; padding: 28px 22px 0; gap: 8px; }
+  .wl-lead { font-size: 17px; }
+  .wl-big { width: 100%; justify-content: center; }
+  .wl-shots { height: 330px; }
+  .wl-shot { width: 168px; border-radius: 24px; border-width: 5px; }
+  .wl-shot-front { left: 4%; top: 18px; }
+  .wl-shot-back { left: auto; right: 4%; top: 40px; }
+  .wl-grid { grid-template-columns: 1fr; gap: 12px; }
+  .wl-how { gap: 12px; }
+  .wl-final { padding: 26px 22px; }
+  .wl-final a { width: 100%; justify-content: center; }
+  .wl-top-actions .pill { min-height: 38px; padding: 0 14px; }
+}
+
+/* ---------- Сторінка входу ---------- */
+.login { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px 16px; }
+.login-back { align-self: center; width: min(100%, 480px); display: inline-flex; align-items: center; gap: 4px; color: var(--c-muted); font-weight: 700; text-decoration: none; }
+.login-back:hover { color: var(--c-text); }
+.login-card { width: min(100%, 480px); padding: 36px; overflow: hidden; }
+.login-card .wl-mark { width: 48px; height: 48px; }
+.login-card h1 { margin: 22px 0 10px; font-size: 44px; line-height: 1; }
+.login-fields { display: grid; gap: 0; }
+.login-skip { margin: 0; width: min(100%, 480px); color: var(--c-muted); font-weight: 600; line-height: 1.5; font-size: 14px; }
+.login-skip a { color: var(--c-text); font-weight: 800; }
+@media (max-width: 759px) {
+  .login { justify-content: flex-start; padding-top: 28px; }
+  .login-card { padding: 26px 22px; }
+  .login-card h1 { font-size: 38px; }
+  .login-card .modal-actions .pill { flex: 1 1 auto; justify-content: center; }
+}
