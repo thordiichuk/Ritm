@@ -2,7 +2,7 @@ import type { ReactElement, SVGProps } from 'react';
 
 type Name =
   | 'clock' | 'flame' | 'plus' | 'stats' | 'stats-axis' | 'calendar' | 'target' | 'note'
-  | 'chev-left' | 'chev-right' | 'chev-down' | 'check' | 'pause' | 'play' | 'reset' | 'skip' | 'close' | 'trash';
+  | 'chev-left' | 'chev-right' | 'chev-down' | 'check' | 'pause' | 'play' | 'reset' | 'skip' | 'close' | 'trash' | 'gear';
 
 const PATHS: Record<Name, ReactElement> = {
   clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
@@ -23,6 +23,7 @@ const PATHS: Record<Name, ReactElement> = {
   skip: <path d="M5 5l10 7-10 7zM19 5v14" />,
   close: <path d="M6 6l12 12M18 6L6 18" />,
   trash: <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" />,
+  gear: <><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" /></>,
 };
 
 export function Icon({ name, size = 22, stroke = 2.2, ...rest }: { name: Name; size?: number; stroke?: number } & Omit<SVGProps<SVGSVGElement>, 'stroke'>) {

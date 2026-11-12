@@ -3,6 +3,8 @@ import { useStore } from '../data/store';
 import { focusMinutesOn, habitDone, lastDays, planRate } from '../data/selectors';
 import { cap, dayMonth, durationLabel, fromISO, todayISO, weekdayName, WEEKDAYS_SHORT, weekdayIdx } from '../lib/date';
 import { useIsPhone } from '../lib/hooks';
+import { Icon } from '../components/ui/Icon';
+import { href } from '../lib/router';
 import { BottomNav, Rail } from '../components/layout/Nav';
 import { CompletionTile, FocusWeekTile, InsightTile, LongestStreakTile, PlanTile, TimeSplitTile } from '../components/stats/StatTiles';
 import { BotanicalSpray } from '../components/flora/Botanical';
@@ -172,7 +174,10 @@ export function StatsScreen() {
     return (
       <div className="phone st-phone">
         <BotanicalSpray className="flora-head-phone" />
-        <p className="k">{cap(weekdayName(today))}, {dayMonth(today)}</p>
+        <div className="ph-top">
+          <p className="k">{cap(weekdayName(today))}, {dayMonth(today)}</p>
+          <a className="gear-btn" href={href('notes', { s: 'settings' })} aria-label="Налаштування" title="Налаштування"><Icon name="gear" size={20} /></a>
+        </div>
         <h1 className="disp st-title">Статистика</h1>
         <div style={{ margin: '16px 0' }}>{tabs}</div>
         {content}

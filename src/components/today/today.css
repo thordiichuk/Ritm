@@ -16,9 +16,12 @@
 .blk.lilac, .cat-study { background: var(--cat-study-bg); color: var(--cat-study-fg); }
 .blk.peach, .cat-personal { background: var(--cat-personal-bg); color: var(--cat-personal-fg); }
 .blk.ash, .cat-errands { background: var(--cat-errands-bg); color: var(--cat-errands-fg); }
-.blk.done { opacity: var(--done-opacity); }
-.blk.cont { opacity: .55; }
-.blk.cont.done { opacity: .25; }
+.blk.done { opacity: var(--done-opacity); background-image: var(--done-wash); }
+.blk.cont { opacity: var(--cont-opacity); }
+.blk.cont.done { opacity: var(--cont-done-opacity); }
+[data-theme='bloom'] .blk.cont { background-image: linear-gradient(rgba(255, 253, 249, .7), rgba(255, 253, 249, .7)); }
+[data-theme='bloom'] .blk.done:not(.cont) h4::before,
+[data-theme='bloom'] .blk.done:not(.cont) > b::before { content: '✓ '; }
 
 .free {
   border: 2px dashed var(--dash); background: transparent; display: flex; align-items: center; justify-content: center;
@@ -34,7 +37,7 @@
 
 /* ---------- Телефон ---------- */
 .sched-phone .hr { grid-template-columns: 58px 1fr; gap: 10px; min-height: 58px; }
-.sched-phone .hr .h { font-size: 30px; padding-top: 12px; }
+.sched-phone .hr .h { font-size: 30px; padding-top: 12px; color: var(--hour-phone); }
 .sched-phone .blk { border-radius: var(--r-md); padding: 10px 14px; margin: 5px 0; gap: 8px; min-height: 40px; }
 .sched-phone .blk b { font-size: 14px; font-weight: 800; }
 .sched-phone .blk span { font-size: 12px; font-weight: 700; opacity: var(--meta-opacity-phone); white-space: nowrap; }
@@ -147,7 +150,7 @@
 .week-col.today { outline: 2px solid var(--accent); }
 .week-col .wb { border-radius: 10px; padding: 6px 8px; font-size: 12px; font-weight: 800; overflow: hidden; border: var(--week-block-border); text-overflow: ellipsis; white-space: nowrap; }
 .week-col .wb.cat-errands { background: var(--week-errands-bg); color: var(--week-errands-fg); }
-.week-col .wb.done { opacity: var(--done-opacity); }
+.week-col .wb.done { opacity: var(--done-opacity); background-image: var(--done-wash); }
 [data-theme='bloom'] .week-col .wb:not(.done) { background: transparent; }
 [data-theme='bloom'] .week-col .wb.done { border-color: transparent; }
 @media (max-width: 1100px) { .week-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

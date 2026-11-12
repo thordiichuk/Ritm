@@ -77,6 +77,7 @@
   --cell-empty: var(--c-surface-2);       /* порожня клітинка трекера */
   --dash: var(--c-outline);               /* пунктир «вільна година» */
   --hour: var(--c-outline);               /* великі номери годин */
+  --hour-phone: var(--c-outline);         /* на телефоні — просто на фоні сторінки */
   --now: var(--c-lime);                   /* поточна година */
   --focus-ring: var(--c-lime);
   --link: var(--c-lime);
@@ -92,6 +93,9 @@
   --chip-on-fg: var(--c-ink);
   --hover-strong: var(--c-white);          /* іконка рейки при наведенні */
   --done-opacity: .45;
+  --done-wash: none;            /* шар поверх фону виконаного блоку */
+  --cont-opacity: .55;          /* «↳ продовження» */
+  --cont-done-opacity: .25;
   --meta-opacity: .72;          /* час під назвою блоку */
   --meta-opacity-phone: .7;
   --now-sub-opacity: .6;        /* «ще 40 хв» */
@@ -236,7 +240,8 @@
   --tile-outline: #EAE2D4;
   --cell-empty: #EFE8DC;
   --dash: #CFC3AF;
-  --hour: #C5D3E4;
+  --hour: #7891B5;                    /* 3.2:1 на картці — норма для великого тексту */
+  --hour-phone: #647EA6;              /* ≥3.2:1 і на фоні з блакитним відсвітом */
   --now: #3567A8;
   --focus-ring: #3567A8;
   --link: #2F5E9C;
@@ -251,7 +256,11 @@
   --chip-on-bg: #3567A8;
   --chip-on-fg: #FFFFFF;
   --hover-strong: #1C2733;
-  --done-opacity: .6;
+  --done-opacity: 1;
+  /* Виконане бліде лише тлом: текст лишається чітким (≥6.5:1), поруч — позначка ✓ */
+  --done-wash: linear-gradient(rgba(255, 253, 249, .55), rgba(255, 253, 249, .55));
+  --cont-opacity: 1;
+  --cont-done-opacity: 1;
   --meta-opacity: .92;
   --meta-opacity-phone: .92;
   --now-sub-opacity: .92;

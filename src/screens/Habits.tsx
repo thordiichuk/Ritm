@@ -5,6 +5,7 @@ import { HABIT_COLOR, HABIT_FG, HABIT_STRONG, habitDone, habitRate, habitsDoneOn
 import { toggleHabit } from '../data/actions';
 import { addDays, cap, dayMonth, fromISO, MONTHS_SHORT, plural, todayISO, toISO, weekdayName } from '../lib/date';
 import { useIsPhone } from '../lib/hooks';
+import { href } from '../lib/router';
 import { BottomNav, Rail } from '../components/layout/Nav';
 import { Icon } from '../components/ui/Icon';
 import { CountEditor, HabitEditor } from '../components/habits/HabitEditor';
@@ -40,7 +41,10 @@ function PhoneHabits({ setEditing, modal }: { setEditing: (e: Editing) => void; 
   return (
     <div className="phone">
       <BotanicalSpray className="flora-head-phone" />
-      <p className="k">{cap(weekdayName(today))}, {dayMonth(today)}</p>
+      <div className="ph-top">
+        <p className="k">{cap(weekdayName(today))}, {dayMonth(today)}</p>
+        <a className="gear-btn" href={href('notes', { s: 'settings' })} aria-label="Налаштування" title="Налаштування"><Icon name="gear" size={20} /></a>
+      </div>
       <div className="ph-head">
         <h1 className="disp">Звички</h1>
         <p className="disp" style={{ color: 'var(--accent)' }}>{done}<span style={{ color: 'var(--c-muted-4)' }}>/{total}</span></p>
