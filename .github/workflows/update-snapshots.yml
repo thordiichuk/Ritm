@@ -1,0 +1,50 @@
+name: Оновити знімки екрана
+
+# Два способи запуску:
+#  1) вручну: Actions → «Оновити знімки екрана» → Run workflow → обрати гілку
+#     (кнопка є лише для workflow, які вже потрапили в main);
+#  2) коміт у будь-яку гілку, крім main, з міткою «[оновити знімки]» у повідомленні.
+# Робить нові еталонні знімки в тому самому образі, що й CI, і комітить їх у ту саму гілку.
+# Потрібно лише тоді, коли вигляд сторінок змінено навмисно.
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    name: Нові знімки
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[оновити знімки]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Встановити залежності
+        run: npm ci
+
+      - name: Зробити нові знімки
+        run: npx playwright test visual --update-snapshots
+
+      - name: Закомітити знімки, якщо вони змінились
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/e2e/visual.spec.ts-snapshots
+          if git diff --cached --quiet; then
+            echo "Знімки не змінились"
+          else
+            git commit -m "Оновити знімки екрана (зроблено в CI)"
+            git push
+          fi

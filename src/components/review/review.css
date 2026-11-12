@@ -1,0 +1,37 @@
+.rv-title { margin: 6px 0 0; font-size: 34px; line-height: 1.05; }
+.rv-stats { display: flex; gap: 22px; margin-top: 18px; }
+.rv-stats p { margin: 0; }
+.rv-stats .disp { font-size: 34px; }
+.rv-stats p:not(.disp) { margin-top: 2px; font-size: 12px; font-weight: 700; color: var(--c-muted); }
+.rv-sec { margin-top: 22px; }
+.rv-k { margin: 0 0 10px; }
+
+.moods { display: flex; gap: 6px; align-items: flex-end; }
+.mood {
+  flex: 1; border: 0; border-radius: 18px; min-height: 64px; font-size: 12px; font-weight: 800;
+  display: flex; align-items: flex-end; justify-content: center; padding: 0 2px 10px; transition: min-height .18s ease-out;
+}
+.mood:hover { filter: brightness(1.08); }
+
+.left-list { display: flex; flex-direction: column; gap: 6px; }
+.left { display: flex; align-items: center; gap: 8px; background: var(--tile-bg); border: var(--tile-border); border-radius: 18px; padding: 12px 14px; font-size: 14px; font-weight: 700; }
+.left-t { flex: 1; min-width: 0; }
+.sw { font-size: 12px; font-weight: 800; border-radius: var(--r-pill); padding: 0 12px; min-height: 36px; border: 0; white-space: nowrap; flex: none; }
+.sw:hover { filter: brightness(1.1); }
+.sw-dark { background: var(--c-surface-2); color: var(--c-text); }
+.sw-accent { background: var(--accent-bg); color: var(--on-accent); }
+.rv-desk .sw-dark { background: var(--c-outline); }
+.rv-win { background: var(--tile-bg); border: var(--tile-border); }
+
+.rv-cta {
+  min-height: 64px; border: 0; border-radius: 32px; background: var(--accent-bg); color: var(--on-accent); box-shadow: var(--accent-shadow);
+  font-size: 17px; font-weight: 800; width: 100%;
+}
+.rv-cta:hover { background: var(--accent-bg-hover); }
+.rv-phone { padding-bottom: 120px; }
+.rv-phone .rv-cta { position: fixed; left: 20px; right: 20px; bottom: calc(32px + env(safe-area-inset-bottom)); width: auto; z-index: 10; }
+
+.rv-desk { width: min(560px, 100%); padding: 40px; margin-top: 24px; }
+.rv-desk .left, .rv-desk .rv-win { background: var(--c-surface-2); }
+.rv-desk .rv-cta { margin-top: 28px; }
+.rv-desk .mood[aria-checked='true'] { box-shadow: none !important; outline: 2px solid var(--c-text); outline-offset: 3px; }

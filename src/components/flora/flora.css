@@ -1,0 +1,44 @@
+/* Квіти рендеряться лише в темі «bloom» (див. Botanical.tsx). */
+[data-theme='bloom'] .flora-host,
+[data-theme='bloom'] .now-card,
+[data-theme='bloom'] .week-col { position: relative; isolation: isolate; }
+[data-theme='bloom'] .week-col { overflow: hidden; }
+.flora-clip {
+  position: absolute; inset: 0; overflow: hidden; border-radius: inherit;
+  pointer-events: none; z-index: -1;
+}
+.flora-clip svg { position: absolute; display: block; overflow: visible; }
+.flora-clip svg * { vector-effect: non-scaling-stroke; }
+.flora-clip .fl-thin { stroke-width: .8; }
+.flora-clip .fl-dot { fill: currentColor; stroke: none; }
+
+/* Логотип у рейці */
+[data-theme='bloom'] .rail-logo { border-width: 2px; position: relative; isolation: isolate; }
+[data-theme='bloom'] .rail-logo i { display: none; }
+.flora-logo { inset: 3px; width: calc(100% - 6px); height: calc(100% - 6px); }
+
+/* Гілочка внизу рейки */
+[data-theme='bloom'] .rail { isolation: isolate; }
+.flora-rail { left: 50%; bottom: 76px; width: 58px; transform: translateX(-50%); opacity: .7; }
+
+/* Шапки сторінок */
+[data-theme='bloom'] .page-head { position: relative; isolation: isolate; }
+.flora-head { right: -18px; top: -40px; width: 380px; opacity: .55; }
+.flora-head-phone { right: -40px; top: -62px; width: 240px; opacity: .55; }
+
+/* Картка поточної години */
+.flora-now { left: 26%; bottom: -58px; width: 300px; opacity: .45; }
+
+/* «Прогрес дня», «Виконання» */
+.flora-sprig-corner { right: 14px; top: -22px; width: 58px; opacity: .6; }
+
+/* Плитки «Фокус» */
+.flora-spray-br { right: -16%; bottom: -26%; width: 66%; min-width: 130px; opacity: .75; }
+
+/* Вільні дні в огляді тижня */
+.flora-sprig-center { left: 50%; top: 52%; width: 74px; transform: translate(-50%, -50%); opacity: .85; }
+
+@media (max-width: 1100px) {
+  .flora-rail { display: none; }
+  .flora-head { width: 300px; }
+}
