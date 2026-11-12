@@ -21,6 +21,10 @@ jobs:
     name: Тести й збірка
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # Офіційний образ Playwright: та сама система, браузер і шрифти за кожного запуску,
+    # тож знімки екрана порівнюються «яблуко з яблуком». Версія = @playwright/test у package.json.
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
     steps:
       - uses: actions/checkout@v4
 
@@ -37,9 +41,6 @@ jobs:
 
       - name: Юніт-тести
         run: npm test
-
-      - name: Встановити браузер для Playwright
-        run: npx playwright install --with-deps chromium
 
       - name: Наскрізні тести і знімки екрана
         run: npm run test:e2e
