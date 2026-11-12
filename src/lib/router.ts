@@ -8,14 +8,24 @@ export interface Location {
   params: URLSearchParams;
 }
 
+/** Що показувати за адресою без маршруту (просто …/Ritm/): «Сьогодні» або головну для нового відвідувача */
+let home: Route = 'today';
+
 function parse(): Location {
   const raw = window.location.hash.replace(/^#\/?/, '');
   const [path, query = ''] = raw.split('?');
-  const route = (ROUTES as string[]).includes(path) ? (path as Route) : 'today';
+  const route = path === '' ? home : (ROUTES as string[]).includes(path) ? (path as Route) : 'today';
   return { route, params: new URLSearchParams(query) };
 }
 
 let current = parse();
+
+/** Змінити сторінку для адреси без маршруту (викликається до першого показу) */
+export function setHomeRoute(r: Route) {
+  home = r;
+  current = parse();
+  listeners.forEach((l) => l());
+}
 const listeners = new Set<() => void>();
 window.addEventListener('hashchange', () => {
   current = parse();

@@ -12,11 +12,10 @@ import './components/welcome/welcome.css';
 import { App } from './App';
 import { initAccount } from './sync/account';
 import { shouldShowWelcome } from './lib/welcome';
+import { setHomeRoute } from './lib/router';
 
-if (shouldShowWelcome()) {
-  history.replaceState(null, '', location.pathname + location.search + '#/welcome');
-  window.dispatchEvent(new HashChangeEvent('hashchange'));
-}
+// новий відвідувач бачить головну просто за адресою сайту, без #/welcome
+if (shouldShowWelcome()) setHomeRoute('welcome');
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
