@@ -3,7 +3,7 @@ import { dayOf, getState, replaceState, resetToDemo, resetToEmpty, update, useSt
 import { setNote } from '../data/actions';
 import { dayMonth, plural, todayISO } from '../lib/date';
 import { BottomNav, Rail } from '../components/layout/Nav';
-import { useIsPhone } from '../lib/hooks';
+import { useIsPhone, useOuterValue } from '../lib/hooks';
 import { useLocation } from '../lib/router';
 import { Modal, toast } from '../components/ui/Modal';
 import { downloadBackup, parseBackup, type BackupSummary } from '../data/backup';
@@ -12,6 +12,8 @@ import { BotanicalSpray } from '../components/flora/Botanical';
 import { Icon } from '../components/ui/Icon';
 import type { Settings } from '../data/types';
 import { setTheme, useTheme, type Theme } from '../lib/theme';
+import { AccountPanel } from '../components/account/Account';
+import { useAccount } from '../sync/account';
 
 export function NotesScreen() {
   const today = todayISO();
@@ -20,10 +22,14 @@ export function NotesScreen() {
   const phone = useIsPhone();
   const { params } = useLocation();
   const settingsRef = useRef<HTMLElement>(null);
-  // шестерня на телефоні веде сюди з ?s=settings — прокручуємо до налаштувань
+  const accountRef = useRef<HTMLElement>(null);
+  const acc = useAccount();
+  // шестерня на телефоні веде сюди з ?s=settings — прокручуємо до налаштувань; ?s=account — до акаунта
   useEffect(() => {
     if (params.get('s') === 'settings') settingsRef.current?.scrollIntoView({ block: 'start' });
+    if (params.get('s') === 'account') accountRef.current?.scrollIntoView({ block: 'start' });
   }, [params]);
+  const noteRef = useOuterValue<HTMLTextAreaElement>(note);
   const [restored, setRestored] = useState(0); // після відновлення з копії перемальовуємо поле нотатки
   const [perm, setPerm] = useState(() => ('Notification' in window ? Notification.permission : 'unsupported'));
   const set = <K extends keyof Settings>(k: K, v: Settings[K]) => update((d) => void (d.settings[k] = v));
@@ -39,7 +45,7 @@ export function NotesScreen() {
         <section className="tile">
         <label className="field" style={{ marginBottom: 0 }}>
           <span>Нотатки дня</span>
-          <textarea className="input" style={{ minHeight: 220 }} key={`${today}-${restored}`} defaultValue={note} placeholder="Думки, ідеї, що не забути…"
+          <textarea ref={noteRef} className="input" style={{ minHeight: 220 }} key={`${today}-${restored}`} defaultValue={note} placeholder="Думки, ідеї, що не забути…"
             onChange={(e) => setNote(today, e.target.value)} />
         </label>
       </section>
@@ -71,15 +77,23 @@ export function NotesScreen() {
           {perm === 'denied' && <span style={{ color: 'var(--c-muted)', fontWeight: 700, alignSelf: 'center' }}>Системні сповіщення заблоковано в браузері</span>}
         </div>
       </section>
+      {acc.configured && (
+        <section className="tile" ref={accountRef} style={{ scrollMarginTop: 16 }}>
+          <p className="k" style={{ marginBottom: 14 }}>Акаунт і синхронізація</p>
+          <AccountPanel />
+        </section>
+      )}
       <section className="tile">
         <p className="k" style={{ marginBottom: 14 }}>Дані</p>
         <p style={{ margin: '0 0 16px', color: 'var(--c-muted)', fontWeight: 600, lineHeight: 1.5 }}>
-          Усе зберігається лише в цьому браузері. Робіть копію, щоб не втратити записи або перенести їх на інший пристрій.
+          {acc.user
+            ? 'Записи зберігаються в цьому браузері й синхронізуються з акаунтом. Копія у файл — додатковий запобіжник.'
+            : 'Усе зберігається лише в цьому браузері. Робіть копію, щоб не втратити записи або перенести їх на інший пристрій.'}
         </p>
         <BackupPanel onRestored={() => setRestored((n) => n + 1)} />
         <div className="modal-actions" style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--c-surface-2)' }}>
-          <button className="pill pill-dark" onClick={() => { if (confirm('Замінити все демо-даними?')) { resetToDemo(); toast('Демо-дані відновлено'); } }}>Відновити демо-дані</button>
-          <button className="pill danger" onClick={() => { if (confirm('Видалити всі дані й почати з чистого аркуша?')) { resetToEmpty(); toast('Усе очищено'); } }}>Почати з чистого аркуша</button>
+          <button className="pill pill-dark" onClick={() => { if (confirm(acc.user ? 'Замінити все демо-даними — тут, в акаунті й на всіх ваших пристроях?' : 'Замінити все демо-даними?')) { resetToDemo(); toast('Демо-дані відновлено'); } }}>Відновити демо-дані</button>
+          <button className="pill danger" onClick={() => { if (confirm(acc.user ? 'Видалити всі дані — тут, в акаунті й на всіх ваших пристроях — і почати з чистого аркуша?' : 'Видалити всі дані й почати з чистого аркуша?')) { resetToEmpty(); toast('Усе очищено'); } }}>Почати з чистого аркуша</button>
         </div>
       </section>
     </>

@@ -8,6 +8,7 @@ import { WeekScreen } from './screens/Week';
 import { NotesScreen } from './screens/Notes';
 import { ToastHost } from './components/ui/Modal';
 import { useBackgroundTicker } from './lib/ticker';
+import { AccountPrompts } from './components/account/Account';
 
 export function App() {
   const { route } = useLocation();
@@ -38,6 +39,7 @@ export function App() {
   return (
     <>
       {screen}
+      <AccountPrompts />
       <ToastHost />
     </>
   );

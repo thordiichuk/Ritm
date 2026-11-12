@@ -63,6 +63,7 @@ export function Top3Tile({ date }: { date: string }) {
                 <span className="chk ghost" aria-hidden="true" />
               )}
               <input
+                key={it?.title ?? ''} // назва змінилася на іншому пристрої — показати нову
                 className="top3-text"
                 defaultValue={it?.title ?? ''}
                 placeholder={i === top3.length ? 'Додати пріоритет' : ''}
