@@ -63,3 +63,7 @@
 .tp-accent { width: 36px; height: 100%; border-radius: 10px; background: var(--accent-bg); box-shadow: var(--accent-shadow); }
 .theme-label { font-size: 15px; font-weight: 800; padding: 0 4px 2px; }
 .theme-label small { display: block; font-size: 13px; font-weight: 600; color: var(--c-muted); margin-top: 2px; }
+
+/* ---------- Резервна копія ---------- */
+.backup-sum { list-style: none; margin: 0; padding: 14px 16px; border-radius: var(--r-lg); background: var(--c-surface-2); display: grid; gap: 6px; font-weight: 600; }
+.backup-sum b { font-weight: 800; }
