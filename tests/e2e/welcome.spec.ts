@@ -6,15 +6,16 @@ test.beforeEach(async ({ page }) => page.clock.setFixedTime(new Date(MOCKUP_TIME
 
 test('уперше на сайті — головна сторінка, звідти в застосунок', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveURL(/#\/welcome$/);
   await expect(page.getByRole('heading', { name: 'Живіть у своєму ритмі' })).toBeVisible();
+  expect(new URL(page.url()).hash).toBe(''); // головна — просто за адресою сайту, без #/welcome
 
   await page.getByRole('link', { name: 'Спробувати без реєстрації' }).click();
   await expect(page).toHaveURL(/#\/today$/);
 
-  // наступного разу головна вже не заважає
+  // наступного разу головна вже не заважає: за адресою сайту одразу застосунок
   await page.goto('/');
-  await expect(page).not.toHaveURL(/welcome/);
+  await expect(page.getByRole('navigation', { name: 'Навігація' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Живіть у своєму ритмі' })).toHaveCount(0);
 });
 
 test('хто вже має дані — одразу в застосунок', async ({ page }) => {
@@ -24,7 +25,14 @@ test('хто вже має дані — одразу в застосунок', a
     localStorage.setItem('ritm:v1', JSON.stringify({ version: 1, blocks: [], tasks: [], habits: [], sessions: [], timer: null, days: {}, reviews: {}, template: null, settings: {} }));
   });
   await page.goto('/');
-  await expect(page).not.toHaveURL(/welcome/);
+  await expect(page.getByRole('navigation', { name: 'Навігація' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Живіть у своєму ритмі' })).toHaveCount(0);
+});
+
+test('головна відкривається й за прямим посиланням #/welcome', async ({ page }) => {
+  await page.goto('/#/today');
+  await page.goto('/#/welcome');
+  await expect(page.getByRole('heading', { name: 'Живіть у своєму ритмі' })).toBeVisible();
 });
 
 test('посилання на конкретну сторінку відкриває її, а не головну', async ({ page }) => {
