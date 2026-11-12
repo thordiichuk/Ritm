@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react';
 
-export type Route = 'today' | 'week' | 'habits' | 'focus' | 'review' | 'stats' | 'notes';
-const ROUTES: Route[] = ['today', 'week', 'habits', 'focus', 'review', 'stats', 'notes'];
+export type Route = 'today' | 'week' | 'habits' | 'focus' | 'review' | 'stats' | 'notes' | 'welcome' | 'login';
+const ROUTES: Route[] = ['today', 'week', 'habits', 'focus', 'review', 'stats', 'notes', 'welcome', 'login'];
 
 export interface Location {
   route: Route;

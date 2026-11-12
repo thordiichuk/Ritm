@@ -7,12 +7,15 @@ test.use({ viewport: DESKTOP });
 const EMAIL = 'tania@example.com';
 const PASSWORD = 'dobryi-parol';
 
-async function signIn(page: Page, email = EMAIL, password = PASSWORD) {
-  const panel = page.locator('section', { hasText: 'Акаунт і синхронізація' });
-  await panel.getByRole('tab', { name: 'Увійти' }).click();
-  await panel.getByLabel('Пошта').fill(email);
-  await panel.getByLabel('Пароль').fill(password);
-  await panel.getByRole('button', { name: 'Увійти', exact: true }).click();
+/** Увійти зі сторінки входу; після входу «Ритм» сам відкриває «Сьогодні» — повертаємось у нотатки */
+async function signIn(page: Page, email = EMAIL, password = PASSWORD, expectSuccess = true) {
+  await page.goto('/#/login');
+  await page.getByLabel('Пошта').fill(email);
+  await page.getByLabel('Пароль').fill(password);
+  await page.getByRole('button', { name: 'Увійти', exact: true }).click();
+  if (!expectSuccess) return;
+  await expect(page).toHaveURL(/#\/today$/);
+  await page.goto('/#/notes?s=account');
 }
 
 const synced = (page: Page) => expect(page.getByText(/Синхронізовано о/)).toBeVisible();
@@ -27,7 +30,8 @@ test('реєстрація → вхід → дані доходять на др�
   const phone = await browser.newPage({ viewport: PHONE });
   await server.attach(phone);
   await open(phone, 'notes');
-  await phone.getByRole('tab', { name: 'Створити акаунт' }).click();
+  await phone.getByRole('link', { name: 'Створити акаунт' }).click();
+  await expect(phone.getByRole('heading', { name: 'Новий акаунт' })).toBeVisible();
   await phone.getByLabel('Пошта').fill(EMAIL);
   await phone.getByLabel('Пароль').fill('коротк');
   await phone.getByRole('button', { name: 'Створити акаунт', exact: true }).click();
@@ -63,7 +67,7 @@ test('реєстрація → вхід → дані доходять на др�
   // ---- вихід прибирає дані з пристрою, але не з акаунта
   phone.once('dialog', (d) => d.accept());
   await phone.getByRole('button', { name: 'Вийти' }).click();
-  await expect(phone.getByRole('tab', { name: 'Увійти' })).toBeVisible();
+  await expect(phone.getByRole('link', { name: 'Увійти' })).toBeVisible();
   await expect(note(phone)).toHaveValue('');
   expect(server.live('habit:')).toHaveLength(5);
 });
@@ -73,7 +77,7 @@ test('неправильний пароль — зрозуміла помилк�
   server.addUser(EMAIL, PASSWORD);
   await server.attach(page);
   await open(page, 'notes');
-  await signIn(page, EMAIL, 'не той пароль');
+  await signIn(page, EMAIL, 'не той пароль', false);
   await expect(page.getByRole('alert')).toHaveText('Неправильна пошта або пароль.');
 });
 
@@ -87,11 +91,15 @@ test('перший вхід на пристрої зі своїми даними
   await open(page, 'notes');
   await note(page).fill('мої місцеві нотатки'); // тепер на пристрої є свої дані
 
-  await signIn(page);
+  await page.goto('/#/login');
+  await page.getByLabel('Пошта').fill(EMAIL);
+  await page.getByLabel('Пароль').fill(PASSWORD);
+  await page.getByRole('button', { name: 'Увійти', exact: true }).click();
   const dialog = page.getByRole('dialog', { name: 'Що робити з даними?' });
   await expect(dialog).toContainText('5 звичок, 4 задачі');
   await expect(dialog).toContainText('В акаунті: 0 блоків, 1 звичка, 0 задач');
   await dialog.getByRole('button', { name: 'Об’єднати' }).click();
+  await page.goto('/#/notes?s=account');
   await synced(page);
 
   await page.goto('/#/habits');
