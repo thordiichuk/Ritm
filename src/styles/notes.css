@@ -137,3 +137,114 @@
   .plan-li { font-size: 16px; }
   .plan-tag { display: none; }
 }
+
+/* ======================================================================
+   Суцільний аркуш: замість окремих плиток — розділи одного білого аркуша,
+   розділені тонкими лініями (як у макетах design-notes/mockups)
+   ====================================================================== */
+[data-theme='notes'] .tile { background: transparent; border: 0; border-radius: 0; box-shadow: none; }
+[data-theme='notes'] .wrap { gap: 0; padding: 0; }
+/* сіра смуга рейки — на всю висоту сторінки (сама рейка закріплена на екрані) */
+[data-theme='notes'] .wrap { background: linear-gradient(to right, var(--n-side-bg) 88px, var(--n-side-border) 88px 89px, transparent 89px); }
+[data-theme='notes'] .rail { border-radius: 0; border: 0; background: transparent; top: 0; height: 100vh; }
+[data-theme='notes'] .wrap > main { gap: 0; padding: 8px 32px 48px; }
+[data-theme='notes'] .wrap > aside { gap: 0; padding: 8px 24px 48px; border-left: 1px solid var(--n-list-border); }
+[data-theme='notes'] .page-head { padding: 24px 0 20px; border-bottom: 1px solid var(--n-table-line); }
+[data-theme='notes'] .wrap > main > .tile:not(.page-head) { padding-left: 0; padding-right: 0; }
+[data-theme='notes'] .wrap > aside > .tile, [data-theme='notes'] .wrap > aside .g2 > .tile {
+  padding: 22px 0; border: 0 !important; border-bottom: 1px solid var(--n-table-line) !important; background: transparent !important;
+}
+[data-theme='notes'] .wrap > aside .g2 { gap: 0; border-bottom: 1px solid var(--n-table-line); }
+[data-theme='notes'] .wrap > aside .g2 > .tile { border-bottom: 0 !important; }
+[data-theme='notes'] .wrap > aside .g2 > .tile + .tile { border-left: 1px solid var(--n-table-line) !important; padding-left: 20px; }
+[data-theme='notes'] .mini { border-radius: 0; }
+
+/* кнопки дій — темні, як у макеті; жовтий лишається для деталей */
+[data-theme='notes'] .pill-lime { background: var(--n-action); color: #FFFFFF; }
+[data-theme='notes'] .pill-lime:hover { background: #3A3A3C; color: #FFFFFF; }
+[data-theme='notes'] .pill-ink { background: var(--n-action); color: #FFFFFF; }
+[data-theme='notes'] .pill-ink:hover { color: #FFE9A0; }
+[data-theme='notes'] .ri.on, [data-theme='notes'] .ri.on:hover { box-shadow: none; }
+[data-theme='notes'] .bnav { border-radius: 0; left: 0; right: 0; bottom: 0; padding-bottom: env(safe-area-inset-bottom); border: 0; border-top: 1px solid var(--n-list-border); }
+
+/* розклад — рядки чек-листа на аркуші, без рамок */
+[data-theme='notes'] .sched-desktop { padding: 8px 0 0; }
+[data-theme='notes'] .sched .hr { border-top-color: var(--n-rule); }
+[data-theme='notes'] .blk { border: 0; border-radius: 6px !important; background: transparent; }
+[data-theme='notes'] .sched-desktop .blk { padding: 9px 10px; margin: 2px 0; min-height: 40px; }
+[data-theme='notes'] .sched-phone .blk { padding: 8px 6px; margin: 2px 0; }
+[data-theme='notes'] .blk.cont { background: transparent; border: 0; }
+[data-theme='notes'] .free {
+  border: 0; border-radius: 6px; justify-content: flex-start; gap: 10px; padding: 0 10px; background: transparent; color: var(--n-text-3);
+}
+[data-theme='notes'] .free::before {
+  content: ''; width: 16px; height: 16px; flex: none; border-radius: 50%; border: 1.5px dashed var(--n-circle); box-sizing: border-box;
+}
+[data-theme='notes'] .sched-phone .free { padding: 0 6px; min-height: 40px; }
+[data-theme='notes'] .sched-desktop .free { min-height: 44px; }
+[data-theme='notes'] .now-card { border: 0; }
+
+/* великі показники — текст на аркуші */
+[data-theme='notes'] .stat-big, [data-theme='notes'] .mini .big { color: var(--c-text); }
+[data-theme='notes'] .seg span { height: 6px; }
+[data-theme='notes'] .bento { gap: 0; border-top: 1px solid var(--n-table-line); }
+[data-theme='notes'] .bento > .tile { padding: 22px 20px; border-bottom: 1px solid var(--n-table-line); }
+@media (min-width: 760px) {
+  [data-theme='notes'] .bento > .tile:not(.span2) + .tile:not(.span2) { border-left: 1px solid var(--n-table-line); }
+  [data-theme='notes'] .bento > .tile:first-child { padding-left: 0; }
+  [data-theme='notes'] .bento > .span2 { padding-left: 0; padding-right: 24px; }
+  [data-theme='notes'] .bento > .span2:nth-child(even) { border-left: 1px solid var(--n-table-line); padding-left: 24px; padding-right: 0; }
+}
+@media (max-width: 759px) {
+  /* телефон: показники — таблиця 2×2, графіки — один під одним */
+  [data-theme='notes'] .phone .bento > .tile { border-top: 0; padding: 18px 0; }
+  [data-theme='notes'] .phone .bento.kpi > .tile:nth-child(even) { border-left: 1px solid var(--n-table-line); padding-left: 16px; }
+  [data-theme='notes'] .phone .bento.kpi > .tile:nth-child(odd) { padding-right: 12px; }
+}
+[data-theme='notes'] .insight { border: 0; border-bottom: 1px solid var(--n-table-line); }
+[data-theme='notes'] .stat-sub { font-weight: 600; }
+[data-theme='notes'] .ib { background: transparent; }
+
+/* звички на телефоні — плитки-рядки аркуша */
+[data-theme='notes'] .ht { border: 1px solid var(--n-table-line); box-shadow: none; }
+[data-theme='notes'] .ht-add { border-width: 1.5px; }
+
+/* тиждень — таблиця з тонкими лініями */
+[data-theme='notes'] .week-grid { gap: 0; border: 1px solid var(--n-table-line); border-radius: 0; margin-top: 20px; }
+[data-theme='notes'] .week-col { border: 0; border-radius: 0; background: transparent; outline: 0 !important; }
+[data-theme='notes'] .week-col + .week-col { border-left: 1px solid var(--n-table-line); }
+[data-theme='notes'] .week-col.today { background: var(--n-today-col); }
+[data-theme='notes'] .week-col:hover { background: var(--n-hover); }
+
+/* телефон — суцільний аркуш */
+[data-theme='notes'] .phone .tile { border-radius: 0; padding-left: 0; padding-right: 0; border-top: 1px solid var(--n-table-line); }
+[data-theme='notes'] .plan-head { padding: 18px 0 0; }
+[data-theme='notes'] .plan { padding-left: 0; padding-right: 0; }
+
+/* звички на телефоні — рядки чек-листа замість карток */
+[data-theme='notes'] .ht-grid { grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--n-table-line); }
+[data-theme='notes'] .ht {
+  flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; min-height: 0;
+  padding: 14px 0 14px 34px; border: 0; border-bottom: 1px solid var(--n-table-line); border-radius: 0;
+  background: transparent !important; color: var(--c-text) !important; position: relative; aspect-ratio: auto;
+}
+[data-theme='notes'] .ht::before {
+  content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--n-circle); box-sizing: border-box; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; color: var(--c-text);
+}
+[data-theme='notes'] .ht[aria-pressed='true']::before { content: '✓'; background: var(--n-yellow); border-color: var(--n-yellow); }
+[data-theme='notes'] .ht .n { font-weight: 600; }
+[data-theme='notes'] .ht .s { color: var(--n-text-3); font-weight: 500; }
+[data-theme='notes'] .ht-foot { width: auto; gap: 8px; align-items: baseline; }
+[data-theme='notes'] .ht .big { font-size: 24px; }
+[data-theme='notes'] .ht .lbl { color: var(--n-text-3) !important; font-weight: 500; }
+[data-theme='notes'] .ht.wide { flex-wrap: wrap; min-height: 0; grid-column: auto; }
+[data-theme='notes'] .ht.wide > div:first-child { flex: 1; }
+[data-theme='notes'] .ht .bar { height: 4px; }
+[data-theme='notes'] .ht-add { grid-column: auto; padding: 14px 0; min-height: 0; border: 0; border-bottom: 1px solid var(--n-table-line); border-radius: 0; justify-content: flex-start; color: var(--n-yellow-text); }
+[data-theme='notes'] .ht-add::before { display: none; }
+
+/* вибір теми в налаштуваннях — без сірих карток */
+[data-theme='notes'] .theme-opt { background: transparent; border: 1px solid var(--n-table-line); }
+[data-theme='notes'] .theme-opt[aria-checked='true'] { border: 2px solid var(--n-yellow-text); }
