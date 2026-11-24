@@ -63,4 +63,28 @@ test.describe('тема «Нотатки»', () => {
     await page.getByRole('link', { name: 'Звички' }).click();
     await expect(page.getByRole('heading', { name: 'Звички' })).toBeVisible();
   });
+
+  test('план на день списком: пункти без годин, відмітка, вибір запам’ятовується', async ({ page }) => {
+    await open(page, 'today', { theme: 'notes' });
+    await page.getByRole('tab', { name: 'Списком' }).click();
+    const plan = page.getByRole('region', { name: 'План на день' });
+    await expect(plan).toBeVisible();
+    await expect(plan.getByText('5 з 10 виконано')).toBeVisible();
+    await expect(plan.getByText(/\d{2}:\d{2}/)).toHaveCount(0); // жодних годин
+    await plan.getByRole('button', { name: 'Відмітити: Спортзал: ноги + кардіо' }).click();
+    await expect(plan.getByText('6 з 10 виконано')).toBeVisible();
+    await page.reload();
+    await expect(page.getByRole('region', { name: 'План на день' })).toBeVisible();
+    await page.getByRole('button', { name: '+ Додати пункт' }).click();
+    await expect(page.getByRole('dialog')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await page.getByRole('tab', { name: 'По годинах' }).click();
+    await expect(page.getByRole('region', { name: 'Погодинний розклад' })).toBeVisible();
+  });
+
+  test('у темній темі перемикача немає — розклад як і був', async ({ page }) => {
+    await open(page, 'today');
+    await expect(page.getByRole('tablist', { name: 'Вигляд розкладу' })).toHaveCount(0);
+    await expect(page.getByRole('region', { name: 'Погодинний розклад' })).toBeVisible();
+  });
 });
