@@ -75,6 +75,18 @@ export function habitRate(s: AppState, days: ISODate[]): number {
   return total ? done / total : 0;
 }
 
+/** Виконання звичок за період і зміна до попереднього такого ж періоду (у відсоткових пунктах) */
+export function completionSummary(s: AppState, days: ISODate[]) {
+  const rate = habitRate(s, days);
+  const prev = habitRate(s, days.map((d) => addDays(d, -days.length)));
+  return { rate, delta: Math.round((rate - prev) * 100) };
+}
+
+/** Звичка з найдовшою поточною серією */
+export function longestStreak(s: AppState): { habit: Habit; n: number } | undefined {
+  return s.habits.map((h) => ({ habit: h, n: streak(h) })).sort((a, b) => b.n - a.n)[0];
+}
+
 export function focusMinutesOn(s: AppState, date: ISODate): number {
   return s.sessions.filter((x) => x.date === date).reduce((a, x) => a + x.minutes, 0);
 }

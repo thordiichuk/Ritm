@@ -14,7 +14,7 @@ const PHONE_ROUTES = ['today', 'habits', 'focus', 'review', 'stats', 'notes', 'w
 // анімації появи вимкнено (як у людини з вимкненим рухом у системі) — знімок має бути однаковим щоразу
 test.use({ reducedMotion: 'reduce' });
 
-for (const t of ['dark', 'bloom'] as const) {
+for (const t of ['dark', 'bloom', 'notes'] as const) {
   test.describe(`знімки: ${t}`, () => {
     for (const route of DESKTOP_ROUTES) {
       test(`комп'ютер / ${route}`, async ({ page }) => {

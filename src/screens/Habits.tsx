@@ -233,7 +233,8 @@ function DesktopHabits({ setEditing, modal }: { setEditing: (e: Editing) => void
   );
 }
 
-function lastMonths(n: number) {
+/** Останні n місяців із днями — для річного вигляду трекера */
+export function lastMonths(n: number) {
   const now = new Date();
   return Array.from({ length: n }, (_, i) => {
     const first = new Date(now.getFullYear(), now.getMonth() - (n - 1 - i), 1);

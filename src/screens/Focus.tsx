@@ -1,60 +1,16 @@
-import { useEffect, useState } from 'react';
-import { getState, update, useStore } from '../data/store';
-import { blocksOn } from '../data/selectors';
+import { getState } from '../data/store';
 import { toggleBlock } from '../data/actions';
-import { advance, ensureTimer, fmtClock, phaseLength, resetPhase, startOrPause, stopTimer, timerRemaining } from '../components/focus/timer';
+import { advance, ensureTimer, fmtClock, phaseLength, resetPhase, startOrPause } from '../components/focus/timer';
+import { useFocus } from '../components/focus/useFocus';
 import { Icon } from '../components/ui/Icon';
 import { toast } from '../components/ui/Modal';
 import { back, navigate, useLocation } from '../lib/router';
-import { useNow } from '../lib/hooks';
-import { nowMinutes, plural, todayISO } from '../lib/date';
+import { plural } from '../lib/date';
 
 export function FocusScreen() {
   const { params } = useLocation();
-  const blockParam = params.get('block');
-  const timer = useStore((s) => s.timer);
-  const muted = useStore((s) => s.settings.focusMute);
-  const [finished, setFinished] = useState<{ blockId?: string; title: string } | null>(null);
-  const now = useNow(250);
+  const { timer, muted, finished, setFinished, remaining, toggleNotif } = useFocus(params.get('block'));
 
-  // Підготувати таймер: блок з адреси → поточний блок → вільний фокус
-  useEffect(() => {
-    const s = getState();
-    if (s.timer?.running) return;
-    let id = blockParam;
-    if (!id && !s.timer) {
-      const m = nowMinutes();
-      id = blocksOn(s, todayISO()).find((b) => b.start <= m && b.end > m && !b.done)?.id ?? null;
-    }
-    if (id && !s.blocks.some((b) => b.id === id)) id = null;
-    if (s.timer && id && s.timer.blockId !== id) stopTimer();
-    if (!getState().timer) ensureTimer(id);
-  }, [blockParam]);
-
-  // Помітити завершення, коли «пульс» прибрав таймер після останньої сесії
-  const [last, setLast] = useState(timer);
-  useEffect(() => {
-    if (last && !timer && last.phase === 'work' && last.session >= last.total) setFinished({ blockId: last.blockId, title: last.title });
-    setLast(timer);
-  }, [timer]);
-
-  const remaining = timer ? timerRemaining(timer, now.getTime()) : 0;
-  useEffect(() => {
-    document.title = timer ? `${fmtClock(remaining)} · ${timer.phase === 'work' ? 'Фокус' : 'Перерва'} · Ритм` : 'Ритм';
-    return () => void (document.title = 'Ритм');
-  }, [timer, Math.ceil(remaining / 1000)]);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.target as HTMLElement)?.tagName === 'INPUT') return;
-      if (e.code === 'Space') { e.preventDefault(); startOrPause(); }
-      if (e.key === 'Escape') back();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, []);
-
-  const toggleNotif = () => update((d) => void (d.settings.focusMute = !d.settings.focusMute));
   const header = (
     <header className="fx-head">
       <button className="fx-round" aria-label="Згорнути" onClick={() => back()}><Icon name="chev-down" size={20} stroke={2.6} /></button>

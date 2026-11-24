@@ -138,7 +138,21 @@ export function WaterTile({ date }: { date: string }) {
   );
 }
 
-const MINUTE_OPTIONS = [5, 15, 30, 45, 60, 90, 120];
+export const MINUTE_OPTIONS = [5, 15, 30, 45, 60, 90, 120];
+export const minutesLabel = (m: number) => (m >= 60 ? `${m / 60} год` : `${m} хв`);
+
+/** Поставити задачу з вхідних у перший вільний проміжок дня (з повідомленням). true — вдалося. */
+export function scheduleToFirstFree(t: Task, date: string): boolean {
+  const from = date === todayISO() ? nowMinutes() : 0;
+  const slot = findFreeSlot(date, Math.max(15, t.minutes), from);
+  if (slot == null) {
+    toast('Немає вільного проміжку на цей день');
+    return false;
+  }
+  scheduleTask(t.id, date, slot);
+  toast(`«${t.title}» → ${hhmm(slot)}`);
+  return true;
+}
 export function taskLabel(t: Task) {
   return `${t.title} · ${t.minutes >= 60 && t.minutes % 60 === 0 ? `${t.minutes / 60} год` : `${t.minutes} хв`}`;
 }
@@ -155,12 +169,7 @@ export function InboxTile({ date, phone }: { date: string; phone?: boolean }) {
     setTitle('');
   };
   const autoSchedule = (t: Task) => {
-    const from = date === todayISO() ? nowMinutes() : 0;
-    const slot = findFreeSlot(date, Math.max(15, t.minutes), from);
-    if (slot == null) return toast('Немає вільного проміжку на цей день');
-    scheduleTask(t.id, date, slot);
-    toast(`«${t.title}» → ${hhmm(slot)}`);
-    setOpen(null);
+    if (scheduleToFirstFree(t, date)) setOpen(null);
   };
   return (
     <section className="tile">
@@ -189,7 +198,7 @@ export function InboxTile({ date, phone }: { date: string; phone?: boolean }) {
       <form className="ib-add" onSubmit={(e) => { e.preventDefault(); add(); }}>
         <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="+ задача у вхідні" aria-label="Нова задача" />
         <select value={mins} onChange={(e) => setMins(Number(e.target.value))} aria-label="Тривалість">
-          {MINUTE_OPTIONS.map((m) => <option key={m} value={m}>{m >= 60 ? `${m / 60} год` : `${m} хв`}</option>)}
+          {MINUTE_OPTIONS.map((m) => <option key={m} value={m}>{minutesLabel(m)}</option>)}
         </select>
       </form>
     </section>

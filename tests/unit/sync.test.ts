@@ -84,8 +84,9 @@ describe('записи', () => {
     const s = createSeed();
     const n = structuredClone(s);
     const h = n.habits[0];
-    h.log['2026-11-12'] = { done: true };
-    expect(diffKeys(explode(s), explode(n))).toEqual([`hlog:${h.id}:2026-11-12`]);
+    // дата в майбутньому: демо-дані будуються від «сьогодні», тож минулі дні вже можуть бути відмічені
+    h.log['2099-01-01'] = { done: true };
+    expect(diffKeys(explode(s), explode(n))).toEqual([`hlog:${h.id}:2099-01-01`]);
   });
 
   it('видалення блоку — це видалений запис', () => {

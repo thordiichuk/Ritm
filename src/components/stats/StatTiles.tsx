@@ -1,18 +1,16 @@
 import { useStore } from '../../data/store';
 import {
-  CATEGORIES, CATEGORY_META, bestHabitLift, focusMinutesIn, habitRate, planRate, streak, timeByCategory, weekDays,
+  CATEGORIES, CATEGORY_META, bestHabitLift, completionSummary, focusMinutesIn, longestStreak, planRate, timeByCategory, weekDays,
 } from '../../data/selectors';
-import { addDays, num, plural } from '../../lib/date';
-import type { ISODate } from '../../data/types';
+import { num, plural } from '../../lib/date';
+import type { Habit, ISODate } from '../../data/types';
 import { saveHabit } from '../../data/actions';
 import { toast } from '../ui/Modal';
 import { BotanicalSpray, BotanicalSprig } from '../flora/Botanical';
 
 export function CompletionTile({ days }: { days: ISODate[] }) {
   const s = useStore((x) => x);
-  const rate = habitRate(s, days);
-  const prev = habitRate(s, days.map((d) => addDays(d, -days.length)));
-  const delta = Math.round((rate - prev) * 100);
+  const { rate, delta } = completionSummary(s, days);
   return (
     <section className="tile stat flora-host" style={{ background: 'var(--accent-bg)', color: 'var(--on-accent)', boxShadow: 'var(--accent-shadow)' }}>
       <BotanicalSprig inverse className="flora flora-sprig-corner" />
@@ -23,7 +21,7 @@ export function CompletionTile({ days }: { days: ISODate[] }) {
   );
 }
 
-function periodPrev(n: number) {
+export function periodPrev(n: number) {
   if (n === 14) return 'минулих 2 тижнів';
   if (n === 7) return 'минулого тижня';
   if (n <= 31) return 'минулого місяця';
@@ -32,7 +30,8 @@ function periodPrev(n: number) {
 
 export function LongestStreakTile() {
   const s = useStore((x) => x);
-  const best = s.habits.map((h) => ({ h, n: streak(h) })).sort((a, b) => b.n - a.n)[0];
+  const top = longestStreak(s);
+  const best = top && { h: top.habit, n: top.n };
   return (
     <section className="tile stat" style={{ background: 'var(--streak-tile-bg)', color: 'var(--streak-tile-fg)' }}>
       <p className="k" style={{ color: 'var(--streak-tile-k)' }}>Найдовша серія</p>
@@ -93,6 +92,17 @@ export function TimeSplitTile({ days = weekDays(), title = 'Куди йде ча
   );
 }
 
+/** Час нагадування, яке пропонує інсайт */
+export const reminderTime = (h: Habit) => h.reminder ?? '21:00';
+
+/** Увімкнути нагадування звички (з дозволом на системні сповіщення) */
+export async function enableReminder(habit: Habit) {
+  const when = reminderTime(habit);
+  if ('Notification' in window && Notification.permission === 'default') await Notification.requestPermission();
+  saveHabit({ ...habit, reminder: when });
+  toast(`Нагадування о ${when} увімкнено`);
+}
+
 export function InsightTile() {
   const s = useStore((x) => x);
   const best = bestHabitLift(s);
@@ -105,12 +115,8 @@ export function InsightTile() {
     );
   }
   const { habit, lift } = best;
-  const when = habit.reminder ?? '21:00';
-  const enable = async () => {
-    if ('Notification' in window && Notification.permission === 'default') await Notification.requestPermission();
-    saveHabit({ ...habit, reminder: when });
-    toast(`Нагадування о ${when} увімкнено`);
-  };
+  const when = reminderTime(habit);
+  const enable = () => enableReminder(habit);
   return (
     <section className="tile span2 insight">
       <div className="disp insight-num">+{Math.round(lift * 100)}%</div>

@@ -4,11 +4,17 @@ import { useSyncExternalStore } from 'react';
  * Тема оформлення. Живе окремо від даних застосунку: її потрібно знати ще до першого рендеру,
  * тому index.html читає той самий ключ вбудованим скриптом і ставить data-theme на <html>.
  */
-export type Theme = 'dark' | 'bloom';
+export type Theme = 'dark' | 'bloom' | 'notes';
 export const THEME_KEY = 'ritm:theme';
+export const THEMES_ALL: Theme[] = ['dark', 'bloom', 'notes'];
+
+/** Будь-що невідоме — темна тема (вона за замовчуванням) */
+export function asTheme(v: string | null | undefined): Theme {
+  return v === 'bloom' || v === 'notes' ? v : 'dark';
+}
 
 function read(): Theme {
-  return document.documentElement.dataset.theme === 'bloom' ? 'bloom' : 'dark';
+  return asTheme(document.documentElement.dataset.theme);
 }
 
 let current: Theme = read();
@@ -41,7 +47,7 @@ export function useTheme(): Theme {
 // інша вкладка змінила тему
 window.addEventListener('storage', (e) => {
   if (e.key === THEME_KEY) {
-    current = e.newValue === 'bloom' ? 'bloom' : 'dark';
+    current = asTheme(e.newValue);
     document.documentElement.dataset.theme = current;
     listeners.forEach((l) => l());
   }

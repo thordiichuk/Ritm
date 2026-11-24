@@ -61,6 +61,16 @@
 .tp-row { display: flex; gap: 4px; }
 .tp-row i { flex: 1; height: 10px; border-radius: 4px; display: block; }
 .tp-accent { width: 36px; height: 100%; border-radius: 10px; background: var(--accent-bg); box-shadow: var(--accent-shadow); }
+.tp-notes { padding: 0; gap: 0; align-items: stretch; background: #FFFFFF; border: 1px solid #ECEAE3; }
+.tp-n-side { width: 30%; background: var(--n-side-bg); border-right: 1px solid var(--n-side-border); display: flex; flex-direction: column; gap: 5px; padding: 10px 6px; }
+.tp-n-side i { display: block; height: 7px; border-radius: 3px; background: #E3E1DA; }
+.tp-n-side i.on { background: var(--n-hl-folder); outline: 2px solid var(--n-hl-folder); }
+.tp-n-sheet { flex: 1; display: flex; flex-direction: column; gap: 7px; padding: 10px 12px; font-family: var(--font-body); }
+.tp-n-title { font-size: 15px; font-weight: 700; color: #1D1D1F; line-height: 1; margin-bottom: 2px; }
+.tp-n-row { display: flex; align-items: center; gap: 6px; }
+.tp-n-row i { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid #C7C7CC; flex: none; }
+.tp-n-row i.on { background: #F2B705; border-color: #F2B705; }
+.tp-n-row b { display: block; height: 6px; width: 82%; border-radius: 3px; background: #E5E5EA; }
 .theme-label { font-size: 15px; font-weight: 800; padding: 0 4px 2px; }
 .theme-label small { display: block; font-size: 13px; font-weight: 600; color: var(--c-muted); margin-top: 2px; }
 

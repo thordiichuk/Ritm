@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ритм · Нотатки · Сьогодні</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Caveat:wght@600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#946A00}a:hover{color:#1D1D1F}
+.ic{color:#C99A00}
+.circ{width:22px;height:22px;border-radius:50%;border:1.5px solid #C7C7CC;background:#fff;flex:none;padding:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.circ.on{background:#F2B705;border-color:#F2B705}
+.li{display:flex;align-items:center;gap:12px;padding:7px 0;font-size:16px;line-height:1.4}
+.li.done .tx{color:#8E8E93}
+.tm{width:48px;flex:none;color:#8E8E93;font-variant-numeric:tabular-nums;font-size:15px}
+.tag{color:#946A00;font-size:14px;font-weight:500}
+.h2{margin:26px 0 6px;font-size:21px;font-weight:700;letter-spacing:-.01em}
+.tbtn{width:40px;height:40px;border-radius:9px;border:0;background:transparent;color:#C99A00;display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.tbtn:hover{background:#F2F1EC}
+.fold{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;font-size:14px;color:#1D1D1F;text-decoration:none}
+.fold .n{margin-left:auto;color:#8E8E93;font-size:13px}
+.fold.on{background:#E9E6DC}
+.nl{display:block;padding:12px 16px;border-radius:10px;text-decoration:none;color:#1D1D1F}
+.nl b{display:block;font-size:15px;font-weight:600}
+.nl span{display:block;font-size:13px;color:#6E6E73;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nl.on{background:#FFE9A0}
+.nl+.nl{border-top:1px solid #F0EFEA}
+.nl.on+.nl,.nl+.nl.on{border-top-color:transparent}
+.sec{margin:18px 16px 6px;font-size:13px;font-weight:600;color:#6E6E73}
+.wrap{display:grid;grid-template-columns:230px 320px minmax(0,1fr);min-height:1080px;background:#FFFFFF}
+.note{max-width:720px;margin:0 auto;padding:22px 40px 60px}
+.drop{width:22px;height:28px;border-radius:5px 5px 9px 9px;border:1.5px solid #9FBEE0;background:#fff;padding:0}
+.drop.on{background:#7FAAD9;border-color:#5E93CF}
+@media (max-width:1100px){.wrap{grid-template-columns:1fr}.side,.list{display:none}}
+</style>
+
+</head>
+<body>
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, 'Segoe UI', system-ui, sans-serif; color: #1D1D1F; width: 100%">
+<div class="wrap">
+<aside class="side" style="background: #F6F5F1; border-right: 1px solid #E3E1DA; padding: 16px 10px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 4px 10px"><span style="font-size: 15px; font-weight: 700">Ритм</span><button class="tbtn" aria-label="Сховати бічну панель"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16"></path></svg></button></div>
+<p style="margin: 6px 10px 4px; font-size: 12px; font-weight: 600; color: #8E8E93">Мій день</p>
+<nav style="display: flex; flex-direction: column; gap: 1px" aria-label="Папки"><a href="#" class="fold on"><span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg></span>Сьогодні<span class="n">10</span></a><a href="#" class="fold"><span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg></span>Тиждень<span class="n">46</span></a><a href="#" class="fold"><span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg></span>Звички<span class="n">5</span></a><a href="#" class="fold"><span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg></span>Фокус<span class="n">4</span></a><a href="#" class="fold"><span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg></span>Статистика<span class="n"></span></a><a href="#" class="fold"><span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg></span>Вхідні<span class="n">4</span></a><a href="#" class="fold"><span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg></span>Нотатки<span class="n">12</span></a></nav>
+<p style="margin: 18px 10px 4px; font-size: 12px; font-weight: 600; color: #8E8E93">Теги</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; padding: 0 8px"><span style="font-size: 12px; padding: 4px 9px; border-radius: 999px; background: #ECEAE2; color: #5C5C61">#робота</span><span style="font-size: 12px; padding: 4px 9px; border-radius: 999px; background: #ECEAE2; color: #5C5C61">#здоров’я</span><span style="font-size: 12px; padding: 4px 9px; border-radius: 999px; background: #ECEAE2; color: #5C5C61">#навчання</span><span style="font-size: 12px; padding: 4px 9px; border-radius: 999px; background: #ECEAE2; color: #5C5C61">#особисте</span><span style="font-size: 12px; padding: 4px 9px; border-radius: 999px; background: #ECEAE2; color: #5C5C61">#справи</span></div>
+<button style="margin-top: auto; display: flex; align-items: center; gap: 8px; border: 0; background: transparent; font-family: inherit; font-size: 14px; color: #946A00; padding: 8px 10px; min-height: 40px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>Нова папка</button>
+</aside>
+<section class="list" style="border-right: 1px solid #ECEAE3; background: #FFFFFF; display: flex; flex-direction: column">
+<div style="padding: 18px 16px 6px"><h2 style="margin: 0; font-size: 22px; font-weight: 700">Сьогодні</h2><p style="margin: 2px 0 0; font-size: 13px; color: #8E8E93">5 нотаток</p></div>
+<p class=sec>Закріплені</p><div style="padding: 0 6px"><a href="#" class="nl"><b>Вхідні</b><span>Стоматолог · Подарунок мамі · Оплатити інтернет</span></a><a href="#" class="nl"><b>Топ-3 тижня</b><span>Здати звіт · 30 сторінок щодня · 3 тренування</span></a></div>
+<p class="sec">Нещодавні</p>
+<div style="padding: 0 6px"><a href="#" class="nl on"><b>Четвер, 12 листопада</b><span>14:40 · 5 з 10 блоків, зараз англійська</span></a><a href="#" class="nl"><b>Середа, 11 листопада</b><span>Вчора · 9 з 9 блоків, 4 з 5 звичок</span></a><a href="#" class="nl"><b>Вівторок, 10 листопада</b><span>Вівторок · 7 з 9 блоків</span></a><a href="#" class="nl"><b>Понеділок, 9 листопада</b><span>Понеділок · 4 з 9 блоків</span></a><a href="#" class="nl"><b>Підсумок тижня 45</b><span>08.11 · 81% звичок, 7 год фокусу</span></a></div>
+</section>
+<main style="min-width: 0">
+<div style="display: flex; align-items: center; gap: 2px; padding: 10px 18px; border-bottom: 1px solid #F0EFEA">
+<button class="tbtn" aria-label="Формат тексту"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M4 19l5-14 5 14M6 14h6M15 19l3-8 3 8M16 16.5h4"></path></svg></button><button class="tbtn" aria-label="Чек-лист"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><circle cx="5" cy="7" r="1.6"></circle><circle cx="5" cy="12" r="1.6"></circle><circle cx="5" cy="17" r="1.6"></circle><path d="M10 7h10M10 12h10M10 17h10"></path></svg></button><button class="tbtn" aria-label="Таблиця"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 10h18M3 15h18M9 4v16M15 4v16"></path></svg></button><button class="tbtn" aria-label="Малюнок"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M3 21c3 0 4-2 6-4l9-9-3-3-9 9c-2 2-4 3-4 6z"></path></svg></button>
+<span style="flex: 1"></span>
+<label style="display: flex; align-items: center; gap: 6px; padding: 0 10px; min-height: 34px; border-radius: 9px; background: #F2F1EC; color: #8E8E93; width: 200px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><input aria-label="Пошук" placeholder="Пошук" style="border: 0; background: transparent; font-family: inherit; font-size: 14px; outline: none; width: 100%"></label>
+<button class="tbtn" aria-label="Поділитися"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M12 3v12M8 7l4-4 4 4M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6"></path></svg></button><button class="tbtn" aria-label="Нова нотатка"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M4 20h4L19 9l-4-4L4 16z"></path><path d="M13 7l4 4"></path></svg></button></div>
+<article class="note">
+<p style="margin: 0 0 14px; text-align: center; font-size: 13px; color: #8E8E93">12 листопада 2026 р. о 14:40</p>
+<h1 style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -.02em">Четвер, 12 листопада</h1>
+<p style="margin: 8px 0 0; font-size: 16px; color: #6E6E73">5 з 10 блоків · вільно 3 год 25 хв</p>
+<div style="height: 4px; border-radius: 2px; background: #F0EFEA; margin-top: 10px; max-width: 360px"><div style="width: 50%; height: 100%; border-radius: 2px; background: #F2B705"></div></div>
+
+<div style="margin-top: 24px; padding: 16px 18px; border-radius: 12px; background: #FFF0B8; display: flex; align-items: center; gap: 16px; flex-wrap: wrap">
+<div style="flex: 1; min-width: 220px"><p style="margin: 0; font-size: 13px; font-weight: 600; color: #946A00">ЗАРАЗ · 14:40 · ще 20 хв</p><p style="margin: 4px 0 0; font-size: 18px; font-weight: 600">Англійська: курс + 20 нових слів — сесія 2 з 4</p></div>
+<span style="font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.02em">25:00</span>
+<button style="display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border-radius: 10px; border: 0; background: #1D1D1F; color: #fff; font-family: inherit; font-size: 14px; font-weight: 600"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style=""><path d="M7 5l12 7-12 7z"></path></svg>Таймер</button>
+</div>
+
+<h2 class="h2">Розклад</h2>
+<div class="li done"><button class="circ on" aria-label="Виконано: Ранкова зарядка"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: #fff"><path d="M5 12l4 4L19 7"></path></svg></button><span class=tm>07:00</span><span class="tx">Ранкова зарядка</span><span class=tag>#здоров’я</span></div><div class="li done"><button class="circ on" aria-label="Виконано: Сніданок і план дня"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: #fff"><path d="M5 12l4 4L19 7"></path></svg></button><span class=tm>07:30</span><span class="tx">Сніданок і план дня</span><span class=tag>#особисте</span></div><div class="li done"><button class="circ on" aria-label="Виконано: Глибока робота: квартальний звіт"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: #fff"><path d="M5 12l4 4L19 7"></path></svg></button><span class=tm>09:00</span><span class="tx">Глибока робота: квартальний звіт</span><span class=tag>#робота</span></div><div class="li done"><button class="circ on" aria-label="Виконано: Стендап з командою"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: #fff"><path d="M5 12l4 4L19 7"></path></svg></button><span class=tm>11:00</span><span class="tx">Стендап з командою</span><span class=tag>#робота</span></div><div class="li done"><button class="circ on" aria-label="Виконано: Обід і прогулянка"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: #fff"><path d="M5 12l4 4L19 7"></path></svg></button><span class=tm>12:00</span><span class="tx">Обід і прогулянка</span><span class=tag>#здоров’я</span></div>
+<div class="li"><button class="circ" aria-label="Відмітити: Англійська: курс + 20 нових слів"></button><span class=tm>13:00</span><span class="tx">Англійська: курс + 20 нових слів</span><span class=tag>#навчання</span><span style="margin-left: 6px; font-size: 12px; font-weight: 600; color: #fff; background: #D93F2B; border-radius: 6px; padding: 2px 6px">зараз</span></div>
+<div class="li" style="color: #8E8E93"><span style="width: 22px; height: 22px; border-radius: 50%; border: 1.5px dashed #C7C7CC; flex: none"></span><span class="tm">16:30</span><span>вільно 1,5 год — перетягніть сюди задачу з «Вхідних»</span></div>
+<div class="li"><button class="circ" aria-label="Відмітити: Пошта й дрібні справи"></button><span class=tm>15:30</span><span class="tx">Пошта й дрібні справи</span><span class=tag>#справи</span></div><div class="li"><button class="circ" aria-label="Відмітити: Спортзал: ноги + кардіо"></button><span class=tm>18:00</span><span class="tx">Спортзал: ноги + кардіо</span><span class=tag>#здоров’я</span></div><div class="li"><button class="circ" aria-label="Відмітити: Читання: 30 сторінок"></button><span class=tm>20:00</span><span class="tx">Читання: 30 сторінок</span><span class=tag>#особисте</span></div><div class="li"><button class="circ" aria-label="Відмітити: Вечірній підсумок"></button><span class=tm>21:00</span><span class="tx">Вечірній підсумок</span></div>
+
+<h2 class="h2">Звички · 2 з 5</h2>
+<div class="li done"><button class="circ on" aria-label="Виконано: Зарядка 10 хв"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: #fff"><path d="M5 12l4 4L19 7"></path></svg></button><span class="tx">Зарядка 10 хв</span><span style="margin-left: auto; font-size: 14px; color: #6E6E73">серія 21</span></div><div class="li done"><button class="circ on" aria-label="Виконано: Без телефона до 9:00"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: #fff"><path d="M5 12l4 4L19 7"></path></svg></button><span class="tx">Без телефона до 9:00</span><span style="margin-left: auto; font-size: 14px; color: #6E6E73">серія 6</span></div><div class="li"><button class="circ" aria-label="Відмітити: 10 000 кроків"></button><span class="tx">10 000 кроків</span><span style="margin-left: auto; font-size: 14px; color: #6E6E73">6 240 / 10 000</span></div><div class="li"><button class="circ" aria-label="Відмітити: Читання 30 сторінок"></button><span class="tx">Читання 30 сторінок</span><span style="margin-left: auto; font-size: 14px; color: #6E6E73">серія 12</span></div><div class="li"><button class="circ" aria-label="Відмітити: Сон до 23:30"></button><span class="tx">Сон до 23:30</span><span style="margin-left: auto; font-size: 14px; color: #6E6E73">нагадаю о 22:45</span></div>
+
+<h2 class="h2">Вода · 1,25 з 2 л</h2>
+<div style="display: flex; gap: 8px; padding: 6px 0"><button class="drop on" aria-label="Склянка 1"></button><button class="drop on" aria-label="Склянка 2"></button><button class="drop on" aria-label="Склянка 3"></button><button class="drop on" aria-label="Склянка 4"></button><button class="drop on" aria-label="Склянка 5"></button><button class="drop" aria-label="Склянка 6"></button><button class="drop" aria-label="Склянка 7"></button><button class="drop" aria-label="Склянка 8"></button></div>
+
+<h2 class="h2">Нотатка дня</h2>
+<p style="margin: 4px 0 0; font-size: 16px; line-height: 1.6">Звіт здала — нарешті. Після обіду енергія падає, тож пошту краще лишати на 15:30. <span style="color: #946A00">#енергія</span></p>
+<p class="hand" style="margin: 14px 0 0; font-family: Caveat, cursive; font-size: 26px; color: #C99A00; transform: rotate(-2deg); display: inline-block">не забути: подарунок мамі до суботи!</p>
+</article>
+</main>
+</div>
+</div>
+</body>
+</html>

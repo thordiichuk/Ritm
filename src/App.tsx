@@ -13,9 +13,13 @@ import { LoginScreen } from './screens/Login';
 import { ToastHost } from './components/ui/Modal';
 import { useBackgroundTicker } from './lib/ticker';
 import { AccountPrompts } from './components/account/Account';
+import { useTheme } from './lib/theme';
+import { NotesFocus, NotesHabits, NotesNotes, NotesStats, NotesToday, NotesWeek } from './themes/notes';
 
 export function App() {
   const { route } = useLocation();
+  // тема «Нотатки» має власну розкладку: ті самі дані й дії, інші презентаційні компоненти
+  const notes = useTheme() === 'notes';
   useBackgroundTicker();
   useEffect(() => {
     if (route !== 'welcome' && route !== 'login') markWelcomed();
@@ -23,22 +27,22 @@ export function App() {
   let screen;
   switch (route) {
     case 'habits':
-      screen = <HabitsScreen />;
+      screen = notes ? <NotesHabits /> : <HabitsScreen />;
       break;
     case 'focus':
-      screen = <FocusScreen />;
+      screen = notes ? <NotesFocus /> : <FocusScreen />;
       break;
     case 'review':
       screen = <ReviewScreen />;
       break;
     case 'stats':
-      screen = <StatsScreen />;
+      screen = notes ? <NotesStats /> : <StatsScreen />;
       break;
     case 'week':
-      screen = <WeekScreen />;
+      screen = notes ? <NotesWeek /> : <WeekScreen />;
       break;
     case 'notes':
-      screen = <NotesScreen />;
+      screen = notes ? <NotesNotes /> : <NotesScreen />;
       break;
     case 'welcome':
       screen = <WelcomeScreen />;
@@ -47,7 +51,7 @@ export function App() {
       screen = <LoginScreen />;
       break;
     default:
-      screen = <TodayScreen />;
+      screen = notes ? <NotesToday /> : <TodayScreen />;
   }
   return (
     <>

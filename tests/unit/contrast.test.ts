@@ -79,3 +79,51 @@ describe('контраст квіткової теми', () => {
     expect(contrast('#FFFFFF', stops.at(-1)!)).toBeGreaterThanOrEqual(LARGE);
   });
 });
+
+/*
+ * Тема «Нотатки»: текст ≥ 4.5:1. Жовтий текст — лише темні відтінки (#946A00 / #855F00),
+ * яскравий #F2B705 — тільки для заливок (галочки, прогрес), не для тексту.
+ */
+const notes = block("[data-theme='notes']");
+function nhex(name: string): string {
+  const v = notes[name] ?? name;
+  if (!/^#[0-9a-f]{6}$/i.test(v)) throw new Error(`${name} має бути кольором #RRGGBB, а не «${v}»`);
+  return v;
+}
+
+const NOTES_PAIRS: Array<[string, string, string, number]> = [
+  ['основний текст на аркуші', '--c-text', '--tile-bg', TEXT],
+  ['другорядний текст на аркуші', '--c-muted', '--tile-bg', TEXT],
+  ['третинний текст і штамп дати', '--n-text-3', '--tile-bg', TEXT],
+  ['третинний текст у бічній панелі', '--n-text-3', '--n-side-bg', TEXT],
+  ['третинний текст у шапці таблиці', '--n-text-3', '--n-table-head', TEXT],
+  ['третинний текст у сьогоднішній колонці', '--n-text-3', '--n-today-col', TEXT],
+  ['сірий текст на вибраній нотатці', '--n-text-on-hl', '--n-hl-note', TEXT],
+  ['сірий текст на вибраній папці', '--n-text-on-hl', '--n-hl-folder', TEXT],
+  ['підказка в полі пошуку', '--n-text-on-hl', '--n-hover', TEXT],
+  ['жовтий текст (теги, посилання) на аркуші', '--n-yellow-text', '--tile-bg', TEXT],
+  ['жовтий текст на плашці «Зараз»', '--n-yellow-text-hl', '--n-hl-now', TEXT],
+  ['жовтий текст на вибраній нотатці', '--n-yellow-text-hl', '--n-hl-note', TEXT],
+  ['посилання', '--link', '--tile-bg', TEXT],
+  ['акцент', '--accent', '--tile-bg', TEXT],
+  ['основний текст на плашці «Зараз»', '--c-text', '--n-hl-now', TEXT],
+  ['теги в бічній панелі', '--n-tag-fg', '--n-tag-bg', TEXT],
+  ['біла «зараз» на червоному', '#FFFFFF', '--n-now-red', TEXT],
+  ['кнопка дії', '#FFFFFF', '--n-action', TEXT],
+  ['небезпечна дія', '--danger-fg', '--tile-bg', TEXT],
+  ['значки-кнопки панелі (не текст)', '--n-tool', '--tile-bg', LARGE],
+  ['значки-кнопки при наведенні', '--n-tool', '--n-hover', LARGE],
+  ['номери годин (великі)', '--hour', '--tile-bg', LARGE],
+];
+
+describe('контраст теми «Нотатки»', () => {
+  it.each(NOTES_PAIRS)('%s', (_, fg, bg, min) => {
+    expect(contrast(nhex(fg), nhex(bg))).toBeGreaterThanOrEqual(min);
+  });
+
+  it('яскравий жовтий не використовується як колір тексту', () => {
+    for (const k of ['--c-text', '--c-muted', '--n-text-3', '--accent', '--link', '--n-yellow-text', '--n-yellow-text-hl', '--streak-text']) {
+      expect(notes[k].toUpperCase()).not.toBe('#F2B705');
+    }
+  });
+});

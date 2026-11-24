@@ -3,7 +3,7 @@ import { Icon } from '../components/ui/Icon';
 import { BotanicalBlossom, BotanicalSpray, BotanicalSprig } from '../components/flora/Botanical';
 import { href } from '../lib/router';
 import { markWelcomed } from '../lib/welcome';
-import { setTheme, useTheme } from '../lib/theme';
+import { setTheme, useTheme, type Theme } from '../lib/theme';
 import { useAccount } from '../sync/account';
 
 type IconName = Parameters<typeof Icon>[0]['name'];
@@ -50,20 +50,29 @@ function useReveal() {
   return ref;
 }
 
-/** Перемикач теми: повзунок «місяць — квітка» */
+const SWITCH: Array<{ id: Theme; label: string; name: string; icon: 'moon' | 'flower' | 'note' }> = [
+  { id: 'dark', label: 'Темна', name: 'Темна тема', icon: 'moon' },
+  { id: 'bloom', label: 'Квіткова', name: 'Квіткова тема', icon: 'flower' },
+  { id: 'notes', label: 'Нотатки', name: 'Тема «Нотатки»', icon: 'note' },
+];
+
+/** Перемикач теми: повзунок на три положення — місяць, квітка, нотатка */
 function ThemeSwitch() {
   const theme = useTheme();
-  const bloom = theme === 'bloom';
+  const i = Math.max(0, SWITCH.findIndex((t) => t.id === theme));
   return (
-    <button className="theme-switch" role="switch" aria-checked={bloom} aria-label="Квіткова тема"
-      title={bloom ? 'Увімкнути темну тему' : 'Увімкнути квіткову тему'} onClick={() => setTheme(bloom ? 'dark' : 'bloom')}>
-      <span className="ts-track" aria-hidden="true">
-        <span className="ts-knob" />
-        <span className="ts-ic ts-moon"><Icon name="moon" size={16} stroke={2.2} /></span>
-        <span className="ts-ic ts-flower"><Icon name="flower" size={17} stroke={1.9} /></span>
+    <div className="theme-switch" role="radiogroup" aria-label="Тема">
+      <span className="ts-track">
+        <span className="ts-knob" style={{ transform: `translateX(${i * 36}px)` }} aria-hidden="true" />
+        {SWITCH.map((t) => (
+          <button key={t.id} type="button" className={`ts-ic${t.id === theme ? ' on' : ''}`} role="radio" aria-checked={t.id === theme}
+            aria-label={t.name} title={t.name} onClick={() => setTheme(t.id)}>
+            <Icon name={t.icon} size={t.icon === 'flower' ? 17 : 16} stroke={t.icon === 'flower' ? 1.9 : 2.2} />
+          </button>
+        ))}
       </span>
-      <span className="ts-label">{bloom ? 'Квіткова' : 'Темна'}</span>
-    </button>
+      <span className="ts-label" aria-hidden="true">{SWITCH[i].label}</span>
+    </div>
   );
 }
 
@@ -72,7 +81,7 @@ export function WelcomeScreen() {
   const theme = useTheme();
   const acc = useAccount();
   const root = useReveal();
-  const shot = (name: string) => `./welcome/${name}-${theme === 'bloom' ? 'bloom' : 'dark'}.jpg`;
+  const shot = (name: string) => `./welcome/${name}-${theme}.jpg`;
 
   return (
     <div className="welcome" ref={root}>
