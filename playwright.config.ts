@@ -19,7 +19,9 @@ export default defineConfig({
   },
   expect: {
     // знімки екрана: допускаємо крихітну різницю згладжування між машинами
-    toHaveScreenshot: { maxDiffPixelRatio: 0.002, animations: 'disabled' },
+    // threshold — наскільки може відрізнятися колір одного пікселя (0…1). Типове 0.2 не помічало навіть
+    // заміни блідо-жовтого тла на біле, тож ставимо суворіше: знімки робить той самий образ у CI.
+    toHaveScreenshot: { maxDiffPixelRatio: 0.002, threshold: 0.02, animations: 'disabled' },
   },
   projects: [{ name: 'chromium', use: { browserName: 'chromium' } }],
   webServer: {
