@@ -13,6 +13,8 @@ import { useIsPhone } from '../lib/hooks';
 import { applyTemplate, findFreeSlot, saveTemplate } from '../data/actions';
 import { BotanicalSpray } from '../components/flora/Botanical';
 import { isReviewBlock } from './Review';
+import { useTheme } from '../lib/theme';
+import { PlanList, PlanViewSwitch, usePlanView } from '../components/today/PlanList';
 
 /** Дата з адреси (?d=…) або сьогодні */
 export function useSelectedDate(): string {
@@ -39,15 +41,26 @@ export function TodayScreen() {
   const editor = editing && <BlockEditor block={editing.block} isNew={editing.isNew} onClose={() => setEditing(null)} />;
   const edit = (b: Block) =>
     isReviewBlock(b.title) ? navigate('review', date === todayISO() ? undefined : { d: date }) : setEditing({ block: b, isNew: false });
+  // у темі «Нотатки» розклад можна показати простим списком пунктів, без сітки годин
+  const notes = useTheme() === 'notes';
+  const planView = usePlanView();
+  const asList = notes && planView === 'list';
 
   if (phone) {
     return (
       <div className="phone phone-today">
         <DayStrip date={date} />
+        {notes && <PlanViewSwitch />}
         <PhoneScroller date={date}>
-          <section aria-label="Розклад по годинах">
-            <Schedule date={date} variant="phone" onEdit={edit} onAddAt={addAt} />
-          </section>
+          {asList ? (
+            <section aria-label="План на день">
+              <PlanList date={date} onEdit={edit} onAdd={addNext} />
+            </section>
+          ) : (
+            <section aria-label="Розклад по годинах">
+              <Schedule date={date} variant="phone" onEdit={edit} onAddAt={addAt} />
+            </section>
+          )}
           <div className="phone-extra">
             <Top3Tile date={date} />
             <WaterTile date={date} />
@@ -81,9 +94,19 @@ export function TodayScreen() {
             <button className="pill pill-lime" onClick={addNext}><Icon name="plus" size={18} stroke={2.8} />Новий блок</button>
           </div>
         </header>
-        <section className="tile" aria-label="Погодинний розклад" style={{ padding: 0 }}>
-          <Schedule date={date} variant="desktop" onEdit={edit} onAddAt={addAt} />
-        </section>
+        {notes ? (
+          <section className="tile plan-tile" aria-label={asList ? 'План на день' : 'Погодинний розклад'} style={{ padding: 0 }}>
+            <div className="plan-head">
+              <p className="k">{asList ? 'План на день' : 'Розклад'}</p>
+              <PlanViewSwitch />
+            </div>
+            {asList ? <PlanList date={date} onEdit={edit} onAdd={addNext} /> : <Schedule date={date} variant="desktop" onEdit={edit} onAddAt={addAt} />}
+          </section>
+        ) : (
+          <section className="tile" aria-label="Погодинний розклад" style={{ padding: 0 }}>
+            <Schedule date={date} variant="desktop" onEdit={edit} onAddAt={addAt} />
+          </section>
+        )}
       </main>
       <aside>
         <ProgressTile date={date} />

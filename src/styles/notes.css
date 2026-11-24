@@ -105,3 +105,35 @@
 [data-theme='notes'] .hab-name { font-weight: 600; }
 [data-theme='notes'] .ph-heat i { border-radius: 50%; }
 [data-theme='notes'] .week-col.today { background: var(--n-today-col); border-color: #F2D77A; }
+
+/* ---------- План дня списком (перемикач «По годинах / Списком») ---------- */
+.plan-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 24px 0 24px; flex-wrap: wrap; }
+.plan-tile .sched-desktop { padding-top: 12px; }
+.plan-switch { display: inline-flex; }
+.plan-switch .pill { min-height: 34px; font-size: 13px; padding: 0 14px; }
+.phone .plan-switch { margin: 12px 0 4px; }
+.plan { padding: 8px 24px 24px; }
+.phone .plan { padding: 8px 0 24px; }
+.plan-sum { margin: 0 0 6px; font-size: 14px; color: var(--n-text-3); }
+.plan-list { list-style: none; margin: 0; padding: 0; }
+.plan-li { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--n-rule); font-size: 17px; line-height: 1.4; }
+.plan-circ {
+  width: 24px; height: 24px; flex: none; border-radius: 50%; border: 1.5px solid var(--n-circle); background: var(--tile-bg);
+  padding: 0; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: var(--c-text);
+}
+.plan-circ:hover { border-color: var(--n-tool); }
+.plan-circ.on { background: var(--n-yellow); border-color: var(--n-yellow); }
+.plan-tx { border: 0; background: transparent; padding: 0; font: inherit; color: var(--c-text); text-align: left; cursor: pointer; min-width: 0; overflow-wrap: anywhere; }
+.plan-tx:hover { text-decoration: underline; text-decoration-color: var(--n-circle); text-underline-offset: 3px; }
+.plan-li.done .plan-tx { color: var(--n-text-3); text-decoration: line-through; text-decoration-color: var(--n-circle); }
+.plan-tag { font-size: 14px; font-weight: 500; color: var(--n-yellow-text); white-space: nowrap; }
+.plan-now { font-size: 12px; font-weight: 600; color: #FFFFFF; background: var(--n-now-red); border-radius: 6px; padding: 2px 6px; white-space: nowrap; }
+.plan-add {
+  margin-top: 10px; border: 0; background: transparent; padding: 8px 0; font: inherit; font-size: 16px; font-weight: 500;
+  color: var(--n-yellow-text); cursor: pointer;
+}
+.plan-add:hover { color: var(--c-text); }
+@media (max-width: 759px) {
+  .plan-li { font-size: 16px; }
+  .plan-tag { display: none; }
+}
