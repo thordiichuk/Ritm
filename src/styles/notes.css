@@ -1,0 +1,107 @@
+/*
+ * Тема «Нотатки»: будова сторінок — як у темній темі (рейка, плитки, погодинний розклад),
+ * а вигляд — нотатника: білий аркуш, тонкі лінії без тіней, системний шрифт,
+ * жовтий акцент, теги категорій замість кольорових заливок, кружечки чек-листа.
+ * Кольори — змінні з tokens.css ([data-theme='notes']). Еталон — design-notes/.
+ */
+
+/* ---------- Підписи: звичайним регістром, як у нотатках ---------- */
+[data-theme='notes'] .k { text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 600; }
+[data-theme='notes'] .field > span { text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 600; }
+[data-theme='notes'] .disp { letter-spacing: -.02em; }
+[data-theme='notes'] .page-head h1 { font-size: 44px; }
+
+/* ---------- Рейка й нижня панель — як бічна панель нотатника ---------- */
+[data-theme='notes'] .rail { background: var(--n-side-bg); border: 1px solid var(--n-side-border); }
+[data-theme='notes'] .ri { color: var(--n-tool); }
+[data-theme='notes'] .ri:hover { background: var(--n-hl-folder); color: var(--c-text); }
+[data-theme='notes'] .ri.on, [data-theme='notes'] .ri.on:hover { background: var(--n-hl-note); color: var(--c-text); box-shadow: inset 0 0 0 1px #F2D77A; }
+[data-theme='notes'] .bnav { box-shadow: none; }
+
+/* ---------- Блоки розкладу: білий рядок, кружечок чек-листа, тег категорії ---------- */
+[data-theme='notes'] .blk { border: 1px solid var(--n-table-line); }
+[data-theme='notes'] .blk:hover { filter: none; background-color: var(--n-hover); }
+[data-theme='notes'] .blk.sky { --tag: '#робота'; }
+[data-theme='notes'] .blk.mint { --tag: '#здоров’я'; }
+[data-theme='notes'] .blk.lilac { --tag: '#навчання'; }
+[data-theme='notes'] .blk.peach { --tag: '#особисте'; }
+[data-theme='notes'] .blk.ash { --tag: '#справи'; }
+
+/* кружечок перед назвою: порожній — заплановано, жовтий з галочкою — виконано */
+[data-theme='notes'] .blk:not(.cont) h4::before,
+[data-theme='notes'] .blk:not(.cont) > b::before {
+  content: ''; display: inline-flex; align-items: center; justify-content: center; vertical-align: -3px;
+  width: 16px; height: 16px; margin-right: 10px; border-radius: 50%; border: 1.5px solid var(--n-circle); box-sizing: border-box;
+  font-size: 10px; font-weight: 800; color: var(--c-text);
+}
+[data-theme='notes'] .blk.done:not(.cont) h4::before,
+[data-theme='notes'] .blk.done:not(.cont) > b::before { content: '✓'; background: var(--n-yellow); border-color: var(--n-yellow); }
+[data-theme='notes'] .blk.done h4, [data-theme='notes'] .blk.done > b { color: var(--n-text-3); }
+
+/* тег після назви */
+[data-theme='notes'] .blk:not(.cont) h4::after,
+[data-theme='notes'] .sched-desktop .blk:not(.cont) > div h4::after {
+  content: var(--tag, ''); margin-left: 10px; font-size: 13px; font-weight: 500; color: var(--n-yellow-text);
+}
+[data-theme='notes'] .sched-desktop .blk h4 { font-weight: 600; }
+[data-theme='notes'] .sched-desktop .blk p { padding-left: 26px; color: var(--n-text-3); opacity: 1; font-weight: 500; }
+[data-theme='notes'] .sched-phone .blk b { font-weight: 600; }
+[data-theme='notes'] .sched-phone .blk span { color: var(--n-text-3); opacity: 1; font-weight: 500; }
+[data-theme='notes'] .blk.cont { background: var(--n-table-head); color: var(--n-text-3); border-style: dashed; }
+[data-theme='notes'] .blk.cont h4, [data-theme='notes'] .blk.cont b { font-weight: 500; }
+
+/* вільна година — пунктирний рядок нотатника */
+[data-theme='notes'] .free { border-width: 1.5px; color: var(--n-text-3); font-weight: 500; }
+[data-theme='notes'] .free:hover { border-color: var(--n-tool); color: var(--n-yellow-text); background: var(--n-hover); }
+[data-theme='notes'] .free.over { border-color: var(--n-tool); color: var(--c-text); background: var(--n-hl-note); }
+
+/* поточна година — червона позначка, як «зараз» у макеті */
+[data-theme='notes'] .sched .hr.now { border-top-width: 2px; }
+
+/* ---------- Плашка «Зараз»: жовта, з темною кнопкою таймера ---------- */
+[data-theme='notes'] .now-card { background: var(--n-hl-now); color: var(--c-text); border: 1px solid #F2D77A; }
+[data-theme='notes'] .now-top { color: var(--n-yellow-text-hl); }
+[data-theme='notes'] .now-top span { opacity: 1 !important; }
+[data-theme='notes'] .now-title { font-weight: 700; }
+[data-theme='notes'] .now-clock { font-variant-numeric: tabular-nums; }
+[data-theme='notes'] .now-bar { background: rgba(29, 29, 31, .1); }
+[data-theme='notes'] .now-bar > div { background: var(--n-yellow); }
+[data-theme='notes'] .now-btn, [data-theme='notes'] .now-card .pill-ink { border-radius: 10px; }
+
+/* ---------- Плитки й кнопки ---------- */
+[data-theme='notes'] .pill { font-weight: 700; }
+[data-theme='notes'] .pill-dark { background: var(--tile-bg); border: 1px solid var(--n-table-line); }
+[data-theme='notes'] .pill-dark:hover { background: var(--n-hover); }
+[data-theme='notes'] .mini:hover { filter: none; background-color: var(--n-hover); }
+[data-theme='notes'] .cup { border-radius: 6px 6px 12px 12px; }
+[data-theme='notes'] .top3 { font-weight: 500; }
+[data-theme='notes'] .chk { border-width: 1.5px; }
+[data-theme='notes'] .ib { border: 1px solid var(--n-table-line); }
+
+/* тижневі блоки — рядки чек-листа з кружечком, як у макеті тижня */
+[data-theme='notes'] .wb {
+  background: transparent; border: 0; padding-left: 0; padding-right: 0; display: flex; gap: 7px; align-items: baseline;
+  font-weight: 500; white-space: normal; overflow: visible; line-height: 1.35;
+}
+[data-theme='notes'] .wb::before {
+  content: ''; flex: none; width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid var(--n-circle); box-sizing: border-box;
+  transform: translateY(1px);
+}
+[data-theme='notes'] .wb.done { opacity: 1; color: var(--n-text-3); }
+[data-theme='notes'] .wb.done::before { background: var(--n-yellow); border-color: var(--n-yellow); }
+
+/* трекер звичок — жовті крапки замість квадратів */
+[data-theme='notes'] .hm > i, [data-theme='notes'] .hm > button {
+  background: none; border: 0; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+}
+[data-theme='notes'] .hm > i::before, [data-theme='notes'] .hm > button::before {
+  content: ''; width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid #D1D1D6; box-sizing: border-box;
+}
+[data-theme='notes'] .hm > .a { opacity: 1 !important; }
+[data-theme='notes'] .hm > .a::before { background: var(--n-yellow); border-color: var(--n-yellow); }
+[data-theme='notes'] .hm > .t::before { border: 1.5px dashed var(--n-icon); }
+[data-theme='notes'] .hm > button:hover { outline: 0; background: var(--n-hover); }
+[data-theme='notes'] .hab { border-top-color: var(--n-table-line); }
+[data-theme='notes'] .hab-name { font-weight: 600; }
+[data-theme='notes'] .ph-heat i { border-radius: 50%; }
+[data-theme='notes'] .week-col.today { background: var(--n-today-col); border-color: #F2D77A; }

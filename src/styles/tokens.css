@@ -359,8 +359,8 @@
    Тема «Нотатки»: білий аркуш, жовтий акцент, системний шрифт.
    Джерело: design-notes/NOTES_THEME.md. Де колір з макета не дає тексту 4.5:1,
    для тексту взято трохи темніший відтінок (пояснення — біля змінної).
-   Окрім кольорів, тема має власну розкладку (src/themes/notes/), а ці змінні
-   потрібні ще й спільним частинам: вікнам редагування, підсумку, входу.
+   Будова сторінок — та сама, що й у темній темі; вигляд «нотаток» додає src/styles/notes.css
+   (тонкі лінії, теги категорій, кружечки чек-листа, жовта плашка «Зараз»).
    ====================================================================== */
 [data-theme='notes'] {
   color-scheme: light;
@@ -419,33 +419,33 @@
   --backdrop: rgba(29, 29, 31, .25);
   --toast-bg: #1D1D1F;
   --toast-fg: #FFFFFF;
-  --chip-on-bg: #FFE9A0;
+  --chip-on-bg: #FFE9A0;               /* вибраний день, вкладка — як вибрана нотатка */
   --chip-on-fg: #1D1D1F;
   --hover-strong: #1D1D1F;
-  --done-opacity: .55;
+  --done-opacity: 1;                  /* виконане — сірим текстом і жовтим кружечком (notes.css) */
   --done-wash: none;
-  --cont-opacity: .55;
-  --cont-done-opacity: .3;
+  --cont-opacity: 1;
+  --cont-done-opacity: 1;
   --meta-opacity: .85;
   --meta-opacity-phone: .85;
   --now-sub-opacity: .85;
 
   --accent: #946A00;                  /* жовтий текст і рамки: 4.86:1 на білому */
-  --accent-bg: #1D1D1F;               /* кнопка дії — темна, як у макеті */
-  --accent-bg-hover: #3A3A3C;
+  --accent-bg: #F2B705;               /* там, де в темній темі лайм: заливка з темним текстом (9.3:1) */
+  --accent-bg-hover: #E0A800;
   --accent-shadow: none;
-  --on-accent: #FFFFFF;
-  --on-accent-k: rgba(255, 255, 255, .85);
-  --on-accent-muted: rgba(255, 255, 255, .85);
-  --on-accent-btn-bg: #FFFFFF;
-  --on-accent-btn-fg: #1D1D1F;
-  --on-accent-btn-fg-hover: #946A00;
-  --on-accent-track: rgba(255, 255, 255, .25);
-  --on-accent-fill: #F2B705;
+  --on-accent: #1D1D1F;
+  --on-accent-k: #4A3800;             /* підпис на жовтому: 6.2:1 */
+  --on-accent-muted: #1D1D1F;
+  --on-accent-btn-bg: #1D1D1F;        /* кнопка дії — темна, як у макеті */
+  --on-accent-btn-fg: #FFFFFF;
+  --on-accent-btn-fg-hover: #FFE9A0;
+  --on-accent-track: rgba(29, 29, 31, .16);
+  --on-accent-fill: #1D1D1F;
   --accent-wash: rgba(242, 183, 5, .14);
 
   --check-bg: #F2B705;
-  --check-fg: #FFFFFF;
+  --check-fg: #1D1D1F;
   --cell-done: #F2B705;
   --heat: #F2B705;
   --today-dash: #C99A00;
@@ -467,20 +467,20 @@
   --cup-full: #7FAAD9;
 
   /* Категорії в цій темі показують тегами; тло — нейтральне для спільних частин */
-  --cat-work-bg: #F2F1EC;     --cat-work-fg: #3A3A3C;     --cat-work-chart: #F2B705;
-  --cat-health-bg: #F2F1EC;   --cat-health-fg: #3A3A3C;   --cat-health-chart: #9DB58C;
-  --cat-study-bg: #F2F1EC;    --cat-study-fg: #3A3A3C;    --cat-study-chart: #A99BD0;
-  --cat-personal-bg: #F2F1EC; --cat-personal-fg: #3A3A3C; --cat-personal-chart: #D9A574;
-  --cat-errands-bg: #F2F1EC;  --cat-errands-fg: #3A3A3C;  --cat-errands-chart: #C7C7CC;
+  --cat-work-bg: #FFFFFF;     --cat-work-fg: #1D1D1F;     --cat-work-chart: #F2B705;
+  --cat-health-bg: #FFFFFF;   --cat-health-fg: #1D1D1F;   --cat-health-chart: #9DB58C;
+  --cat-study-bg: #FFFFFF;    --cat-study-fg: #1D1D1F;    --cat-study-chart: #A99BD0;
+  --cat-personal-bg: #FFFFFF; --cat-personal-fg: #1D1D1F; --cat-personal-chart: #D9A574;
+  --cat-errands-bg: #FFFFFF;  --cat-errands-fg: #1D1D1F;  --cat-errands-chart: #C7C7CC;
   --week-block-border: 0 solid transparent;
-  --week-errands-bg: #F2F1EC;
-  --week-errands-fg: #3A3A3C;
+  --week-errands-bg: transparent;
+  --week-errands-fg: #1D1D1F;
 
-  --habit-peach: #FFF0B8; --habit-peach-fg: #1D1D1F; --habit-peach-strong: #946A00;
-  --habit-mint: #FFF0B8;  --habit-mint-fg: #1D1D1F;  --habit-mint-strong: #946A00;
-  --habit-sky: #FFF0B8;   --habit-sky-fg: #1D1D1F;   --habit-sky-strong: #946A00;
-  --habit-lilac: #FFF0B8; --habit-lilac-fg: #1D1D1F; --habit-lilac-strong: #946A00;
-  --habit-lime: #FFF0B8;  --habit-lime-fg: #1D1D1F;  --habit-lime-strong: #946A00;
+  --habit-peach: #FFE9A0; --habit-peach-fg: #1D1D1F; --habit-peach-strong: #946A00;
+  --habit-mint: #FFE9A0;  --habit-mint-fg: #1D1D1F;  --habit-mint-strong: #946A00;
+  --habit-sky: #FFE9A0;   --habit-sky-fg: #1D1D1F;   --habit-sky-strong: #946A00;
+  --habit-lilac: #FFE9A0; --habit-lilac-fg: #1D1D1F; --habit-lilac-strong: #946A00;
+  --habit-lime: #F2B705;  --habit-lime-fg: #1D1D1F;  --habit-lime-strong: #946A00;
   --habit-bar-off: #F2F1EC;
 
   --mood-1: #F2F1EC; --mood-1-fg: #3A3A3C; --mood-1-ring: #C7C7CC;
@@ -517,7 +517,7 @@
   --flower-fill-inverse-from: rgba(255, 255, 255, .38);
   --flower-fill-inverse-to: rgba(255, 255, 255, .06);
 
-  /* ---------- Лише для розкладки «Нотатки» (src/themes/notes) ---------- */
+  /* ---------- Деталі вигляду «нотаток» (src/styles/notes.css і прев'ю теми) ---------- */
   --n-side-bg: #F6F5F1;
   --n-side-border: #E3E1DA;
   --n-list-border: #ECEAE3;

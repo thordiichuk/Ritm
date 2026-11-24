@@ -9,6 +9,7 @@ import './components/review/review.css';
 import './components/stats/stats.css';
 import './components/flora/flora.css';
 import './components/welcome/welcome.css';
+import './styles/notes.css';
 import { App } from './App';
 import { initAccount } from './sync/account';
 import { shouldShowWelcome } from './lib/welcome';
