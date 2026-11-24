@@ -11,7 +11,7 @@ export const EVENING = '2026-11-11T21:00:00+02:00';
  * Відкрити сторінку із замороженим годинником. Демо-дані створюються відносно «сьогодні»,
  * тому з фіксованим часом застосунок щоразу виглядає однаково.
  */
-export async function open(page: Page, route: string, opts: { time?: string; theme?: 'dark' | 'bloom' } = {}) {
+export async function open(page: Page, route: string, opts: { time?: string; theme?: 'dark' | 'bloom' | 'notes' } = {}) {
   await page.clock.setFixedTime(new Date(opts.time ?? MOCKUP_TIME));
   if (opts.theme) {
     await page.addInitScript((t) => {

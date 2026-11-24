@@ -14,13 +14,14 @@ import { applyTemplate, findFreeSlot, saveTemplate } from '../data/actions';
 import { BotanicalSpray } from '../components/flora/Botanical';
 import { isReviewBlock } from './Review';
 
-function useSelectedDate(): string {
+/** Дата з адреси (?d=…) або сьогодні */
+export function useSelectedDate(): string {
   const { params } = useLocation();
   const d = params.get('d');
   return d && /^\d{4}-\d{2}-\d{2}$/.test(d) ? d : todayISO();
 }
 
-function newBlock(date: string, start: number): Block {
+export function newBlock(date: string, start: number): Block {
   return { id: '', date, start, end: start + 60, title: '', category: 'work', done: false, subtasks: [] };
 }
 

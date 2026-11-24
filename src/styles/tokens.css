@@ -354,3 +354,191 @@
   --flower-fill-inverse-from: rgba(255, 255, 255, .38);
   --flower-fill-inverse-to: rgba(255, 255, 255, .06);
 }
+
+/* ======================================================================
+   Тема «Нотатки»: білий аркуш, жовтий акцент, системний шрифт.
+   Джерело: design-notes/NOTES_THEME.md. Де колір з макета не дає тексту 4.5:1,
+   для тексту взято трохи темніший відтінок (пояснення — біля змінної).
+   Окрім кольорів, тема має власну розкладку (src/themes/notes/), а ці змінні
+   потрібні ще й спільним частинам: вікнам редагування, підсумку, входу.
+   ====================================================================== */
+[data-theme='notes'] {
+  color-scheme: light;
+
+  --c-bg: #FFFFFF;
+  --c-surface: #FFFFFF;
+  --c-surface-2: #F2F1EC;
+  --c-nav: #F6F5F1;
+  --c-ash: #ECEAE2;
+  --c-line: #E5E5EA;
+  --c-outline: #E3E1DA;
+  --c-check-border: #C7C7CC;
+  --c-text: #1D1D1F;
+  --c-text-2: #3A3A3C;
+  --c-muted: #6E6E73;
+  --c-muted-2: #6E6E73;
+  --c-muted-3: #6E6E73;
+  --c-muted-4: #8E8E93;               /* лише великі числа (3.3:1 ≥ 3:1) і рамки */
+  --c-ink: #1D1D1F;
+  --c-white: #FFFFFF;
+  --c-lime: #F2B705;
+
+  --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, 'Segoe UI', system-ui, sans-serif;
+  --font-display-weight: 700;
+  --display-tracking: -0.02em;
+  --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, 'Segoe UI', system-ui, sans-serif;
+  --font-hand: Caveat, cursive;
+
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 10px;
+  --r-xl: 12px;
+  --r-2xl: 12px;
+  --r-3xl: 12px;
+  --r-tile: 12px;
+  --r-pill: 10px;
+
+  --page-bg: #FFFFFF;
+  --tile-bg: #FFFFFF;
+  --tile-border: 1px solid #ECEAE3;
+  --tile-shadow: none;
+  --tile-outline: #E5E5EA;
+  --cell-empty: #F2F1EC;
+  --dash: #C7C7CC;
+  --hour: #8E8E93;
+  --hour-phone: #8E8E93;
+  --now: #D23A26;
+  --focus-ring: #946A00;
+  --link: #946A00;
+  --link-hover: #1D1D1F;
+  --nav-bg: rgba(255, 255, 255, .96);
+  --nav-border: 1px solid #ECEAE3;
+  --nav-shadow: none;
+  --menu-shadow: 0 0 0 1px #E3E1DA;
+  --backdrop: rgba(29, 29, 31, .25);
+  --toast-bg: #1D1D1F;
+  --toast-fg: #FFFFFF;
+  --chip-on-bg: #FFE9A0;
+  --chip-on-fg: #1D1D1F;
+  --hover-strong: #1D1D1F;
+  --done-opacity: .55;
+  --done-wash: none;
+  --cont-opacity: .55;
+  --cont-done-opacity: .3;
+  --meta-opacity: .85;
+  --meta-opacity-phone: .85;
+  --now-sub-opacity: .85;
+
+  --accent: #946A00;                  /* жовтий текст і рамки: 4.86:1 на білому */
+  --accent-bg: #1D1D1F;               /* кнопка дії — темна, як у макеті */
+  --accent-bg-hover: #3A3A3C;
+  --accent-shadow: none;
+  --on-accent: #FFFFFF;
+  --on-accent-k: rgba(255, 255, 255, .85);
+  --on-accent-muted: rgba(255, 255, 255, .85);
+  --on-accent-btn-bg: #FFFFFF;
+  --on-accent-btn-fg: #1D1D1F;
+  --on-accent-btn-fg-hover: #946A00;
+  --on-accent-track: rgba(255, 255, 255, .25);
+  --on-accent-fill: #F2B705;
+  --accent-wash: rgba(242, 183, 5, .14);
+
+  --check-bg: #F2B705;
+  --check-fg: #FFFFFF;
+  --cell-done: #F2B705;
+  --heat: #F2B705;
+  --today-dash: #C99A00;
+  --today-bg: #FFFFFF;
+  --streak: #946A00;
+  --streak-text: #946A00;
+
+  --streak-tile-bg: #FFF0B8;
+  --streak-tile-fg: #1D1D1F;
+  --streak-tile-k: #855F00;
+  --focus-tile-bg: #F2F1EC;
+  --focus-tile-fg: #1D1D1F;
+  --focus-tile-k: #5C5C61;
+  --focus-strong: #946A00;
+
+  --cup-bg: #FFFFFF;
+  --cup-bg-hover: #F2F1EC;
+  --cup-border: 1.5px solid #9FBEE0;
+  --cup-full: #7FAAD9;
+
+  /* Категорії в цій темі показують тегами; тло — нейтральне для спільних частин */
+  --cat-work-bg: #F2F1EC;     --cat-work-fg: #3A3A3C;     --cat-work-chart: #F2B705;
+  --cat-health-bg: #F2F1EC;   --cat-health-fg: #3A3A3C;   --cat-health-chart: #9DB58C;
+  --cat-study-bg: #F2F1EC;    --cat-study-fg: #3A3A3C;    --cat-study-chart: #A99BD0;
+  --cat-personal-bg: #F2F1EC; --cat-personal-fg: #3A3A3C; --cat-personal-chart: #D9A574;
+  --cat-errands-bg: #F2F1EC;  --cat-errands-fg: #3A3A3C;  --cat-errands-chart: #C7C7CC;
+  --week-block-border: 0 solid transparent;
+  --week-errands-bg: #F2F1EC;
+  --week-errands-fg: #3A3A3C;
+
+  --habit-peach: #FFF0B8; --habit-peach-fg: #1D1D1F; --habit-peach-strong: #946A00;
+  --habit-mint: #FFF0B8;  --habit-mint-fg: #1D1D1F;  --habit-mint-strong: #946A00;
+  --habit-sky: #FFF0B8;   --habit-sky-fg: #1D1D1F;   --habit-sky-strong: #946A00;
+  --habit-lilac: #FFF0B8; --habit-lilac-fg: #1D1D1F; --habit-lilac-strong: #946A00;
+  --habit-lime: #FFF0B8;  --habit-lime-fg: #1D1D1F;  --habit-lime-strong: #946A00;
+  --habit-bar-off: #F2F1EC;
+
+  --mood-1: #F2F1EC; --mood-1-fg: #3A3A3C; --mood-1-ring: #C7C7CC;
+  --mood-2: #FBE7D7; --mood-2-fg: #7A4C24; --mood-2-ring: #D9A574;
+  --mood-3: #FFF6D6; --mood-3-fg: #5C4600; --mood-3-ring: #E5C25A;
+  --mood-4: #FFE9A0; --mood-4-fg: #5C4600; --mood-4-ring: #F2B705;
+  --mood-5: #F2B705; --mood-5-fg: #1D1D1F; --mood-5-ring: #C99A00;
+
+  --chart-focus: #F2B705;
+  --chart-plan: #C99A00;
+  --chart-habit: #F2B705;
+  --chart-today: #946A00;
+
+  --fx-bg: #FFF0B8;
+  --fx-break-bg: #E2EADB;
+  --fx-fg: #1D1D1F;
+  --fx-btn-bg: #1D1D1F;
+  --fx-btn-fg: #FFFFFF;
+  --fx-btn-fg-break: #FFFFFF;
+  --fx-btn-fg-hover: #FFE9A0;
+  --fx-track: rgba(29, 29, 31, .12);
+  --fx-hover: rgba(29, 29, 31, .06);
+  --fx-shadow: none;
+
+  --danger-fg: #C0392B;
+  --danger-border: #F0D4D0;
+  --danger-hover-bg: #FBEDEB;
+  --danger-hover-fg: #8E2318;
+
+  --flower-line: #946A00;
+  --flower-line-inverse: #FFFFFF;
+  --flower-fill-from: #FFFFFF;
+  --flower-fill-to: #FFFFFF;
+  --flower-fill-inverse-from: rgba(255, 255, 255, .38);
+  --flower-fill-inverse-to: rgba(255, 255, 255, .06);
+
+  /* ---------- Лише для розкладки «Нотатки» (src/themes/notes) ---------- */
+  --n-side-bg: #F6F5F1;
+  --n-side-border: #E3E1DA;
+  --n-list-border: #ECEAE3;
+  --n-rule: #F0EFEA;                  /* тонкі розділювачі в списку й під панеллю */
+  --n-table-line: #E5E5EA;
+  --n-table-head: #FAFAF7;
+  --n-text-3: #6E6E73;                /* «третинний» текст: #8E8E93 з макета дає лише 3.3:1 */
+  --n-text-on-hl: #5C5C61;            /* сірий текст на жовтих виділеннях (≥5.3:1) */
+  --n-yellow: #F2B705;                /* галочки, прогрес — не для тексту */
+  --n-yellow-text: #946A00;           /* жовтий текст на білому */
+  --n-yellow-text-hl: #855F00;        /* жовтий текст на жовтих плашках (#946A00 там лише 4.0–4.3:1) */
+  --n-icon: #C99A00;                  /* декоративні значки поруч із підписом */
+  --n-tool: #A87D00;                  /* значок-кнопка без підпису: ≥3:1 */
+  --n-circle: #C7C7CC;
+  --n-hl-note: #FFE9A0;               /* вибрана нотатка у списку */
+  --n-hl-now: #FFF0B8;                /* плашка «Зараз» */
+  --n-hl-folder: #E9E6DC;             /* вибрана папка */
+  --n-today-col: #FFFBEA;
+  --n-now-red: #D23A26;               /* #D93F2B з макета дає білому тексту 4.47:1 */
+  --n-hover: #F2F1EC;
+  --n-tag-bg: #ECEAE2;
+  --n-tag-fg: #5C5C61;
+  --n-action: #1D1D1F;
+}

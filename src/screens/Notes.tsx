@@ -17,9 +17,45 @@ import { useAccount } from '../sync/account';
 
 export function NotesScreen() {
   const today = todayISO();
+  const phone = useIsPhone();
+
+  if (phone) {
+    return (
+      <div className="phone st-phone notes-phone">
+        <BotanicalSpray className="flora-head-phone" />
+        <p className="k">{dayMonth(today)}</p>
+        <h1 className="disp st-title" style={{ marginBottom: 16 }}>Нотатки</h1>
+        <NotesSections />
+        <BottomNav active="notes" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="wrap">
+      <Rail active="notes" />
+      <main>
+        <header className="tile page-head">
+          <BotanicalSpray className="flora-head" />
+          <div>
+            <p className="k">{dayMonth(today)}</p>
+            <h1 className="disp">Нотатки</h1>
+          </div>
+        </header>
+        <NotesSections />
+      </main>
+    </div>
+  );
+}
+
+/**
+ * Вміст сторінки: нотатка дня, налаштування, акаунт, дані.
+ * Спільний для всіх тем — тема «Нотатки» показує його на своєму аркуші.
+ */
+export function NotesSections() {
+  const today = todayISO();
   const note = useStore((s) => dayOf(s, today).note);
   const settings = useStore((s) => s.settings);
-  const phone = useIsPhone();
   const { params } = useLocation();
   const settingsRef = useRef<HTMLElement>(null);
   const accountRef = useRef<HTMLElement>(null);
@@ -28,6 +64,7 @@ export function NotesScreen() {
   useEffect(() => {
     if (params.get('s') === 'settings') settingsRef.current?.scrollIntoView({ block: 'start' });
     if (params.get('s') === 'account') accountRef.current?.scrollIntoView({ block: 'start' });
+    if (params.get('s') === 'note') noteRef.current?.focus(); // «Нова нотатка» в темі «Нотатки»
   }, [params]);
   const noteRef = useOuterValue<HTMLTextAreaElement>(note);
   const [restored, setRestored] = useState(0); // після відновлення з копії перемальовуємо поле нотатки
@@ -40,7 +77,7 @@ export function NotesScreen() {
         onChange={(e) => { const v = Number(e.target.value); if (v >= min && v <= max) set(k, v); }} />
     </label>
   );
-  const sections = (
+  return (
     <>
         <section className="tile">
         <label className="field" style={{ marginBottom: 0 }}>
@@ -98,39 +135,12 @@ export function NotesScreen() {
       </section>
     </>
   );
-
-  if (phone) {
-    return (
-      <div className="phone st-phone notes-phone">
-        <BotanicalSpray className="flora-head-phone" />
-        <p className="k">{dayMonth(today)}</p>
-        <h1 className="disp st-title" style={{ marginBottom: 16 }}>Нотатки</h1>
-        {sections}
-        <BottomNav active="notes" />
-      </div>
-    );
-  }
-
-  return (
-    <div className="wrap">
-      <Rail active="notes" />
-      <main>
-        <header className="tile page-head">
-          <BotanicalSpray className="flora-head" />
-          <div>
-            <p className="k">{dayMonth(today)}</p>
-            <h1 className="disp">Нотатки</h1>
-          </div>
-        </header>
-        {sections}
-      </main>
-    </div>
-  );
 }
 
 const THEMES: Array<{ id: Theme; label: string; hint: string }> = [
   { id: 'dark', label: 'Темна', hint: 'лаймова, за замовчуванням' },
   { id: 'bloom', label: 'Блакитна квіткова', hint: 'світла, з ботанічною графікою' },
+  { id: 'notes', label: 'Нотатки', hint: 'білий аркуш і чек-листи' },
 ];
 
 /** Вибір теми. Кожне прев'ю «одягає» свою тему через data-theme і малює її власними змінними. */
@@ -142,6 +152,7 @@ function ThemePicker() {
       <div className="theme-picker" role="radiogroup" aria-labelledby="theme-h">
         {THEMES.map((t) => (
           <button key={t.id} className="theme-opt" role="radio" aria-checked={theme === t.id} onClick={() => setTheme(t.id)}>
+            {t.id === 'notes' ? <NotesPreview /> : (
             <span className="theme-prev" data-theme={t.id} aria-hidden="true">
               <span className="tp-tile">
                 <span className="tp-title">Аа</span>
@@ -154,11 +165,27 @@ function ThemePicker() {
               </span>
               <span className="tp-accent" />
             </span>
+            )}
             <span className="theme-label">{t.label}<small>{t.hint}</small></span>
           </button>
         ))}
       </div>
     </div>
+  );
+}
+
+/** Прев'ю теми «Нотатки»: аркуш із чек-листом, а не плитки */
+function NotesPreview() {
+  return (
+    <span className="theme-prev tp-notes" data-theme="notes" aria-hidden="true">
+      <span className="tp-n-side"><i /><i /><i className="on" /><i /></span>
+      <span className="tp-n-sheet">
+        <span className="tp-n-title">Четвер</span>
+        <span className="tp-n-row"><i className="on" /><b /></span>
+        <span className="tp-n-row"><i className="on" /><b style={{ width: '58%' }} /></span>
+        <span className="tp-n-row"><i /><b style={{ width: '70%' }} /></span>
+      </span>
+    </span>
   );
 }
 

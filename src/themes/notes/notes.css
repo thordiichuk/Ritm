@@ -1,0 +1,302 @@
+/*
+ * Тема «Нотатки» — розкладка й вигляд аркуша. Розміри — з design-notes/mockups, кольори — змінні --n-* та
+ * спільні токени з tokens.css. Класи .n-* з'являються лише тоді, коли ввімкнено цю тему.
+ */
+
+.n-app { min-height: 100vh; min-height: 100dvh; background: var(--page-bg); color: var(--c-text); font-family: var(--font-body); font-size: 16px; }
+/* звичайні посилання в тексті; кнопки-посилання (.pill тощо) мають власні кольори */
+.n-app a:not([class]) { color: var(--n-yellow-text); }
+.n-app a:not([class]):hover { color: var(--c-text); }
+.n-app button { font-family: inherit; }
+.n-app :focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* ---------- Три колонки ---------- */
+.n-wrap { display: grid; grid-template-columns: 230px 320px minmax(0, 1fr); }
+.n-wrap.no-list { grid-template-columns: 230px minmax(0, 1fr); }
+.n-wrap.side-off { grid-template-columns: 320px minmax(0, 1fr); }
+.n-wrap.side-off.no-list { grid-template-columns: minmax(0, 1fr); }
+
+/* ---------- Бічна панель-«папки» ---------- */
+.n-side { background: var(--n-side-bg); border-right: 1px solid var(--n-side-border); min-height: 100vh; }
+/* колонка тягнеться на всю висоту сторінки, а її вміст лишається на місці під час прокручування */
+.n-side-in {
+  padding: 16px 10px; display: flex; flex-direction: column; gap: 6px;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.n-side-head { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px 10px; min-height: 40px; }
+.n-side-head span { font-size: 15px; font-weight: 700; }
+.n-side-k { margin: 6px 10px 4px; font-size: 12px; font-weight: 600; color: var(--n-text-3); }
+.n-folders { display: flex; flex-direction: column; gap: 1px; }
+.n-app a.n-fold { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; font-size: 14px; color: var(--c-text); text-decoration: none; }
+.n-fold:hover { background: var(--n-hover); }
+.n-fold.on { background: var(--n-hl-folder); }
+.n-fold-ic { color: var(--n-icon); display: inline-flex; }
+.n-fold .n { margin-left: auto; color: var(--n-text-3); font-size: 13px; }
+.n-fold.on .n { color: var(--n-text-on-hl); }
+.n-tags { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 8px; margin: 0; list-style: none; }
+.n-tags li { font-size: 12px; padding: 4px 9px; border-radius: 999px; background: var(--n-tag-bg); color: var(--n-tag-fg); }
+.n-app a.n-side-link { display: block; padding: 6px 10px; font-size: 14px; color: var(--n-text-3); text-decoration: none; border-radius: 8px; }
+.n-side-link:first-of-type { margin-top: auto; }
+.n-app a.n-side-link:hover { background: var(--n-hover); color: var(--c-text); }
+
+/* ---------- Колонка-список ---------- */
+.n-list { border-right: 1px solid var(--n-list-border); background: var(--tile-bg); min-height: 100vh; }
+.n-list-in { position: sticky; top: 0; max-height: 100vh; overflow-y: auto; padding-bottom: 16px; }
+.n-list-head { padding: 18px 16px 6px; }
+.n-list-head h2 { margin: 0; font-size: 22px; font-weight: 700; }
+.n-list-head p { margin: 2px 0 0; font-size: 13px; color: var(--n-text-3); }
+.n-sec { margin: 18px 16px 6px; font-size: 13px; font-weight: 600; color: var(--n-text-3); }
+.n-nls { padding: 0 6px; }
+.n-app .n-nl {
+  display: block; width: 100%; text-align: left; padding: 12px 16px; border-radius: 10px; text-decoration: none;
+  color: var(--c-text); background: transparent; border: 0; border-top: 1px solid var(--n-rule); cursor: pointer; font-size: inherit;
+}
+.n-nl:first-child, .n-nl.on, .n-nl.on + .n-nl { border-top-color: transparent; }
+.n-app .n-nl:hover { color: var(--c-text); background: var(--n-hover); }
+.n-nl b { display: block; font-size: 15px; font-weight: 600; }
+.n-nl span { display: block; font-size: 13px; color: var(--n-text-3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.n-app .n-nl.on, .n-app .n-nl.on:hover { background: var(--n-hl-note); }
+.n-nl.on span { color: var(--n-text-on-hl); }
+
+/* ---------- Аркуш і панель інструментів ---------- */
+.n-main { min-width: 0; }
+.n-toolbar {
+  display: flex; align-items: center; gap: 2px; padding: 10px 18px; border-bottom: 1px solid var(--n-rule);
+  position: sticky; top: 0; z-index: 4; background: var(--tile-bg);
+}
+.n-app .n-tbtn {
+  width: 40px; height: 40px; border-radius: 9px; border: 0; background: transparent; color: var(--n-tool);
+  display: inline-flex; align-items: center; justify-content: center; padding: 0; cursor: pointer; flex: none; text-decoration: none;
+}
+.n-app .n-tbtn:hover { background: var(--n-hover); color: var(--n-tool); }
+.n-tbtn[aria-pressed='true'] { background: var(--n-hl-note); }
+.n-tbtn.bordered { border: 1px solid var(--n-table-line); }
+.n-tbtn.lg { width: 44px; height: 44px; }
+.n-tbtn.sm { width: 32px; height: 32px; }
+.n-search-wrap { position: relative; }
+.n-search { display: flex; align-items: center; gap: 6px; padding: 0 10px; min-height: 34px; border-radius: 9px; background: var(--n-hover); color: var(--n-text-on-hl); width: 200px; }
+.n-search input { border: 0; background: transparent; font: inherit; font-size: 14px; outline: none; width: 100%; color: var(--c-text); }
+.n-search input::placeholder { color: var(--n-text-on-hl); }
+.n-search:focus-within { outline: 2px solid var(--focus-ring); }
+.n-results {
+  position: absolute; right: 0; top: calc(100% + 6px); width: 300px; max-height: 360px; overflow-y: auto; z-index: 20;
+  background: var(--tile-bg); border: 1px solid var(--n-table-line); border-radius: 12px; padding: 6px;
+}
+.n-app .n-results a { display: block; padding: 8px 10px; border-radius: 8px; text-decoration: none; color: var(--c-text); }
+.n-app .n-results a:hover, .n-app .n-results a:focus-visible { background: var(--n-hl-note); color: var(--c-text); }
+.n-results b { display: block; font-size: 14px; font-weight: 600; }
+.n-results span { display: block; font-size: 12px; color: var(--n-text-on-hl); }
+.n-results p { margin: 8px 10px; font-size: 14px; color: var(--n-text-3); }
+
+.n-note { max-width: 720px; margin: 0 auto; padding: 22px 40px 60px; }
+.n-wrap:not(.no-list) .n-note:has(.n-tracker) { max-width: 860px; }
+.n-note.wide { max-width: 1120px; }
+.n-note.big { font-size: 18px; }
+.n-note.big .n-li, .n-note.big .n-p, .n-note.big .n-bullets { font-size: 18px; }
+
+/* ---------- Текст аркуша ---------- */
+.n-stamp { margin: 0 0 14px; text-align: center; font-size: 13px; color: var(--n-text-3); }
+.n-h1 { margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; }
+.n-title-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.n-nav { display: flex; gap: 4px; align-items: center; }
+.n-sub { margin: 8px 0 0; font-size: 16px; color: var(--n-text-3); line-height: 1.5; }
+.n-h2 { margin: 26px 0 6px; font-size: 21px; font-weight: 700; letter-spacing: -.01em; scroll-margin-top: 70px; }
+.n-p { margin: 6px 0 0; font-size: 16px; line-height: 1.6; }
+.n-muted { color: var(--n-text-3); }
+.n-hint { margin: 0 0 4px; font-size: 14px; color: var(--n-text-3); }
+.n-empty { margin: 6px 0; color: var(--n-text-3); font-size: 15px; }
+.n-bullets { margin: 20px 0 0; padding-left: 22px; font-size: 16px; line-height: 1.9; }
+.n-progress { height: 4px; border-radius: 2px; background: var(--n-rule); margin-top: 10px; max-width: 360px; overflow: hidden; }
+.n-progress > div { height: 100%; border-radius: 2px; background: var(--n-yellow); }
+.n-app .n-link, .n-app .n-link-btn { color: var(--n-yellow-text); font-weight: 500; }
+.n-link-btn { border: 0; background: transparent; padding: 6px 8px; font-size: 15px; cursor: pointer; border-radius: 8px; text-decoration: none; min-height: 36px; display: inline-flex; align-items: center; }
+.n-app .n-link-btn:hover { background: var(--n-hover); color: var(--c-text); }
+.n-period { border: 0; background: transparent; padding: 0; font: inherit; color: var(--n-yellow-text); cursor: pointer; }
+.n-period.on { color: var(--c-text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Чек-лист ---------- */
+.n-li { display: flex; align-items: center; gap: 12px; padding: 7px 0; font-size: 16px; line-height: 1.4; }
+.n-circ {
+  width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--n-circle); background: var(--tile-bg); flex: none;
+  padding: 0; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: #FFFFFF;
+}
+.n-circ:hover { border-color: var(--n-tool); }
+.n-circ.on { background: var(--n-yellow); border-color: var(--n-yellow); }
+.n-circ.sm { width: 13px; height: 13px; }
+.n-tm { width: 48px; flex: none; color: var(--n-text-3); font-variant-numeric: tabular-nums; font-size: 15px; }
+.n-tx, .n-tx-static { text-align: left; font: inherit; color: var(--c-text); min-width: 0; overflow-wrap: anywhere; }
+.n-tx { border: 0; background: transparent; padding: 0; cursor: pointer; }
+.n-tx:hover { text-decoration: underline; text-decoration-color: var(--n-circle); text-underline-offset: 3px; }
+.n-li.done .n-tx, .n-li.done .n-tx-static { color: var(--n-text-3); }
+.n-tag { color: var(--n-yellow-text); font-size: 14px; font-weight: 500; white-space: nowrap; }
+.n-meta { margin-left: auto; font-size: 14px; color: var(--n-text-3); white-space: nowrap; }
+.n-nowbadge { margin-left: 6px; font-size: 12px; font-weight: 600; color: #FFFFFF; background: var(--n-now-red); border-radius: 6px; padding: 2px 6px; }
+.n-dash { width: 22px; height: 22px; border-radius: 50%; border: 1.5px dashed var(--n-circle); flex: none; }
+.n-app .n-free { width: 100%; border: 0; background: transparent; color: var(--n-text-3); font: inherit; text-align: left; cursor: pointer; border-radius: 8px; }
+.n-app .n-free:hover { background: var(--n-hover); color: var(--c-text); }
+.n-free.over { background: var(--n-hl-note); color: var(--c-text); outline: 1.5px dashed var(--n-tool); }
+.n-free.over .n-tm { color: var(--n-text-on-hl); }
+.n-task { cursor: grab; }
+.n-task:active { cursor: grabbing; }
+.n-task .n-meta { margin-left: auto; }
+.n-mark { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--n-circle); flex: none; }
+.n-mark.on { background: var(--n-yellow); border-color: var(--n-yellow); }
+.n-inline-input { flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; color: var(--c-text); padding: 2px 0; border-bottom: 1px solid transparent; }
+.n-inline-input:focus { outline: none; border-bottom-color: var(--n-tool); }
+.n-inline-input::placeholder { color: var(--n-text-3); }
+.n-add { display: flex; align-items: center; gap: 12px; padding: 7px 0; }
+.n-add select { font: inherit; font-size: 14px; color: var(--c-text); background: var(--n-hover); border: 0; border-radius: 8px; padding: 6px 8px; }
+.n-textarea {
+  width: 100%; min-height: 140px; margin-top: 4px; border: 0; padding: 0; resize: vertical; background: transparent;
+  font: inherit; font-size: 16px; line-height: 1.6; color: var(--c-text);
+}
+.n-textarea:focus { outline: none; }
+.n-textarea::placeholder { color: var(--n-text-3); }
+.n-fold-done { font-size: 15px; color: var(--n-text-3); padding: 6px 0; }
+.n-fold-done summary { cursor: pointer; min-height: 30px; display: flex; align-items: center; }
+.n-fold-done[open] summary { margin-bottom: 4px; }
+.n-fold-done .n-li { color: var(--c-text); }
+
+/* ---------- Плашка «Зараз» і кнопки дій ---------- */
+.n-now { margin-top: 24px; padding: 16px 18px; border-radius: 12px; background: var(--n-hl-now); display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.n-now-main { flex: 1; min-width: 220px; }
+.n-now-k { margin: 0; font-size: 13px; font-weight: 600; color: var(--n-yellow-text-hl); }
+.n-now-title { margin: 4px 0 0; font-size: 18px; font-weight: 600; }
+.n-now-clock { font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.n-action, .n-btn {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border-radius: 10px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.n-action { border: 0; background: var(--n-action); color: #FFFFFF; }
+.n-action:hover { background: #3A3A3C; }
+.n-btn { border: 1px solid var(--n-table-line); background: var(--tile-bg); color: var(--c-text); }
+.n-btn:hover { background: var(--n-hover); }
+.n-ctl { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+
+/* ---------- Вода ---------- */
+.n-drops { display: flex; gap: 8px; padding: 6px 0; flex-wrap: wrap; }
+.n-drop { width: 22px; height: 28px; border-radius: 5px 5px 9px 9px; border: var(--cup-border); background: var(--cup-bg); padding: 0; cursor: pointer; }
+.n-drop.on { background: var(--cup-full); border-color: #5E93CF; }
+
+/* ---------- Таблиці ---------- */
+.n-scroll { overflow-x: auto; }
+.n-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.n-table th, .n-table td { border: 1px solid var(--n-table-line); padding: 8px 6px; text-align: center; }
+.n-table thead th { font-weight: 600; background: var(--n-table-head); color: var(--c-text-2); }
+.n-table td:first-child, .n-table th:first-child { text-align: left; padding-left: 12px; white-space: nowrap; }
+.n-table tbody th { font-weight: 400; }
+.n-tracker thead th.is-today { color: var(--n-yellow-text); }
+.n-cell { width: 26px; height: 26px; border: 0; background: transparent; padding: 0; cursor: pointer; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; }
+.n-cell:hover:not(:disabled) { background: var(--n-hover); }
+.n-cell:disabled { cursor: default; opacity: .4; }
+.n-m, .n-x, .n-tt { display: inline-block; width: 14px; height: 14px; border-radius: 50%; vertical-align: middle; box-sizing: border-box; }
+.n-m { background: var(--n-yellow); }
+.n-x { border: 1.5px solid #D1D1D6; }
+.n-tt { border: 1.5px dashed var(--n-icon); }
+.n-streak { font-weight: 600; }
+.n-pct { font-variant-numeric: tabular-nums; }
+.n-legend { margin: 10px 0 0; font-size: 13px; color: var(--n-text-3); display: flex; gap: 16px; flex-wrap: wrap; }
+.n-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 10px; }
+.n-simple { max-width: 520px; }
+.n-simple td { font-variant-numeric: tabular-nums; }
+
+/* Тиждень */
+.n-week { table-layout: fixed; }
+.n-week th, .n-week td { padding: 10px; vertical-align: top; text-align: left; }
+.n-week thead th { font-size: 13px; color: var(--n-text-3); }
+.n-app .n-week thead a { color: inherit; text-decoration: none; display: block; }
+.n-week thead b { display: block; font-size: 22px; color: var(--c-text); margin-top: 2px; }
+.n-week thead th.is-today { background: var(--n-hl-now); color: var(--n-yellow-text-hl); }
+.n-week thead th.is-today b { color: var(--n-yellow-text-hl); }
+.n-week td.is-today { background: var(--n-today-col); }
+.n-week td:first-child, .n-week th:first-child { padding-left: 10px; white-space: normal; }
+.n-s {
+  display: flex; gap: 7px; align-items: flex-start; padding: 4px 0; font-size: 13px; line-height: 1.35; width: 100%;
+  border: 0; background: transparent; text-align: left; color: var(--c-text); cursor: pointer; font-family: inherit; border-radius: 4px;
+}
+.n-s:hover { background: var(--n-hover); }
+.n-s i { width: 13px; height: 13px; border-radius: 50%; border: 1.5px solid var(--n-circle); flex: none; margin-top: 2px; box-sizing: border-box; }
+.n-s.d i { background: var(--n-yellow); border-color: var(--n-yellow); }
+.n-s.d span { color: var(--n-text-3); }
+.n-free-day { margin: 0; font-size: 13px; color: var(--n-text-3); }
+.n-ft td { font-size: 12px; color: var(--n-text-3); background: var(--n-table-head); }
+
+/* Фокус */
+.n-clock { margin: 22px 0 10px; font-size: 72px; font-weight: 700; letter-spacing: -.03em; font-variant-numeric: tabular-nums; line-height: 1; }
+.n-sessions { display: flex; gap: 8px; margin-top: 14px; }
+.n-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid #D1D1D6; }
+.n-dot.on { background: var(--n-yellow); border-color: var(--n-yellow); }
+.n-dot.now { border: 1.5px dashed var(--n-icon); }
+
+/* Графік «від руки» */
+.n-hand { display: block; margin-top: 8px; height: auto; }
+.n-hand text { font-family: var(--font-hand); fill: var(--n-yellow-text); }
+.n-hand-line { fill: none; stroke: var(--n-tool); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.n-hand-hatch { fill: none; stroke: var(--n-tool); stroke-width: 1.6; stroke-linecap: round; opacity: .55; }
+
+/* «Нотатки»: спільний вміст налаштувань без плиток — заголовки й поля на аркуші */
+.n-sections .tile { background: none; border: 0; box-shadow: none; padding: 0; margin-top: 26px; border-radius: 0; }
+.n-sections > .tile:first-child { margin-top: 14px; }
+.n-sections .tile > .k { font-size: 21px; font-weight: 700; letter-spacing: -.01em; text-transform: none; color: var(--c-text); margin: 0 0 12px !important; }
+.n-sections .field > span { text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 600; color: var(--n-text-3); }
+.n-sections .input { border-radius: 10px; }
+
+/* ---------- Телефон і планшет (одна колонка) ---------- */
+.n-phone { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+.n-ph-head {
+  display: flex; align-items: center; justify-content: space-between; padding: calc(10px + env(safe-area-inset-top)) 10px 0 6px;
+  position: sticky; top: 0; z-index: 5; background: var(--page-bg);
+}
+.n-app .n-ph-back {
+  display: flex; align-items: center; gap: 2px; color: var(--n-yellow-text); border: 0; background: transparent;
+  font-size: 17px; min-height: 44px; padding: 0 6px 0 0; cursor: pointer;
+}
+.n-ph-actions { display: flex; position: relative; }
+.n-menu {
+  position: absolute; right: 0; top: calc(100% + 4px); z-index: 30; min-width: 220px; background: var(--tile-bg);
+  border: 1px solid var(--n-table-line); border-radius: 12px; padding: 6px; display: flex; flex-direction: column;
+}
+.n-app .n-menu a { padding: 10px 12px; border-radius: 8px; text-decoration: none; color: var(--c-text); font-size: 15px; }
+.n-app .n-menu a:hover { background: var(--n-hover); color: var(--c-text); }
+.n-phone .n-note { padding: 2px 20px 0; max-width: 720px; }
+.n-phone .n-note.wide { max-width: none; }
+.n-ph-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; height: calc(80px + env(safe-area-inset-bottom));
+  background: var(--nav-bg); border-top: 1px solid var(--n-list-border);
+  display: flex; justify-content: space-around; align-items: flex-start; padding-top: 8px;
+}
+.n-ph-bar .n-tbtn.lg { width: 48px; height: 44px; }
+.n-app .n-ph-bar .n-tbtn.on { background: var(--n-hl-note); }
+.n-drawer-back { position: fixed; inset: 0; z-index: 50; background: var(--backdrop); }
+.n-drawer {
+  position: absolute; left: 0; top: 0; bottom: 0; width: min(340px, 88vw); background: var(--tile-bg); overflow-y: auto;
+  display: flex; flex-direction: column; animation: n-slide .18s ease-out;
+}
+.n-drawer .n-side, .n-drawer .n-list { min-height: 0; border-right: 0; }
+.n-drawer .n-side-in { position: static; height: auto; padding-top: calc(16px + env(safe-area-inset-top)); }
+.n-drawer .n-list-in { position: static; max-height: none; }
+.n-drawer .n-side-link:first-of-type { margin-top: 10px; }
+.n-drawer-close { position: absolute; right: 8px; top: calc(8px + env(safe-area-inset-top)); z-index: 1; }
+.n-drawer .n-search { width: 100%; }
+@keyframes n-slide { from { transform: translateX(-24px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+@media (max-width: 1099px) {
+  .n-cols { grid-template-columns: 1fr; gap: 0; }
+  .n-week { min-width: 900px; }
+}
+@media (max-width: 759px) {
+  .n-h1 { font-size: 28px; }
+  .n-sub { font-size: 15px; }
+  .n-h2 { font-size: 19px; margin-top: 20px; }
+  .n-now { margin-top: 16px; padding: 14px 16px; gap: 10px; }
+  .n-now-main { min-width: 0; }
+  .n-now-k { font-size: 12px; }
+  .n-now-title { font-size: 16px; }
+  .n-now .n-action { padding: 0 12px; }
+  .n-progress { max-width: none; }
+  .n-li { padding: 6px 0; }
+  .n-clock { font-size: 64px; }
+  .n-tag { display: none; }
+  .n-day-nav { display: none; } /* на телефоні дні — у меню «‹ Сьогодні», як у макеті */
+}
+@media (prefers-reduced-motion: reduce) { .n-drawer { animation: none; } }

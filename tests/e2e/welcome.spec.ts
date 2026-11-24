@@ -53,13 +53,13 @@ test('з головної — на вхід і реєстрацію', async ({ p
 
 test('перемикач теми на головній', async ({ page }) => {
   await page.goto('/');
-  const sw = page.getByRole('switch', { name: 'Квіткова тема' });
-  await expect(sw).toHaveAttribute('aria-checked', 'false');
-  await sw.click();
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'bloom');
-  await expect(sw).toHaveAttribute('aria-checked', 'true');
-  await sw.click();
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  const group = page.getByRole('radiogroup', { name: 'Тема' });
+  await expect(group.getByRole('radio', { name: 'Темна тема' })).toHaveAttribute('aria-checked', 'true');
+  for (const [name, id] of [['Квіткова тема', 'bloom'], ['Тема «Нотатки»', 'notes'], ['Темна тема', 'dark']] as const) {
+    await group.getByRole('radio', { name }).click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', id);
+    await expect(group.getByRole('radio', { name })).toHaveAttribute('aria-checked', 'true');
+  }
 });
 
 test('блоки з’являються під час прокручування', async ({ page }) => {
