@@ -120,6 +120,12 @@ test.describe('тема «Нотатки» на телефоні', () => {
     await page.getByRole('button', { name: 'Сьогодні' }).click();
     const drawer = page.getByRole('dialog', { name: 'Папки й нотатки' });
     await expect(drawer).toBeVisible();
+    // жоден блок меню не налазить на інший (раніше пошук лягав поверх списку днів)
+    const boxes = await drawer.locator('.n-dr-search, .n-dr-group').evaluateAll((els) => els.map((e) => {
+      const r = e.getBoundingClientRect();
+      return [r.top, r.bottom];
+    }));
+    for (let i = 1; i < boxes.length; i++) expect(boxes[i][0]).toBeGreaterThanOrEqual(boxes[i - 1][1] - 0.5);
     await drawer.getByRole('link', { name: /Тиждень/ }).click();
     await expect(page).toHaveURL(/#\/week/);
     await expect(drawer).toHaveCount(0);

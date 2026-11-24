@@ -145,9 +145,24 @@ function useFolderCounts(): Record<Folder, string> {
   };
 }
 
-function Sidebar({ folder, onHide }: { folder: Folder; onHide?: () => void }) {
+const FOLDERS: Folder[] = ['today', 'week', 'habits', 'focus', 'stats', 'inbox', 'notes'];
+
+function FolderLinks({ folder, className }: { folder: Folder; className: string }) {
   const counts = useFolderCounts();
-  const folders: Folder[] = ['today', 'week', 'habits', 'focus', 'stats', 'inbox', 'notes'];
+  return (
+    <nav className={className} aria-label="Папки">
+      {FOLDERS.map((f) => (
+        <a key={f} href={FOLDER_HREF[f]} className={`n-fold${f === folder ? ' on' : ''}`} aria-current={f === folder ? 'page' : undefined}>
+          <span className="n-fold-ic"><NIcon name="folder" size={19} /></span>
+          {FOLDER_LABEL[f]}
+          <span className="n">{counts[f]}</span>
+        </a>
+      ))}
+    </nav>
+  );
+}
+
+function Sidebar({ folder, onHide }: { folder: Folder; onHide?: () => void }) {
   return (
     <aside className="n-side">
       <div className="n-side-in">
@@ -156,15 +171,7 @@ function Sidebar({ folder, onHide }: { folder: Folder; onHide?: () => void }) {
         {onHide && <button type="button" className="n-tbtn" aria-label="Сховати бічну панель" title="Сховати бічну панель" onClick={onHide}><NIcon name="sidebar" size={19} /></button>}
       </div>
       <p className="n-side-k">Мій день</p>
-      <nav className="n-folders" aria-label="Папки">
-        {folders.map((f) => (
-          <a key={f} href={FOLDER_HREF[f]} className={`n-fold${f === folder ? ' on' : ''}`} aria-current={f === folder ? 'page' : undefined}>
-            <span className="n-fold-ic"><NIcon name="folder" size={19} /></span>
-            {FOLDER_LABEL[f]}
-            <span className="n">{counts[f]}</span>
-          </a>
-        ))}
-      </nav>
+      <FolderLinks folder={folder} className="n-folders" />
       <p className="n-side-k" style={{ marginTop: 18 }}>Теги</p>
       <ul className="n-tags" aria-label="Теги категорій">
         {Object.values(TAG).map((t) => <li key={t}>{t}</li>)}
@@ -190,18 +197,20 @@ function NoteList({ spec }: { spec: ListSpec }) {
         <div key={sec.label ?? i}>
           {sec.label && <p className="n-sec">{sec.label}</p>}
           <div className="n-nls">
-            {sec.items.map((it) => {
-              const body = <><b>{it.title}</b><span>{it.sub}</span></>;
-              return it.href
-                ? <a key={it.key} href={it.href} className={`n-nl${it.on ? ' on' : ''}`} aria-current={it.on ? 'page' : undefined}>{body}</a>
-                : <button key={it.key} type="button" className={`n-nl${it.on ? ' on' : ''}`} onClick={it.onClick}>{body}</button>;
-            })}
+            {sec.items.map((it) => <NoteItem key={it.key} it={it} />)}
           </div>
         </div>
       ))}
       </div>
     </section>
   );
+}
+
+function NoteItem({ it }: { it: ListItem }) {
+  const body = <><b>{it.title}</b><span>{it.sub}</span></>;
+  return it.href
+    ? <a href={it.href} className={`n-nl${it.on ? ' on' : ''}`} aria-current={it.on ? 'page' : undefined}>{body}</a>
+    : <button type="button" className={`n-nl${it.on ? ' on' : ''}`} onClick={it.onClick}>{body}</button>;
 }
 
 // ---------- Пошук по блоках, задачах і звичках ----------
@@ -305,10 +314,31 @@ function PhoneShell({ folder, title, list, onNew, children }: { folder: Folder; 
       {drawer && (
         <div className="n-drawer-back" onMouseDown={(e) => e.target === e.currentTarget && setDrawer(false)}>
           <div className="n-drawer" role="dialog" aria-modal="true" aria-label="Папки й нотатки">
-            <button type="button" className="n-tbtn lg n-drawer-close" aria-label="Закрити" onClick={() => setDrawer(false)}><NIcon name="close" size={22} /></button>
-            <Sidebar folder={folder} />
-            {list && <NoteList spec={list} />}
-            <div style={{ padding: '0 16px 24px' }}><Search /></div>
+            <div className="n-dr-head">
+              <span>Ритм</span>
+              <button type="button" className="n-tbtn lg" aria-label="Закрити" onClick={() => setDrawer(false)}><NIcon name="close" size={22} /></button>
+            </div>
+            <div className="n-dr-search"><Search /></div>
+            <section className="n-dr-group">
+              <h3 className="n-dr-k">Папки</h3>
+              <FolderLinks folder={folder} className="n-dr-card n-dr-folders" />
+            </section>
+            {list?.sections.map((sec, i) => (
+              <section key={sec.label ?? i} className="n-dr-group" aria-label={`${list.title}: ${sec.label ?? 'нотатки'}`}>
+                <h3 className="n-dr-k">{list.title}{sec.label ? ` · ${sec.label.toLowerCase()}` : ''}</h3>
+                <div className="n-dr-notes">{sec.items.map((it) => <NoteItem key={it.key} it={it} />)}</div>
+              </section>
+            ))}
+            <section className="n-dr-group">
+              <h3 className="n-dr-k">Теги</h3>
+              <ul className="n-tags n-dr-tags" aria-label="Теги категорій">{Object.values(TAG).map((t) => <li key={t}>{t}</li>)}</ul>
+            </section>
+            <section className="n-dr-group">
+              <div className="n-dr-card n-dr-links">
+                <a href={href('review')}>Вечірній підсумок</a>
+                <a href={href('notes', { s: 'settings' })}>Налаштування</a>
+              </div>
+            </section>
           </div>
         </div>
       )}
