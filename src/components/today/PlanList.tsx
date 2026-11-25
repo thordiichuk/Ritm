@@ -71,7 +71,7 @@ export function PlanList({ date, onEdit, onAdd }: { date: string; onEdit: (b: Bl
       <p className="plan-sum">{blocks.length ? `${done} з ${blocks.length} виконано` : 'План на день порожній'}</p>
       <ul className="plan-list">
         {blocks.map((b) => {
-          const active = isToday && !b.done && b.start <= nowMin && b.end > nowMin;
+          const active = isToday && !b.done && !b.untimed && b.start <= nowMin && b.end > nowMin;
           return (
             <li key={b.id} className={`plan-li${b.done ? ' done' : ''}`}>
               <button type="button" className={`plan-circ${b.done ? ' on' : ''}`} aria-pressed={b.done}

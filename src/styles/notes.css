@@ -262,3 +262,8 @@
   [data-theme='notes'] .week-grid { gap: 0; }
   [data-theme='notes'] .week-col + .week-col { border-left: 0; border-top: 1px solid var(--n-table-line); }
 }
+
+/* завдання без часу — рядки чек-листа на аркуші */
+[data-theme='notes'] .untimed { padding-left: 0; padding-right: 0; border-bottom-color: var(--n-table-line); }
+[data-theme='notes'] .untimed-row { font-weight: 500; }
+[data-theme='notes'] .untimed .chk { width: 22px; height: 22px; }

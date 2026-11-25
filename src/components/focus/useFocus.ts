@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getState, update, useStore } from '../../data/store';
-import { blocksOn } from '../../data/selectors';
+import { timedOn } from '../../data/selectors';
 import { ensureTimer, fmtClock, startOrPause, stopTimer, timerRemaining } from './timer';
 import { back } from '../../lib/router';
 import { useNow } from '../../lib/hooks';
@@ -28,7 +28,7 @@ export function useFocus(blockParam: string | null) {
     let id = blockParam;
     if (!id && !s.timer) {
       const m = nowMinutes();
-      id = blocksOn(s, todayISO()).find((b) => b.start <= m && b.end > m && !b.done)?.id ?? null;
+      id = timedOn(s, todayISO()).find((b) => b.start <= m && b.end > m && !b.done)?.id ?? null;
     }
     if (id && !s.blocks.some((b) => b.id === id)) id = null;
     if (s.timer && id && s.timer.blockId !== id) stopTimer();

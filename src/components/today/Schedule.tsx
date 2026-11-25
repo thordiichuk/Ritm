@@ -1,7 +1,7 @@
 import { useState, type DragEvent, type ReactNode } from 'react';
 import type { AppState, Block } from '../../data/types';
 import { useStore } from '../../data/store';
-import { CATEGORY_META, blocksOn, completedSessionsForBlock, sessionsInBlock } from '../../data/selectors';
+import { CATEGORY_META, completedSessionsForBlock, sessionsInBlock, timedOn } from '../../data/selectors';
 import { hhmm, pad, shortRange, todayISO } from '../../lib/date';
 import { moveBlock, scheduleTask } from '../../data/actions';
 import { navigate } from '../../lib/router';
@@ -23,7 +23,7 @@ interface Row {
 const ROW_MIN = { phone: 58, desktop: 68 };
 
 export function buildRows(s: AppState, date: string): { rows: Row[]; tall: Set<string> } {
-  const bs = blocksOn(s, date);
+  const bs = timedOn(s, date);
   let first = s.settings.dayStart;
   let last = s.settings.dayEnd - 1;
   for (const b of bs) {
@@ -69,7 +69,7 @@ export function Schedule({ date, variant, onEdit, onAddAt }: {
   const nowMin = now.getHours() * 60 + now.getMinutes();
   const nowHour = now.getHours();
   const { rows, tall } = buildRows(s, date);
-  const active = isToday ? blocksOn(s, date).find((b) => b.start <= nowMin && b.end > nowMin && !b.done) : undefined;
+  const active = isToday ? timedOn(s, date).find((b) => b.start <= nowMin && b.end > nowMin && !b.done) : undefined;
   const firstFreeAfterNow = rows.find((r) => r.kind === 'free' && (!isToday || r.hour > nowHour));
   const rowMin = ROW_MIN[variant];
 

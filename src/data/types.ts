@@ -21,6 +21,8 @@ export interface Block {
   note?: string;
   /** важливе — показується жирним шрифтом */
   priority?: boolean;
+  /** завдання на день без конкретної години: start/end зберігаються, але не використовуються */
+  untimed?: boolean;
 }
 
 export type TaskLocation = 'inbox' | 'someday';
@@ -117,6 +119,7 @@ export interface TemplateBlock {
   end: number;
   title: string;
   category: Category;
+  untimed?: boolean;
 }
 
 export interface Settings {

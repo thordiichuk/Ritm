@@ -182,3 +182,5 @@ input[type='date'].input, input[type='time'].input {
   /* iPhone збільшує сторінку, коли фокус отримує поле з шрифтом менше 16px */
   input, select, textarea, .input { font-size: 16px !important; }
 }
+
+.editor-untimed { margin: 0 0 16px; font-weight: 700; }

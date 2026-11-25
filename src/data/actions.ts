@@ -1,7 +1,7 @@
 import { ensureDay, ensureReview, getState, uid, update } from './store';
 import type { Block, Category, Habit, ISODate, Mood, Task } from './types';
 import { addDays, hhmm, nowMinutes, todayISO } from '../lib/date';
-import { blocksOn } from './selectors';
+import { blocksOn, timedOn } from './selectors';
 
 // ---------- Блоки ----------
 export function addBlock(b: Omit<Block, 'id' | 'done' | 'subtasks'> & Partial<Pick<Block, 'subtasks' | 'done'>>) {
@@ -46,7 +46,7 @@ export function findFreeSlot(date: ISODate, minutes: number, from: number): numb
   const end = s.settings.dayEnd * 60;
   let cur = Math.max(from, s.settings.dayStart * 60);
   cur = Math.ceil(cur / 15) * 15;
-  for (const b of blocksOn(s, date)) {
+  for (const b of timedOn(s, date)) {
     if (b.end <= cur) continue;
     if (b.start - cur >= minutes) return cur;
     cur = Math.max(cur, b.end);
@@ -96,7 +96,7 @@ export function blockToInbox(blockId: string, from: ISODate) {
     const b = d.blocks.find((x) => x.id === blockId);
     if (!b) return;
     d.blocks = d.blocks.filter((x) => x.id !== blockId);
-    d.tasks.push({ id: uid(), title: b.title, minutes: b.end - b.start, done: false, location: 'inbox', createdAt: Date.now(), ...(b.priority ? { priority: true } : {}) });
+    d.tasks.push({ id: uid(), title: b.title, minutes: b.untimed ? 30 : b.end - b.start, done: false, location: 'inbox', createdAt: Date.now(), ...(b.priority ? { priority: true } : {}) });
     ensureReview(d, from).handled[blockId] = 'inbox';
   });
 }
@@ -108,7 +108,7 @@ export function blockToTomorrow(blockId: string, from: ISODate) {
   if (!b) return;
   const tomorrow = addDays(from, 1);
   const len = b.end - b.start;
-  const clash = blocksOn(s, tomorrow).some((x) => x.start < b.end && x.end > b.start);
+  const clash = !b.untimed && timedOn(s, tomorrow).some((x) => x.start < b.end && x.end > b.start);
   const start = clash ? findFreeSlot(tomorrow, len, s.settings.dayStart * 60) ?? b.start : b.start;
   update((d) => {
     const x = d.blocks.find((y) => y.id === blockId)!;
@@ -123,7 +123,7 @@ export function blockToTomorrow(blockId: string, from: ISODate) {
 // ---------- Шаблон дня ----------
 export function saveTemplate(date: ISODate) {
   update((d) => {
-    d.template = blocksOn(d, date).map(({ start, end, title, category }) => ({ start, end, title, category }));
+    d.template = blocksOn(d, date).map(({ start, end, title, category, untimed }) => ({ start, end, title, category, ...(untimed ? { untimed } : {}) }));
   });
 }
 
