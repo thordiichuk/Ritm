@@ -3,7 +3,8 @@ import type { Block, Category } from '../../data/types';
 import { useStore } from '../../data/store';
 import { blocksOn } from '../../data/selectors';
 import { toggleBlock } from '../../data/actions';
-import { todayISO } from '../../lib/date';
+import { minutesShort, todayISO } from '../../lib/date';
+import { SubtaskList } from './Untimed';
 import { useNow } from '../../lib/hooks';
 import { isReviewBlock } from '../../screens/Review';
 
@@ -74,6 +75,7 @@ export function PlanList({ date, onEdit, onAdd }: { date: string; onEdit: (b: Bl
           const active = isToday && !b.done && !b.untimed && b.start <= nowMin && b.end > nowMin;
           return (
             <li key={b.id} className={`plan-li${b.done ? ' done' : ''}`}>
+              <div className="plan-row">
               <button type="button" className={`plan-circ${b.done ? ' on' : ''}`} aria-pressed={b.done}
                 aria-label={`${b.done ? 'Виконано' : 'Відмітити'}: ${b.title}`} onClick={() => toggleBlock(b.id)}>
                 {b.done && (
@@ -85,6 +87,9 @@ export function PlanList({ date, onEdit, onAdd }: { date: string; onEdit: (b: Bl
               <button type="button" className={`plan-tx${b.priority ? ' prio-text' : ''}`} onClick={() => onEdit(b)}>{b.priority ? '! ' : ''}{b.title}</button>
               {!isReviewBlock(b.title) && <span className="plan-tag">{TAG[b.category]}</span>}
               {active && <span className="plan-now">зараз</span>}
+              {b.untimed && b.duration ? <span className="untimed-dur plan-dur">{minutesShort(b.duration)}</span> : null}
+              </div>
+              <SubtaskList block={b} />
             </li>
           );
         })}

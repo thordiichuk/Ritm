@@ -80,6 +80,16 @@ test.describe('тема «Нотатки»', () => {
     await expect(page.getByRole('region', { name: 'Погодинний розклад' })).toBeVisible();
   });
 
+  test('у списку видно підзадачі, їх можна відмітити', async ({ page }) => {
+    await open(page, 'today', { theme: 'notes' });
+    await page.getByRole('tab', { name: 'Списком' }).click();
+    const plan = page.getByRole('region', { name: 'План на день' });
+    const subs = plan.getByRole('list', { name: 'Підзадачі: Пошта й дрібні справи' });
+    await expect(subs.getByRole('listitem')).toHaveCount(3);
+    await subs.getByRole('button', { name: 'Відмітити: Розібрати пошту' }).click();
+    await expect(subs.getByRole('button', { name: 'Виконано: Розібрати пошту' })).toBeVisible();
+  });
+
   test('у темній темі перемикача немає — розклад як і був', async ({ page }) => {
     await open(page, 'today');
     await expect(page.getByRole('tablist', { name: 'Вигляд розкладу' })).toHaveCount(0);
