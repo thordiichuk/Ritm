@@ -9,13 +9,15 @@ import { Icon } from '../components/ui/Icon';
 import { toast } from '../components/ui/Modal';
 import { addDays, cap, dayMonth, fromISO, isoWeekNumber, nowMinutes, todayISO, weekStart, weekdayName, WEEKDAYS_SHORT, rangeDays } from '../lib/date';
 import { href, navigate, useLocation } from '../lib/router';
-import { useIsPhone } from '../lib/hooks';
+import { useIsPhone, useNow } from '../lib/hooks';
 import { applyTemplate, findFreeSlot, saveTemplate } from '../data/actions';
 import { BotanicalSpray } from '../components/flora/Botanical';
 import { isReviewBlock } from './Review';
 import { useTheme } from '../lib/theme';
 import { PlanList, PlanViewSwitch, usePlanView } from '../components/today/PlanList';
 import { UntimedList } from '../components/today/Untimed';
+import { TaskComposer } from '../components/today/Composer';
+import { parseHHMM } from '../lib/date';
 
 /** Дата з адреси (?d=…) або сьогодні */
 export function useSelectedDate(): string {
@@ -48,11 +50,16 @@ export function TodayScreen() {
   const notes = useTheme() === 'notes';
   const planView = usePlanView();
   const asList = notes && planView === 'list';
+  // «Вечірній підсумок» — за годину до часу підсумку з налаштувань (типово 21:00 → з 20:00); для минулих днів — завжди
+  const reviewAt = useStore((s) => s.settings.reviewAt);
+  useNow(60_000);
+  const reviewOpen = date < todayISO() || (date === todayISO() && nowMinutes() >= parseHHMM(reviewAt || '21:00') - 60);
 
   if (phone) {
     return (
       <div className="phone phone-today">
         <DayStrip date={date} />
+        <TaskComposer date={date} />
         {notes && <PlanViewSwitch />}
         <PhoneScroller date={date}>
           {asList ? (
@@ -69,7 +76,9 @@ export function TodayScreen() {
           )}
           <div className="phone-extra">
             <InboxTile date={date} phone />
-            <a className="pill pill-dark" style={{ justifyContent: 'center', minHeight: 56 }} href={href('review', date === todayISO() ? undefined : { d: date })}>Вечірній підсумок →</a>
+            {reviewOpen && (
+              <a className="pill pill-dark" style={{ justifyContent: 'center', minHeight: 56 }} href={href('review', date === todayISO() ? undefined : { d: date })}>Вечірній підсумок →</a>
+            )}
           </div>
         </PhoneScroller>
         <BottomNav active="today" onAdd={addNext} />
@@ -98,6 +107,7 @@ export function TodayScreen() {
             <button className="pill pill-lime" onClick={addNext}><Icon name="plus" size={18} stroke={2.8} />Новий блок</button>
           </div>
         </header>
+        <TaskComposer date={date} />
         {notes ? (
           <section className="tile plan-tile" aria-label={asList ? 'План на день' : 'Погодинний розклад'} style={{ padding: 0 }}>
             <div className="plan-head">

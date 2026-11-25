@@ -1,7 +1,7 @@
 import { useState, type DragEvent } from 'react';
 import { useStore, dayOf } from '../../data/store';
 import { blocksOn, timedOn, energyPeak, freeMinutes, habitsDoneOn, streak, sessionsInBlock, completedSessionsForBlock } from '../../data/selectors';
-import { addTask, deleteTask, findFreeSlot, scheduleTask, setEnergy, setWater, toggleTaskPriority } from '../../data/actions';
+import { deleteTask, findFreeSlot, scheduleTask, setEnergy, setWater, toggleTaskPriority } from '../../data/actions';
 import { durationLabel, hhmm, nowMinutes, num, parseHHMM, plural, todayISO } from '../../lib/date';
 import { href } from '../../lib/router';
 import { Icon } from '../ui/Icon';
@@ -35,7 +35,7 @@ export function ProgressTile({ date }: { date: string }) {
         {bs.map((b, i) => <span key={b.id} className={i < done ? 'on' : ''} />)}
         {!bs.length && <span />}
       </div>
-      {(!isToday || nowMinutes() >= parseHHMM(s.settings.reviewAt) - 60) && (
+      {(!isToday || nowMinutes() >= parseHHMM(s.settings.reviewAt || '21:00') - 60) && (
         <a className="pill pill-ink" style={{ marginTop: 18, width: '100%', justifyContent: 'center' }} href={href('review', isToday ? undefined : { d: date })}>
           Вечірній підсумок →
         </a>
@@ -102,8 +102,6 @@ export function WaterTile({ date }: { date: string }) {
   );
 }
 
-export const MINUTE_OPTIONS = [5, 15, 30, 45, 60, 90, 120];
-export const minutesLabel = (m: number) => (m >= 60 ? `${m / 60} год` : `${m} хв`);
 
 /** Поставити задачу з вхідних у перший вільний проміжок дня (з повідомленням). true — вдалося. */
 export function scheduleToFirstFree(t: Task, date: string): boolean {
@@ -123,17 +121,7 @@ export function taskLabel(t: Task) {
 
 export function InboxTile({ date, phone }: { date: string; phone?: boolean }) {
   const tasks = useStore((s) => s.tasks.filter((t) => t.location === 'inbox' && !t.done));
-  const [title, setTitle] = useState('');
-  const [mins, setMins] = useState(15);
-  const [prio, setPrio] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
-
-  const add = () => {
-    if (!title.trim()) return;
-    addTask(title.trim(), mins, 'inbox', prio);
-    setTitle('');
-    setPrio(false);
-  };
   const autoSchedule = (t: Task) => {
     if (scheduleToFirstFree(t, date)) setOpen(null);
   };
@@ -162,15 +150,8 @@ export function InboxTile({ date, phone }: { date: string; phone?: boolean }) {
             )}
           </span>
         ))}
-        {!tasks.length && <span style={{ color: 'var(--c-muted-3)', fontWeight: 700, fontSize: 14 }}>Порожньо — усе розплановано</span>}
+        {!tasks.length && <span style={{ color: 'var(--c-muted-3)', fontWeight: 700, fontSize: 14 }}>Порожньо — нові задачі додавайте в полі вгорі</span>}
       </div>
-      <form className="ib-add" onSubmit={(e) => { e.preventDefault(); add(); }}>
-        <input className={`input${prio ? ' prio-text' : ''}`} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="+ задача у вхідні" aria-label="Нова задача" />
-        <button type="button" className={`ib-prio${prio ? ' on' : ''}`} aria-pressed={prio} aria-label="Важливе" title="Важливе — жирним шрифтом" onClick={() => setPrio(!prio)}>!</button>
-        <select value={mins} onChange={(e) => setMins(Number(e.target.value))} aria-label="Тривалість">
-          {MINUTE_OPTIONS.map((m) => <option key={m} value={m}>{minutesLabel(m)}</option>)}
-        </select>
-      </form>
     </section>
   );
 }

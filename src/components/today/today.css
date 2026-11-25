@@ -195,3 +195,53 @@
   flex: none; min-height: 36px; border: 0; border-radius: var(--r-pill); background: var(--c-surface-2);
   color: var(--c-text); font: inherit; font-size: 13px; font-weight: 700; padding: 0 10px;
 }
+
+/* ---------- Поле додавання завдання (вгорі «Сьогодні») ---------- */
+.composer {
+  display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: var(--r-2xl);
+  background: var(--tile-bg); border: var(--tile-border); box-shadow: var(--tile-shadow);
+}
+.composer-row { display: flex; gap: 8px; align-items: center; }
+.composer-input {
+  flex: 1; min-width: 0; min-height: 44px; border: 0; border-radius: var(--r-lg); padding: 0 14px;
+  background: var(--c-surface-2); color: var(--c-text); font: inherit; font-size: 16px; font-weight: 600;
+}
+.composer-input::placeholder { color: var(--c-muted-3); font-weight: 500; }
+.composer-input:focus { outline: 2px solid var(--focus-ring); outline-offset: 0; }
+.composer-add {
+  flex: none; width: 44px; height: 44px; border-radius: 50%; border: 0; padding: 0; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; background: var(--accent-bg); color: var(--on-accent);
+}
+.composer-add:disabled { opacity: .45; cursor: default; }
+.composer-opts { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.composer-seg { display: inline-flex; background: var(--c-surface-2); border-radius: var(--r-pill); padding: 3px; }
+.composer-seg button, .composer-chip {
+  min-height: 32px; padding: 0 12px; border: 0; border-radius: var(--r-pill); background: transparent;
+  color: var(--c-muted); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap;
+}
+.composer-seg button[aria-checked='true'] { background: var(--chip-on-bg); color: var(--chip-on-fg); }
+.composer-chip { background: var(--c-surface-2); min-height: 38px; }
+.composer-chip[aria-pressed='true'] { background: var(--check-bg); color: var(--check-fg); }
+.composer-sel { padding-right: 8px; }
+.phone-today .composer { margin: 10px 0 4px; flex: none; }
+.wrap > main > .composer { padding: 14px 16px; }
+@media (max-width: 759px) {
+  .composer-input, .composer-sel { font-size: 16px; }
+  .composer-seg button, button.composer-chip { font-size: 13px; }
+}
+
+.composer-opts { flex-wrap: nowrap; }
+.composer-seg { flex: 1; min-width: 0; }
+.composer-seg button { flex: 1 1 auto; }
+.composer-prio b { font-weight: 900; }
+@media (max-width: 759px) {
+  .composer-chip-text { display: none; }
+  .composer-prio { width: 38px; padding: 0; flex: none; }
+  .composer-sel { flex: none; padding: 0 4px 0 10px; }
+  .composer-seg button { padding: 0 8px; }
+}
+@media (max-width: 349px) {
+  .composer-seg button { padding: 0 6px; }
+  .composer-opts { flex-wrap: wrap; }
+  .composer-seg { flex: 1 0 100%; }
+}

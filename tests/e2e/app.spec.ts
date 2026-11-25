@@ -41,9 +41,10 @@ test.describe('Сьогодні (комп\'ютер)', () => {
 
   test('важлива задача — жирним; лишається важливою й у розкладі', async ({ page }) => {
     await open(page, 'today');
-    await page.getByLabel('Нова задача').fill('Дзвінок лікарю');
+    await page.getByRole('radio', { name: 'Вхідні' }).click();
+    await page.getByLabel('Нове завдання').fill('Дзвінок лікарю');
     await page.getByRole('button', { name: 'Важливе', exact: true }).click();
-    await page.getByLabel('Нова задача').press('Enter');
+    await page.getByLabel('Нове завдання').press('Enter');
     const chip = page.getByRole('button', { name: /Дзвінок лікарю/ });
     await expect(chip).toHaveClass(/prio/);
     expect(await chip.evaluate((e) => getComputedStyle(e).fontWeight)).toBe('800');
@@ -155,6 +156,38 @@ test.describe('Вечірній підсумок', () => {
   });
 });
 
+test.describe('Телефон: поле додавання вгорі і час підсумку', () => {
+  test.use({ viewport: PHONE, isMobile: true, hasTouch: true });
+
+  test('поле додавання — над розкладом і вміщається в екран; вибір «Вхідні» запам’ятовується', async ({ page }) => {
+    await open(page, 'today');
+    const input = page.getByLabel('Нове завдання');
+    await expect(input).toBeInViewport();
+    // поле стоїть перед розкладом (сам розклад прокручується всередині до поточної години)
+    expect(await input.evaluate((e) => !!(e.compareDocumentPosition(document.querySelector('.sched')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+    expect(parseFloat(await input.evaluate((e) => getComputedStyle(e).fontSize))).toBeGreaterThanOrEqual(16);
+    await page.getByRole('radio', { name: 'Вхідні' }).click();
+    await input.fill('Оплатити інтернет');
+    await input.press('Enter');
+    await expect(input).toHaveValue('');
+    const tasks = await page.evaluate(() => JSON.parse(localStorage.getItem('ritm:v1')!).tasks.map((t: { title: string }) => t.title));
+    expect(tasks).toContain('Оплатити інтернет');
+    await page.reload();
+    await expect(page.getByRole('radio', { name: 'Вхідні' })).toHaveAttribute('aria-checked', 'true');
+  });
+
+  test('«Вечірній підсумок» з’являється лише після 20:00', async ({ page }) => {
+    await open(page, 'today', { time: '2026-11-11T14:20:00+02:00' });
+    await expect(page.getByRole('link', { name: /Вечірній підсумок/ })).toHaveCount(0);
+  });
+
+  test('о 20:05 посилання на підсумок є', async ({ page }) => {
+    await open(page, 'today', { time: '2026-11-11T20:05:00+02:00' });
+    await expect(page.getByRole('link', { name: /Вечірній підсумок/ })).toBeVisible();
+  });
+});
+
 test.describe('Телефон: вікна вміщаються в екран', () => {
   test.use({ viewport: PHONE, isMobile: true, hasTouch: true });
 
@@ -180,8 +213,9 @@ test.describe('Завдання без часу', () => {
   test('додаються рядком над розкладом, відмічаються й лишаються після перезавантаження', async ({ page }) => {
     await open(page, 'today');
     const list = page.getByRole('region', { name: 'Без часу' });
-    await list.getByLabel('Нове завдання без часу').fill('Купити подарунок мамі');
-    await list.getByLabel('Нове завдання без часу').press('Enter');
+    await expect(page.getByRole('radio', { name: 'Сьогодні' })).toHaveAttribute('aria-checked', 'true'); // за замовчуванням — на день
+    await page.getByLabel('Нове завдання').fill('Купити подарунок мамі');
+    await page.getByLabel('Нове завдання').press('Enter');
     await expect(list.getByRole('button', { name: 'Відмітити: Купити подарунок мамі' })).toBeVisible();
     await expect(page.getByText('5 з 11 блоків')).toBeVisible(); // рахується в прогресі дня
     await list.getByRole('button', { name: 'Відмітити: Купити подарунок мамі' }).click();
@@ -217,9 +251,9 @@ test.describe('Завдання без часу', () => {
     const before = await errandsHours();
     await page.goto('/#/today');
     const list = page.getByRole('region', { name: 'Без часу' });
-    await list.getByLabel('Тривалість завдання').selectOption('120');
-    await list.getByLabel('Нове завдання без часу').fill('Прибрати квартиру');
-    await list.getByLabel('Нове завдання без часу').press('Enter');
+    await page.getByLabel('Тривалість').selectOption('120');
+    await page.getByLabel('Нове завдання').fill('Прибрати квартиру');
+    await page.getByRole('button', { name: 'Додати завдання' }).click();
     await expect(list.locator('.untimed-dur', { hasText: '2 год' })).toBeVisible();
     expect(await errandsHours()).toBeCloseTo(before + 2, 5);
   });

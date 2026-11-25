@@ -267,3 +267,9 @@
 [data-theme='notes'] .untimed { padding-left: 0; padding-right: 0; border-bottom-color: var(--n-table-line); }
 [data-theme='notes'] .untimed-row { font-weight: 500; }
 [data-theme='notes'] .untimed .chk { width: 22px; height: 22px; }
+
+/* поле додавання завдання */
+[data-theme='notes'] .composer { border-radius: 12px; }
+[data-theme='notes'] .composer-add { background: var(--n-action); color: #FFFFFF; }
+[data-theme='notes'] .composer-input { border-radius: 10px; }
+[data-theme='notes'] .wrap > main > .composer { margin-top: 16px; }
