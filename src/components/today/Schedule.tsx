@@ -138,7 +138,7 @@ function BlockCard({ b, variant, s, onEdit, tall, offset = 0 }: {
   if (variant === 'phone') {
     return (
       <button className={cls} style={style} onClick={() => onEdit(b)}>
-        <b>{b.title}</b>
+        <b className={b.priority ? 'prio-text' : undefined}>{b.priority ? '! ' : ''}{b.title}</b>
         <span>{b.done ? 'готово' : b.start % 60 || b.end - b.start < 30 ? hhmm(b.start) : shortRange(b.start, b.end)}</span>
       </button>
     );
@@ -148,12 +148,12 @@ function BlockCard({ b, variant, s, onEdit, tall, offset = 0 }: {
     <button className={cls} style={style} onClick={() => onEdit(b)} draggable onDragStart={(e) => onDragStartBlock(e, b)}>
       {meta.stacked ? (
         <div>
-          <h4>{b.title}</h4>
+          <h4 className={b.priority ? 'prio-text' : undefined}>{b.priority ? '! ' : ''}{b.title}</h4>
           <p>{meta.text}</p>
         </div>
       ) : (
         <>
-          <h4>{b.title}</h4>
+          <h4 className={b.priority ? 'prio-text' : undefined}>{b.priority ? '! ' : ''}{b.title}</h4>
           <p>{meta.text}</p>
         </>
       )}

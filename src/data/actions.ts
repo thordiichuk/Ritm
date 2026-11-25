@@ -55,8 +55,16 @@ export function findFreeSlot(date: ISODate, minutes: number, from: number): numb
 }
 
 // ---------- Задачі ----------
-export function addTask(title: string, minutes: number, location: Task['location'] = 'inbox') {
-  update((d) => void d.tasks.push({ id: uid(), title, minutes, done: false, location, createdAt: Date.now() }));
+export function addTask(title: string, minutes: number, location: Task['location'] = 'inbox', priority = false) {
+  update((d) => void d.tasks.push({ id: uid(), title, minutes, done: false, location, createdAt: Date.now(), ...(priority ? { priority } : {}) }));
+}
+
+/** Позначити задачу важливою (жирний шрифт) або зняти позначку */
+export function toggleTaskPriority(id: string) {
+  update((d) => {
+    const t = d.tasks.find((x) => x.id === id);
+    if (t) t.priority = !t.priority;
+  });
 }
 
 export function deleteTask(id: string) {
@@ -77,6 +85,7 @@ export function scheduleTask(taskId: string, date: ISODate, start: number) {
       category: 'errands',
       done: false,
       subtasks: [],
+      ...(t.priority ? { priority: true } : {}),
     });
   });
 }
@@ -87,7 +96,7 @@ export function blockToInbox(blockId: string, from: ISODate) {
     const b = d.blocks.find((x) => x.id === blockId);
     if (!b) return;
     d.blocks = d.blocks.filter((x) => x.id !== blockId);
-    d.tasks.push({ id: uid(), title: b.title, minutes: b.end - b.start, done: false, location: 'inbox', createdAt: Date.now() });
+    d.tasks.push({ id: uid(), title: b.title, minutes: b.end - b.start, done: false, location: 'inbox', createdAt: Date.now(), ...(b.priority ? { priority: true } : {}) });
     ensureReview(d, from).handled[blockId] = 'inbox';
   });
 }

@@ -11,6 +11,7 @@ import { Icon } from '../components/ui/Icon';
 import { CountEditor, HabitEditor } from '../components/habits/HabitEditor';
 import { BotanicalSpray } from '../components/flora/Botanical';
 import { CompletionTile, FocusWeekTile, InsightTile, LongestStreakTile, PlanTile, TimeSplitTile } from '../components/stats/StatTiles';
+import { WaterTile } from '../components/today/SideTiles';
 
 type Editing = { kind: 'habit'; habit?: Habit } | { kind: 'count'; habit: Habit } | null;
 
@@ -70,6 +71,7 @@ function PhoneHabits({ setEditing, modal }: { setEditing: (e: Editing) => void; 
         </button>
       </div>
       {s.habits.length > 0 && <p className="ph-cap" style={{ textAlign: 'center', marginTop: 14 }}>Утримуйте плитку, щоб змінити звичку</p>}
+      <div className="ph-water"><WaterTile date={today} /></div>
 
       <BottomNav active="habits" />
       {modal}
@@ -222,6 +224,8 @@ function DesktopHabits({ setEditing, modal }: { setEditing: (e: Editing) => void
           })}
           {!s.habits.length && <p style={{ color: 'var(--c-muted)', fontWeight: 700 }}>Ще немає звичок — додайте першу.</p>}
         </section>
+
+        <WaterTile date={today} />
 
         <div className="bento">
           <TimeSplitTile />

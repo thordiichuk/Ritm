@@ -3,7 +3,7 @@ import type { Block } from '../data/types';
 import { uid, useStore } from '../data/store';
 import { Schedule } from '../components/today/Schedule';
 import { BlockEditor } from '../components/today/BlockEditor';
-import { EnergyTile, FocusMini, HabitsMini, InboxTile, ProgressTile, Top3Tile, WaterTile } from '../components/today/SideTiles';
+import { EnergyTile, FocusMini, HabitsMini, InboxTile, ProgressTile } from '../components/today/SideTiles';
 import { BottomNav, Rail } from '../components/layout/Nav';
 import { Icon } from '../components/ui/Icon';
 import { toast } from '../components/ui/Modal';
@@ -62,8 +62,6 @@ export function TodayScreen() {
             </section>
           )}
           <div className="phone-extra">
-            <Top3Tile date={date} />
-            <WaterTile date={date} />
             <InboxTile date={date} phone />
             <a className="pill pill-dark" style={{ justifyContent: 'center', minHeight: 56 }} href={href('review', date === todayISO() ? undefined : { d: date })}>Вечірній підсумок →</a>
           </div>
@@ -110,12 +108,10 @@ export function TodayScreen() {
       </main>
       <aside>
         <ProgressTile date={date} />
-        <Top3Tile date={date} />
         <div className="g2">
           <HabitsMini date={date} />
           <FocusMini />
         </div>
-        <WaterTile date={date} />
         <InboxTile date={date} />
         <EnergyTile date={date} />
       </aside>

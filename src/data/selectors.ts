@@ -1,12 +1,12 @@
 import type { AppState, Block, Category, Habit, ISODate } from './types';
 import { addDays, parseHHMM, rangeDays, todayISO, weekStart } from '../lib/date';
 
-export const CATEGORY_META: Record<Category, { label: string; cls: string; color: string }> = {
-  work: { label: 'Робота', cls: 'sky', color: 'var(--cat-work-chart)' },
-  health: { label: "Здоров'я", cls: 'mint', color: 'var(--cat-health-chart)' },
-  study: { label: 'Навчання', cls: 'lilac', color: 'var(--cat-study-chart)' },
-  personal: { label: 'Особисте', cls: 'peach', color: 'var(--cat-personal-chart)' },
-  errands: { label: 'Справи', cls: 'ash', color: 'var(--cat-errands-chart)' },
+export const CATEGORY_META: Record<Category, { label: string; cls: string; color: string; emoji: string }> = {
+  work: { label: 'Робота', cls: 'sky', color: 'var(--cat-work-chart)', emoji: '💼' },
+  health: { label: "Здоров'я", cls: 'mint', color: 'var(--cat-health-chart)', emoji: '🏃' },
+  study: { label: 'Навчання', cls: 'lilac', color: 'var(--cat-study-chart)', emoji: '📚' },
+  personal: { label: 'Особисте', cls: 'peach', color: 'var(--cat-personal-chart)', emoji: '🌿' },
+  errands: { label: 'Справи', cls: 'ash', color: 'var(--cat-errands-chart)', emoji: '🛒' },
 };
 export const CATEGORIES = Object.keys(CATEGORY_META) as Category[];
 

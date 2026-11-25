@@ -72,6 +72,14 @@ input, textarea, select { font-family: inherit; }
   .rail-logo { margin: 0 12px 0 0; }
   .rail .rail-bottom { margin-top: 0 !important; }
 }
+@media (max-width: 759px) {
+  /* рейка згори на телефоні (сторінка «Тиждень») — вміщається в ширину екрана */
+  .rail { justify-content: space-between; gap: 2px; padding: 8px; }
+  .rail-logo { margin: 0; width: 44px; height: 44px; flex: none; }
+  .ri { width: 44px; height: 44px; flex: none; }
+  .page-head { padding: 20px; }
+  .page-head h1 { font-size: 38px; overflow-wrap: anywhere; }
+}
 
 /* ---------- Оболонка телефона ---------- */
 .phone {
@@ -147,3 +155,13 @@ textarea.input { padding: 14px 16px; min-height: 96px; resize: vertical; line-he
 }
 @media (max-width: 759px) { .toast { bottom: auto; top: calc(16px + env(safe-area-inset-top)); } }
 @media (min-width: 760px) { .toast { bottom: 32px; } }
+
+/* емодзі категорії в редакторі блоку */
+.chip-emoji { font-size: 16px; line-height: 1; }
+.editor-flags { display: flex; flex-direction: column; gap: 12px; margin: 4px 0 18px; }
+.editor-hint { font-weight: 600; color: var(--c-muted); font-size: 13px; }
+
+/* важливе — жирним шрифтом */
+.prio-text { font-weight: 800 !important; }
+.ib.prio { font-weight: 800; }
+.ib.prio::before { content: '!'; color: var(--accent); font-weight: 900; }

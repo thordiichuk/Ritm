@@ -1,7 +1,7 @@
 /* ---------- Телефон ---------- */
-.ph-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.ph-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 40px; }
 .gear-btn {
-  width: 40px; height: 40px; margin: -14px -6px -14px 0; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
   color: var(--c-muted); background: var(--tile-bg); border: var(--tile-border); box-shadow: var(--tile-shadow); text-decoration: none; flex: none;
 }
 .gear-btn:hover { color: var(--c-text); }
@@ -84,3 +84,7 @@
   .bento .span2 { grid-column: auto; }
   .stat-big { font-size: 52px; }
 }
+
+/* вода — тепер на сторінці звичок */
+.ph-water { margin-top: 16px; }
+.ph-water .tile { padding: 20px; border-radius: var(--r-3xl); }

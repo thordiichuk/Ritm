@@ -39,8 +39,8 @@ export function WeekScreen() {
                 <p className="k">{WEEKDAYS_SHORT[i]}</p>
                 <p className="disp" style={{ margin: '4px 0 8px', fontSize: 34, lineHeight: 1, color: d === today ? 'var(--accent)' : undefined }}>{fromISO(d).getDate()}</p>
                 {bs.map((b) => (
-                  <div key={b.id} className={`wb cat-${b.category}${b.done ? ' done' : ''}`} title={`${hhmm(b.start)} ${b.title}`}>
-                    {hhmm(b.start)} {b.title}
+                  <div key={b.id} className={`wb cat-${b.category}${b.done ? ' done' : ''}${b.priority ? ' prio-text' : ''}`} title={`${hhmm(b.start)} ${b.title}`}>
+                    {hhmm(b.start)} {b.priority ? '! ' : ''}{b.title}
                   </div>
                 ))}
                 {!bs.length && <span style={{ color: 'var(--c-muted-3)', fontWeight: 700, fontSize: 13 }}>вільний день</span>}
