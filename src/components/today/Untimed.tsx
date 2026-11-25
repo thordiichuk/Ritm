@@ -8,6 +8,24 @@ import { minutesShort } from '../../lib/date';
 /** Варіанти тривалості завдання без часу (хвилини) */
 export const DURATIONS = [15, 30, 45, 60, 90, 120, 180];
 
+/** Підзадачі блоку під його назвою: їх можна відмітити одразу, без редактора */
+export function SubtaskList({ block: b }: { block: Block }) {
+  if (!b.subtasks.length) return null;
+  return (
+    <ul className="untimed-subs" aria-label={`Підзадачі: ${b.title}`}>
+      {b.subtasks.map((st) => (
+        <li key={st.id} className={st.done ? 'done' : undefined}>
+          <button type="button" className={`chk chk-sm${st.done ? ' on' : ''}`} aria-pressed={st.done}
+            aria-label={`${st.done ? 'Виконано' : 'Відмітити'}: ${st.title}`} onClick={() => toggleSubtask(b.id, st.id)}>
+            {st.done && <Icon name="check" size={11} stroke={4} />}
+          </button>
+          <span className="untimed-sub-tx">{st.title}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 /**
  * Завдання дня без конкретної години: окремий чек-лист над погодинним розкладом.
  * Це звичайні блоки з позначкою untimed — відмітка й редагування ті самі.
@@ -30,19 +48,7 @@ export function UntimedList({ date, onEdit }: { date: string; onEdit: (b: Block)
           </button>
           {b.duration ? <span className="untimed-dur">{minutesShort(b.duration)}</span> : null}
         </div>
-        {b.subtasks.length > 0 && (
-          <ul className="untimed-subs" aria-label={`Підзадачі: ${b.title}`}>
-            {b.subtasks.map((st) => (
-              <li key={st.id} className={st.done ? 'done' : undefined}>
-                <button type="button" className={`chk chk-sm${st.done ? ' on' : ''}`} aria-pressed={st.done}
-                  aria-label={`${st.done ? 'Виконано' : 'Відмітити'}: ${st.title}`} onClick={() => toggleSubtask(b.id, st.id)}>
-                  {st.done && <Icon name="check" size={11} stroke={4} />}
-                </button>
-                <span className="untimed-sub-tx">{st.title}</span>
-              </li>
-            ))}
-          </ul>
-        )}
+        <SubtaskList block={b} />
         </div>
       ))}
     </section>

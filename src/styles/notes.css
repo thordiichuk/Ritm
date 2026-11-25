@@ -116,7 +116,7 @@
 .phone .plan { padding: 8px 0 24px; }
 .plan-sum { margin: 0 0 6px; font-size: 14px; color: var(--n-text-3); }
 .plan-list { list-style: none; margin: 0; padding: 0; }
-.plan-li { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--n-rule); font-size: 17px; line-height: 1.4; }
+.plan-li { display: flex; flex-direction: column; gap: 6px; padding: 9px 0; border-bottom: 1px solid var(--n-rule); font-size: 17px; line-height: 1.4; }
 .plan-circ {
   width: 24px; height: 24px; flex: none; border-radius: 50%; border: 1.5px solid var(--n-circle); background: var(--tile-bg);
   padding: 0; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: var(--c-text);
@@ -126,6 +126,10 @@
 .plan-tx { border: 0; background: transparent; padding: 0; font: inherit; color: var(--c-text); text-align: left; cursor: pointer; min-width: 0; overflow-wrap: anywhere; }
 .plan-tx:hover { text-decoration: underline; text-decoration-color: var(--n-circle); text-underline-offset: 3px; }
 .plan-li.done .plan-tx { color: var(--n-text-3); text-decoration: line-through; text-decoration-color: var(--n-circle); }
+/* підзадачі в списку — окремим рядком під назвою, як у «Без часу» */
+.plan-row { display: flex; align-items: center; gap: 12px; }
+.plan-li .untimed-subs { padding-left: 36px; }
+.plan-dur { margin-left: auto; }
 .plan-tag { font-size: 14px; font-weight: 500; color: var(--n-yellow-text); white-space: nowrap; }
 .plan-now { font-size: 12px; font-weight: 600; color: #FFFFFF; background: var(--n-now-red); border-radius: 6px; padding: 2px 6px; white-space: nowrap; }
 .plan-add {
