@@ -150,7 +150,7 @@ export function InboxTile({ date, phone }: { date: string; phone?: boolean }) {
             )}
           </span>
         ))}
-        {!tasks.length && <span style={{ color: 'var(--c-muted-3)', fontWeight: 700, fontSize: 14 }}>Порожньо — нові задачі додавайте в полі вгорі</span>}
+        {!tasks.length && <span style={{ color: 'var(--c-muted-3)', fontWeight: 700, fontSize: 14 }}>{phone ? 'Порожньо — нові задачі додавайте в полі вгорі' : 'Порожньо'}</span>}
       </div>
     </section>
   );

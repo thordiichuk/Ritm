@@ -41,16 +41,13 @@ test.describe('Сьогодні (комп\'ютер)', () => {
 
   test('важлива задача — жирним; лишається важливою й у розкладі', async ({ page }) => {
     await open(page, 'today');
-    await page.getByRole('radio', { name: 'Вхідні' }).click();
-    await page.getByLabel('Нове завдання').fill('Дзвінок лікарю');
+    await page.getByRole('button', { name: 'Стоматолог · 15 хв' }).click();
     await page.getByRole('button', { name: 'Важливе', exact: true }).click();
-    await page.getByLabel('Нове завдання').press('Enter');
-    const chip = page.getByRole('button', { name: /Дзвінок лікарю/ });
+    const chip = page.getByRole('button', { name: /Стоматолог/ }).first();
     await expect(chip).toHaveClass(/prio/);
     expect(await chip.evaluate((e) => getComputedStyle(e).fontWeight)).toBe('800');
-    await chip.click();
     await page.getByRole('button', { name: 'У розклад' }).click();
-    const h4 = page.locator('.sched h4', { hasText: 'Дзвінок лікарю' });
+    const h4 = page.locator('.sched h4', { hasText: 'Стоматолог' });
     await expect(h4).toHaveClass(/prio-text/);
   });
 
@@ -213,9 +210,10 @@ test.describe('Завдання без часу', () => {
   test('додаються рядком над розкладом, відмічаються й лишаються після перезавантаження', async ({ page }) => {
     await open(page, 'today');
     const list = page.getByRole('region', { name: 'Без часу' });
-    await expect(page.getByRole('radio', { name: 'Сьогодні' })).toHaveAttribute('aria-checked', 'true'); // за замовчуванням — на день
-    await page.getByLabel('Нове завдання').fill('Купити подарунок мамі');
-    await page.getByLabel('Нове завдання').press('Enter');
+    await page.getByRole('button', { name: 'Додати', exact: true }).click();
+    await page.getByRole('dialog').getByLabel('Назва').fill('Купити подарунок мамі');
+    await page.getByRole('dialog').getByRole('button', { name: 'Без конкретного часу' }).click();
+    await page.getByRole('dialog').getByRole('button', { name: 'Додати блок' }).click();
     await expect(list.getByRole('button', { name: 'Відмітити: Купити подарунок мамі' })).toBeVisible();
     await expect(page.getByText('5 з 11 блоків')).toBeVisible(); // рахується в прогресі дня
     await list.getByRole('button', { name: 'Відмітити: Купити подарунок мамі' }).click();
@@ -227,6 +225,7 @@ test.describe('Завдання без часу', () => {
   });
 
   test('підзадачі видно під завданням без часу, їх можна відмітити', async ({ page }) => {
+    await page.setViewportSize(PHONE); // поле додавання є лише на телефоні
     await open(page, 'today');
     await page.getByLabel('Нове завдання').fill('Підготуватися до поїздки');
     await page.getByLabel('Нове завдання').press('Enter');
@@ -247,7 +246,7 @@ test.describe('Завдання без часу', () => {
 
   test('у редакторі: «Без конкретного часу» ховає поля часу', async ({ page }) => {
     await open(page, 'today');
-    await page.getByRole('button', { name: 'Новий блок' }).click();
+    await page.getByRole('button', { name: 'Додати', exact: true }).click();
     const dialog = page.getByRole('dialog');
     await dialog.getByLabel('Назва').fill('Записатися до лікаря');
     await expect(dialog.getByText('Початок')).toBeVisible();
@@ -270,9 +269,13 @@ test.describe('Завдання без часу', () => {
     const before = await errandsHours();
     await page.goto('/#/today');
     const list = page.getByRole('region', { name: 'Без часу' });
-    await page.getByLabel('Тривалість').selectOption('120');
-    await page.getByLabel('Нове завдання').fill('Прибрати квартиру');
-    await page.getByRole('button', { name: 'Додати завдання' }).click();
+    await page.getByRole('button', { name: 'Додати', exact: true }).click();
+    const dialog = page.getByRole('dialog');
+    await dialog.getByLabel('Назва').fill('Прибрати квартиру');
+    await dialog.getByRole('button', { name: 'Без конкретного часу' }).click();
+    await dialog.getByRole('radio', { name: /Справи/ }).click();
+    await dialog.getByLabel('Тривалість').selectOption('120');
+    await dialog.getByRole('button', { name: 'Додати блок' }).click();
     await expect(list.locator('.untimed-dur', { hasText: '2 год' })).toBeVisible();
     expect(await errandsHours()).toBeCloseTo(before + 2, 5);
   });
