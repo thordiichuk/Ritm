@@ -1,7 +1,7 @@
 import type { Block } from '../../data/types';
 import { useStore } from '../../data/store';
 import { untimedOn } from '../../data/selectors';
-import { toggleBlock } from '../../data/actions';
+import { toggleBlock, toggleSubtask } from '../../data/actions';
 import { Icon } from '../ui/Icon';
 import { minutesShort } from '../../lib/date';
 
@@ -19,7 +19,8 @@ export function UntimedList({ date, onEdit }: { date: string; onEdit: (b: Block)
     <section className="untimed" aria-label="Без часу">
       <p className="k">Без часу</p>
       {items.map((b) => (
-        <div key={b.id} className={`top3-row untimed-row${b.done ? ' done' : ''}`}>
+        <div key={b.id} className="untimed-item">
+        <div className={`top3-row untimed-row${b.done ? ' done' : ''}`}>
           <button type="button" className={`chk${b.done ? ' on' : ''}`} aria-pressed={b.done}
             aria-label={`${b.done ? 'Виконано' : 'Відмітити'}: ${b.title}`} onClick={() => toggleBlock(b.id)}>
             {b.done && <Icon name="check" size={14} stroke={4} />}
@@ -28,6 +29,20 @@ export function UntimedList({ date, onEdit }: { date: string; onEdit: (b: Block)
             {b.priority ? '! ' : ''}{b.title}
           </button>
           {b.duration ? <span className="untimed-dur">{minutesShort(b.duration)}</span> : null}
+        </div>
+        {b.subtasks.length > 0 && (
+          <ul className="untimed-subs" aria-label={`Підзадачі: ${b.title}`}>
+            {b.subtasks.map((st) => (
+              <li key={st.id} className={st.done ? 'done' : undefined}>
+                <button type="button" className={`chk chk-sm${st.done ? ' on' : ''}`} aria-pressed={st.done}
+                  aria-label={`${st.done ? 'Виконано' : 'Відмітити'}: ${st.title}`} onClick={() => toggleSubtask(b.id, st.id)}>
+                  {st.done && <Icon name="check" size={11} stroke={4} />}
+                </button>
+                <span className="untimed-sub-tx">{st.title}</span>
+              </li>
+            ))}
+          </ul>
+        )}
         </div>
       ))}
     </section>

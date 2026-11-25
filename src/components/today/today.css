@@ -245,3 +245,11 @@
   .composer-opts { flex-wrap: wrap; }
   .composer-seg { flex: 1 0 100%; }
 }
+
+/* підзадачі під завданням без часу — відступ під назвою, менший шрифт */
+.untimed-item { display: flex; flex-direction: column; gap: 6px; }
+.untimed-subs { list-style: none; margin: 0; padding: 0 0 0 38px; display: flex; flex-direction: column; gap: 6px; }
+.untimed-subs li { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: var(--c-muted); }
+.untimed-subs li.done .untimed-sub-tx { color: var(--c-muted-3); text-decoration: line-through; }
+.untimed-sub-tx { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.untimed-subs .chk.chk-sm { width: 22px; height: 22px; flex: none; }

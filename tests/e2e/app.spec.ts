@@ -226,6 +226,25 @@ test.describe('Завдання без часу', () => {
     await expect(page.locator('.sched h4', { hasText: 'Купити подарунок мамі' })).toHaveCount(0);
   });
 
+  test('підзадачі видно під завданням без часу, їх можна відмітити', async ({ page }) => {
+    await open(page, 'today');
+    await page.getByLabel('Нове завдання').fill('Підготуватися до поїздки');
+    await page.getByLabel('Нове завдання').press('Enter');
+    const list = page.getByRole('region', { name: 'Без часу' });
+    await list.getByRole('button', { name: 'Підготуватися до поїздки', exact: true }).click();
+    const dialog = page.getByRole('dialog');
+    for (const t of ['Купити квитки', 'Зібрати валізу']) {
+      await dialog.getByPlaceholder('+ підзадача').fill(t);
+      await dialog.getByRole('button', { name: 'Додати підзадачу' }).click();
+    }
+    await dialog.getByRole('button', { name: 'Зберегти' }).click();
+    const subs = list.getByRole('list', { name: 'Підзадачі: Підготуватися до поїздки' });
+    await expect(subs.getByRole('listitem')).toHaveText(['Купити квитки', 'Зібрати валізу']);
+    await subs.getByRole('button', { name: 'Відмітити: Купити квитки' }).click();
+    await page.reload();
+    await expect(page.getByRole('button', { name: 'Виконано: Купити квитки' })).toBeVisible();
+  });
+
   test('у редакторі: «Без конкретного часу» ховає поля часу', async ({ page }) => {
     await open(page, 'today');
     await page.getByRole('button', { name: 'Новий блок' }).click();

@@ -25,6 +25,13 @@ export function toggleBlock(id: string) {
   });
 }
 
+export function toggleSubtask(blockId: string, subId: string) {
+  update((d) => {
+    const st = d.blocks.find((x) => x.id === blockId)?.subtasks.find((x) => x.id === subId);
+    if (st) st.done = !st.done;
+  });
+}
+
 export function deleteBlock(id: string) {
   update((d) => void (d.blocks = d.blocks.filter((x) => x.id !== id)));
 }
