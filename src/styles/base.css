@@ -165,3 +165,20 @@ textarea.input { padding: 14px 16px; min-height: 96px; resize: vertical; line-he
 .prio-text { font-weight: 800 !important; }
 .ib.prio { font-weight: 800; }
 .ib.prio::before { content: '!'; color: var(--accent); font-weight: 900; }
+
+/* ---------- Телефон: нічого не ширше за екран, сторінка не «їздить» убік ---------- */
+/* clip, а не hidden: не створює окремої прокрутки й не ламає закріплені (sticky) елементи */
+html, body { overflow-x: clip; }
+.field, .row2 > * { min-width: 0; }
+.row2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.input { min-width: 0; max-width: 100%; }
+/* у Safari на iPhone поля дати й часу мають власну мінімальну ширину й не стискаються */
+input[type='date'].input, input[type='time'].input {
+  -webkit-appearance: none; appearance: none; display: block; min-width: 0; text-align: left;
+}
+.input::-webkit-date-and-time-value { text-align: left; min-height: 1.4em; }
+.modal { overflow-x: hidden; overscroll-behavior: contain; max-width: 100%; }
+@media (max-width: 759px) {
+  /* iPhone збільшує сторінку, коли фокус отримує поле з шрифтом менше 16px */
+  input, select, textarea, .input { font-size: 16px !important; }
+}

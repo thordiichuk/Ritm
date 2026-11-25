@@ -152,3 +152,22 @@ test.describe('Вечірній підсумок', () => {
     expect(review).toMatchObject({ mood: 4, win: 'Здала звіт' });
   });
 });
+
+test.describe('Телефон: вікна вміщаються в екран', () => {
+  test.use({ viewport: PHONE, isMobile: true, hasTouch: true });
+
+  test('«Новий блок» не ширший за екран навіть з полями дати й часу, як у Safari на iPhone', async ({ page }) => {
+    await open(page, 'today');
+    // у Safari поля дати й часу мають власну мінімальну ширину — імітуємо її
+    await page.addStyleTag({ content: 'input[type=date], input[type=time] { min-width: 250px; }' });
+    await page.getByRole('button', { name: 'Додати', exact: true }).click();
+    const modal = page.locator('.modal');
+    await expect(modal).toBeVisible();
+    const { scroll, client, page: pageW } = await modal.evaluate((m) => ({ scroll: m.scrollWidth, client: m.clientWidth, page: document.documentElement.scrollWidth }));
+    expect(scroll).toBeLessThanOrEqual(client + 1);
+    expect(pageW).toBeLessThanOrEqual(390);
+    // шрифт полів ≥ 16px — інакше iPhone збільшує сторінку під час введення
+    const sizes = await modal.locator('input, select, textarea').evaluateAll((els) => els.map((e) => parseFloat(getComputedStyle(e).fontSize)));
+    for (const s of sizes) expect(s).toBeGreaterThanOrEqual(16);
+  });
+});
