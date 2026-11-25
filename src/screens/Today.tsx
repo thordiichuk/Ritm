@@ -104,10 +104,9 @@ export function TodayScreen() {
             </div>
             {date !== todayISO() && <a className="pill pill-dark" href={href('today')}>Сьогодні</a>}
             <TemplateMenu date={date} />
-            <button className="pill pill-lime" onClick={addNext}><Icon name="plus" size={18} stroke={2.8} />Новий блок</button>
+            <button className="pill pill-lime" onClick={addNext}><Icon name="plus" size={18} stroke={2.8} />Додати</button>
           </div>
         </header>
-        <TaskComposer date={date} />
         {notes ? (
           <section className="tile plan-tile" aria-label={asList ? 'План на день' : 'Погодинний розклад'} style={{ padding: 0 }}>
             <div className="plan-head">
