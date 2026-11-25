@@ -13,6 +13,8 @@ test.describe('Сьогодні (комп\'ютер)', () => {
   });
 
   test('задача з вхідних перетягується в розклад', async ({ page }) => {
+    // задача й вільна година мають бути видні одночасно: тест не прокручує сторінку посеред перетягування
+    await page.setViewportSize({ width: 1440, height: 1600 });
     await open(page, 'today');
     await page.getByRole('button', { name: 'Стоматолог · 15 хв' }).dragTo(page.locator('.hr[data-hour="16"] .free'));
     await expect(page.locator('.sched h4', { hasText: 'Стоматолог' })).toHaveCount(1);
@@ -169,5 +171,38 @@ test.describe('Телефон: вікна вміщаються в екран', (
     // шрифт полів ≥ 16px — інакше iPhone збільшує сторінку під час введення
     const sizes = await modal.locator('input, select, textarea').evaluateAll((els) => els.map((e) => parseFloat(getComputedStyle(e).fontSize)));
     for (const s of sizes) expect(s).toBeGreaterThanOrEqual(16);
+  });
+});
+
+test.describe('Завдання без часу', () => {
+  test.use({ viewport: DESKTOP });
+
+  test('додаються рядком над розкладом, відмічаються й лишаються після перезавантаження', async ({ page }) => {
+    await open(page, 'today');
+    const list = page.getByRole('region', { name: 'Без часу' });
+    await list.getByLabel('Нове завдання без часу').fill('Купити подарунок мамі');
+    await list.getByLabel('Нове завдання без часу').press('Enter');
+    await expect(list.getByRole('button', { name: 'Відмітити: Купити подарунок мамі' })).toBeVisible();
+    await expect(page.getByText('5 з 11 блоків')).toBeVisible(); // рахується в прогресі дня
+    await list.getByRole('button', { name: 'Відмітити: Купити подарунок мамі' }).click();
+    await page.reload();
+    await expect(page.getByRole('region', { name: 'Без часу' }).getByRole('button', { name: 'Виконано: Купити подарунок мамі' })).toBeVisible();
+    await expect(page.getByText('6 з 11 блоків')).toBeVisible();
+    // не потрапляє в погодинну сітку
+    await expect(page.locator('.sched h4', { hasText: 'Купити подарунок мамі' })).toHaveCount(0);
+  });
+
+  test('у редакторі: «Без конкретного часу» ховає поля часу', async ({ page }) => {
+    await open(page, 'today');
+    await page.getByRole('button', { name: 'Новий блок' }).click();
+    const dialog = page.getByRole('dialog');
+    await dialog.getByLabel('Назва').fill('Записатися до лікаря');
+    await expect(dialog.getByText('Початок')).toBeVisible();
+    await dialog.getByRole('button', { name: 'Без конкретного часу' }).click();
+    await expect(dialog.getByText('Початок')).toHaveCount(0);
+    await dialog.getByRole('button', { name: 'Додати блок' }).click();
+    await expect(page.getByRole('region', { name: 'Без часу' }).getByText('Записатися до лікаря')).toBeVisible();
+    await page.goto('/#/week');
+    await expect(page.locator('.week-col.today .wb', { hasText: 'Записатися до лікаря' })).toHaveText('Записатися до лікаря'); // без години
   });
 });

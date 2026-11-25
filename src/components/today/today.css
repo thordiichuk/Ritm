@@ -178,3 +178,14 @@
   .week-col { min-height: 0; }
   .week-col .wb { white-space: normal; }
 }
+
+/* ---------- Завдання без часу (над розкладом) ---------- */
+.untimed { display: flex; flex-direction: column; gap: 10px; padding: 20px 24px; border-bottom: 1px solid var(--c-line); }
+.sched-wrap-phone .untimed { padding: 14px 0 16px; }
+.untimed .k { margin-bottom: 2px; }
+.untimed-row { font-size: 16px; font-weight: 700; }
+.untimed-row.done .untimed-tx { color: var(--c-muted-3); text-decoration: line-through; }
+.untimed-tx { flex: 1; min-width: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; padding: 2px 0; cursor: pointer; overflow-wrap: anywhere; }
+.untimed-add { display: flex; align-items: center; gap: 12px; }
+.untimed-input { min-height: 40px; background: transparent; padding: 0; border-radius: 0; font-weight: 600; }
+.untimed-input:focus { outline: none; border-bottom: 2px solid var(--focus-ring); }

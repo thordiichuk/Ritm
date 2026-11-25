@@ -1,6 +1,6 @@
 import { useState, type DragEvent } from 'react';
 import { useStore, dayOf } from '../../data/store';
-import { blocksOn, energyPeak, freeMinutes, habitsDoneOn, streak, sessionsInBlock, completedSessionsForBlock } from '../../data/selectors';
+import { blocksOn, timedOn, energyPeak, freeMinutes, habitsDoneOn, streak, sessionsInBlock, completedSessionsForBlock } from '../../data/selectors';
 import { addTask, deleteTask, findFreeSlot, scheduleTask, setEnergy, setWater, toggleTaskPriority } from '../../data/actions';
 import { durationLabel, hhmm, nowMinutes, num, parseHHMM, plural, todayISO } from '../../lib/date';
 import { href } from '../../lib/router';
@@ -62,7 +62,7 @@ export function FocusMini() {
   const now = useNow(1000);
   const t = s.timer;
   const nowMin = now.getHours() * 60 + now.getMinutes();
-  const active = blocksOn(s, todayISO()).find((b) => b.start <= nowMin && b.end > nowMin && !b.done);
+  const active = timedOn(s, todayISO()).find((b) => b.start <= nowMin && b.end > nowMin && !b.done);
   let clock = `${String(s.settings.workMin).padStart(2, '0')}:00`;
   let sub = 'почати сесію';
   if (t) {

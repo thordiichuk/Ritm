@@ -16,7 +16,7 @@ export function BlockEditor({ block, isNew, onClose }: { block: Block; isNew: bo
 
   const save = () => {
     if (!b.title.trim()) return setError('Назвіть блок');
-    if (b.end <= b.start) return setError('Кінець має бути пізніше за початок');
+    if (!b.untimed && b.end <= b.start) return setError('Кінець має бути пізніше за початок');
     saveBlock({ ...b, title: b.title.trim() });
     onClose();
   };
@@ -35,6 +35,13 @@ export function BlockEditor({ block, isNew, onClose }: { block: Block; isNew: bo
           <span>Назва</span>
           <input className="input" value={b.title} onChange={(e) => set('title', e.target.value)} placeholder="Напр. Глибока робота: звіт" />
         </label>
+        <label className="top3-row editor-untimed">
+          <button type="button" className={`chk${b.untimed ? ' on' : ''}`} onClick={() => set('untimed', !b.untimed)} aria-label="Без конкретного часу" aria-pressed={!!b.untimed}>
+            {b.untimed && <Icon name="check" size={14} stroke={4} />}
+          </button>
+          <span>Без конкретного часу <small className="editor-hint">— просто завдання на цей день</small></span>
+        </label>
+        {!b.untimed && (
         <div className="row2">
           <label className="field">
             <span>Початок</span>
@@ -45,6 +52,7 @@ export function BlockEditor({ block, isNew, onClose }: { block: Block; isNew: bo
             <input className="input" type="time" step={300} value={hhmm(Math.min(b.end, 23 * 60 + 59))} onChange={(e) => e.target.value && set('end', parseHHMM(e.target.value))} />
           </label>
         </div>
+        )}
         <label className="field">
           <span>Дата</span>
           <input className="input" type="date" value={b.date} onChange={(e) => e.target.value && set('date', e.target.value)} />

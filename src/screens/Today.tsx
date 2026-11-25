@@ -15,6 +15,7 @@ import { BotanicalSpray } from '../components/flora/Botanical';
 import { isReviewBlock } from './Review';
 import { useTheme } from '../lib/theme';
 import { PlanList, PlanViewSwitch, usePlanView } from '../components/today/PlanList';
+import { UntimedList } from '../components/today/Untimed';
 
 /** Дата з адреси (?d=…) або сьогодні */
 export function useSelectedDate(): string {
@@ -38,6 +39,8 @@ export function TodayScreen() {
     const from = date === todayISO() ? Math.ceil(nowMinutes() / 30) * 30 : 9 * 60;
     addAt(findFreeSlot(date, 60, from) ?? from);
   };
+  // новий пункт без конкретної години (вигляд «Списком»)
+  const addUntimed = () => setEditing({ block: { ...newBlock(date, 9 * 60), id: uid(), untimed: true }, isNew: true });
   const editor = editing && <BlockEditor block={editing.block} isNew={editing.isNew} onClose={() => setEditing(null)} />;
   const edit = (b: Block) =>
     isReviewBlock(b.title) ? navigate('review', date === todayISO() ? undefined : { d: date }) : setEditing({ block: b, isNew: false });
@@ -54,12 +57,15 @@ export function TodayScreen() {
         <PhoneScroller date={date}>
           {asList ? (
             <section aria-label="План на день">
-              <PlanList date={date} onEdit={edit} onAdd={addNext} />
+              <PlanList date={date} onEdit={edit} onAdd={addUntimed} />
             </section>
           ) : (
-            <section aria-label="Розклад по годинах">
-              <Schedule date={date} variant="phone" onEdit={edit} onAddAt={addAt} />
-            </section>
+            <div className="sched-wrap-phone">
+              <UntimedList date={date} onEdit={edit} />
+              <section aria-label="Розклад по годинах">
+                <Schedule date={date} variant="phone" onEdit={edit} onAddAt={addAt} />
+              </section>
+            </div>
           )}
           <div className="phone-extra">
             <InboxTile date={date} phone />
@@ -98,10 +104,16 @@ export function TodayScreen() {
               <p className="k">{asList ? 'План на день' : 'Розклад'}</p>
               <PlanViewSwitch />
             </div>
-            {asList ? <PlanList date={date} onEdit={edit} onAdd={addNext} /> : <Schedule date={date} variant="desktop" onEdit={edit} onAddAt={addAt} />}
+            {asList ? <PlanList date={date} onEdit={edit} onAdd={addUntimed} /> : (
+              <>
+                <UntimedList date={date} onEdit={edit} />
+                <Schedule date={date} variant="desktop" onEdit={edit} onAddAt={addAt} />
+              </>
+            )}
           </section>
         ) : (
           <section className="tile" aria-label="Погодинний розклад" style={{ padding: 0 }}>
+            <UntimedList date={date} onEdit={edit} />
             <Schedule date={date} variant="desktop" onEdit={edit} onAddAt={addAt} />
           </section>
         )}
@@ -126,6 +138,11 @@ function PhoneScroller({ date, children }: { date: string; children: ReactNode }
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // є невиконані завдання без часу — показуємо їх (вони вгорі), інакше — розклад біля поточної години
+    if (el.querySelector('.untimed-row:not(.done)')) {
+      el.scrollTop = 0;
+      return;
+    }
     const target = date === todayISO() ? new Date().getHours() - 2 : 8;
     const rows = [...el.querySelectorAll<HTMLElement>('[data-hour]')];
     const row = rows.find((r) => Number(r.dataset.hour) >= target) ?? rows[0];

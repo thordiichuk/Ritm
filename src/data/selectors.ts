@@ -36,8 +36,21 @@ export const HABIT_STRONG: Record<Habit['color'], string> = {
   lime: 'var(--habit-lime-strong)',
 };
 
+/** Усі блоки дня: спершу завдання без часу, далі — за часом */
 export function blocksOn(s: AppState, date: ISODate): Block[] {
-  return s.blocks.filter((b) => b.date === date).sort((a, b) => a.start - b.start || a.end - b.end);
+  return s.blocks
+    .filter((b) => b.date === date)
+    .sort((a, b) => Number(!a.untimed) - Number(!b.untimed) || (a.untimed ? 0 : a.start - b.start || a.end - b.end));
+}
+
+/** Лише блоки з годиною — для розкладу, вільного часу, «зараз» */
+export function timedOn(s: AppState, date: ISODate): Block[] {
+  return blocksOn(s, date).filter((b) => !b.untimed);
+}
+
+/** Завдання дня без конкретної години */
+export function untimedOn(s: AppState, date: ISODate): Block[] {
+  return blocksOn(s, date).filter((b) => b.untimed);
 }
 
 export function habitDone(h: Habit, date: ISODate): boolean {
@@ -113,12 +126,13 @@ export function planRate(s: AppState, days: ISODate[]) {
 export function timeByCategory(s: AppState, days: ISODate[]): Record<Category, number> {
   const set = new Set(days);
   const out = { work: 0, health: 0, study: 0, personal: 0, errands: 0 } as Record<Category, number>;
-  for (const b of s.blocks) if (set.has(b.date)) out[b.category] += b.end - b.start;
+  for (const b of s.blocks) if (set.has(b.date) && !b.untimed) out[b.category] += b.end - b.start;
   return out;
 }
 
 /** Кількість помодоро в блоці (25 + 5) */
 export function sessionsInBlock(b: Block, s: AppState): number {
+  if (b.untimed) return 1;
   const cycle = s.settings.workMin + s.settings.breakMin;
   return Math.max(1, Math.round((b.end - b.start) / cycle));
 }
@@ -131,7 +145,7 @@ export function completedSessionsForBlock(s: AppState, blockId: string, date: IS
 export function freeMinutes(s: AppState, date: ISODate, from: number): number {
   const end = s.settings.dayEnd * 60;
   if (from >= end) return 0;
-  const bs = blocksOn(s, date);
+  const bs = timedOn(s, date);
   let free = 0;
   let cur = from;
   for (const b of bs) {
