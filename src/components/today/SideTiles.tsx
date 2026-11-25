@@ -1,7 +1,7 @@
 import { useState, type DragEvent } from 'react';
 import { useStore, dayOf } from '../../data/store';
 import { blocksOn, energyPeak, freeMinutes, habitsDoneOn, streak, sessionsInBlock, completedSessionsForBlock } from '../../data/selectors';
-import { addTask, deleteTask, findFreeSlot, scheduleTask, setEnergy, setTop3, setWater, toggleTop3 } from '../../data/actions';
+import { addTask, deleteTask, findFreeSlot, scheduleTask, setEnergy, setWater, toggleTaskPriority } from '../../data/actions';
 import { durationLabel, hhmm, nowMinutes, num, parseHHMM, plural, todayISO } from '../../lib/date';
 import { href } from '../../lib/router';
 import { Icon } from '../ui/Icon';
@@ -40,42 +40,6 @@ export function ProgressTile({ date }: { date: string }) {
           Вечірній підсумок →
         </a>
       )}
-    </section>
-  );
-}
-
-export function Top3Tile({ date }: { date: string }) {
-  const top3 = useStore((s) => dayOf(s, date).top3);
-  const slots = [0, 1, 2];
-  return (
-    <section className="tile">
-      <p className="k">Топ-3</p>
-      <div className="top3">
-        {slots.map((i) => {
-          const it = top3[i];
-          return (
-            <div key={it?.id ?? `empty${i}`} className={`top3-row${it?.done ? ' done' : ''}`}>
-              {it ? (
-                <button className={`chk${it.done ? ' on' : ''}`} aria-label={it.done ? 'Виконано' : 'Позначити'} aria-pressed={it.done} onClick={() => toggleTop3(date, it.id)}>
-                  {it.done && <Icon name="check" size={14} stroke={4} />}
-                </button>
-              ) : (
-                <span className="chk ghost" aria-hidden="true" />
-              )}
-              <input
-                key={it?.title ?? ''} // назва змінилася на іншому пристрої — показати нову
-                className="top3-text"
-                defaultValue={it?.title ?? ''}
-                placeholder={i === top3.length ? 'Додати пріоритет' : ''}
-                disabled={!it && i > top3.length}
-                aria-label={`Пріоритет ${i + 1}`}
-                onBlur={(e) => e.target.value !== (it?.title ?? '') && setTop3(date, i, e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && (e.target as HTMLInputElement).blur()}
-              />
-            </div>
-          );
-        })}
-      </div>
     </section>
   );
 }
@@ -161,12 +125,14 @@ export function InboxTile({ date, phone }: { date: string; phone?: boolean }) {
   const tasks = useStore((s) => s.tasks.filter((t) => t.location === 'inbox' && !t.done));
   const [title, setTitle] = useState('');
   const [mins, setMins] = useState(15);
+  const [prio, setPrio] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
 
   const add = () => {
     if (!title.trim()) return;
-    addTask(title.trim(), mins);
+    addTask(title.trim(), mins, 'inbox', prio);
     setTitle('');
+    setPrio(false);
   };
   const autoSchedule = (t: Task) => {
     if (scheduleToFirstFree(t, date)) setOpen(null);
@@ -180,7 +146,7 @@ export function InboxTile({ date, phone }: { date: string; phone?: boolean }) {
       <div className="inbox">
         {tasks.map((t) => (
           <span key={t.id} style={{ display: 'inline-flex', gap: 4 }}>
-            <button className="ib" draggable={!phone}
+            <button className={`ib${t.priority ? ' prio' : ''}`} draggable={!phone}
               onDragStart={(e: DragEvent) => { e.dataTransfer.setData('text/ritm-task', t.id); e.dataTransfer.effectAllowed = 'move'; }}
               onClick={() => setOpen(open === t.id ? null : t.id)} aria-expanded={open === t.id}>
               {taskLabel(t)}
@@ -188,6 +154,9 @@ export function InboxTile({ date, phone }: { date: string; phone?: boolean }) {
             {open === t.id && (
               <>
                 <button className="ib ib-accent" onClick={() => autoSchedule(t)}>У розклад</button>
+                <button className="ib" style={{ cursor: 'pointer' }} aria-pressed={!!t.priority} onClick={() => toggleTaskPriority(t.id)}>
+                  {t.priority ? 'Звичайне' : 'Важливе'}
+                </button>
                 <button className="ib" style={{ cursor: 'pointer' }} aria-label="Видалити задачу" onClick={() => deleteTask(t.id)}><Icon name="trash" size={16} /></button>
               </>
             )}
@@ -196,7 +165,8 @@ export function InboxTile({ date, phone }: { date: string; phone?: boolean }) {
         {!tasks.length && <span style={{ color: 'var(--c-muted-3)', fontWeight: 700, fontSize: 14 }}>Порожньо — усе розплановано</span>}
       </div>
       <form className="ib-add" onSubmit={(e) => { e.preventDefault(); add(); }}>
-        <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="+ задача у вхідні" aria-label="Нова задача" />
+        <input className={`input${prio ? ' prio-text' : ''}`} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="+ задача у вхідні" aria-label="Нова задача" />
+        <button type="button" className={`ib-prio${prio ? ' on' : ''}`} aria-pressed={prio} aria-label="Важливе" title="Важливе — жирним шрифтом" onClick={() => setPrio(!prio)}>!</button>
         <select value={mins} onChange={(e) => setMins(Number(e.target.value))} aria-label="Тривалість">
           {MINUTE_OPTIONS.map((m) => <option key={m} value={m}>{minutesLabel(m)}</option>)}
         </select>

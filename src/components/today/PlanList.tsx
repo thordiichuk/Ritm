@@ -82,7 +82,7 @@ export function PlanList({ date, onEdit, onAdd }: { date: string; onEdit: (b: Bl
                   </svg>
                 )}
               </button>
-              <button type="button" className="plan-tx" onClick={() => onEdit(b)}>{b.title}</button>
+              <button type="button" className={`plan-tx${b.priority ? ' prio-text' : ''}`} onClick={() => onEdit(b)}>{b.priority ? '! ' : ''}{b.title}</button>
               {!isReviewBlock(b.title) && <span className="plan-tag">{TAG[b.category]}</span>}
               {active && <span className="plan-now">зараз</span>}
             </li>

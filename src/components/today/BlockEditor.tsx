@@ -54,7 +54,7 @@ export function BlockEditor({ block, isNew, onClose }: { block: Block; isNew: bo
           <div className="chips" role="radiogroup" aria-label="Категорія">
             {CATEGORIES.map((c: Category) => (
               <button type="button" key={c} className="chip" role="radio" aria-checked={b.category === c} aria-pressed={b.category === c} onClick={() => set('category', c)}>
-                <i className="sw" style={{ background: CATEGORY_META[c].color }} />
+                <span className="chip-emoji" aria-hidden="true">{CATEGORY_META[c].emoji}</span>
                 {CATEGORY_META[c].label}
               </button>
             ))}
@@ -81,12 +81,20 @@ export function BlockEditor({ block, isNew, onClose }: { block: Block; isNew: bo
             <button type="button" className="pill pill-dark" onClick={addSub} aria-label="Додати підзадачу"><Icon name="plus" size={18} stroke={2.8} /></button>
           </div>
         </div>
-        <label className="top3-row" style={{ margin: '4px 0 18px', fontWeight: 700 }}>
-          <button type="button" className={`chk${b.done ? ' on' : ''}`} onClick={() => set('done', !b.done)} aria-label="Готово">
-            {b.done && <Icon name="check" size={14} stroke={4} />}
-          </button>
-          Готово
-        </label>
+        <div className="editor-flags">
+          <label className="top3-row" style={{ fontWeight: 700 }}>
+            <button type="button" className={`chk${b.priority ? ' on' : ''}`} onClick={() => set('priority', !b.priority)} aria-label="Важливе" aria-pressed={!!b.priority}>
+              {b.priority && <Icon name="check" size={14} stroke={4} />}
+            </button>
+            <span>Важливе <small className="editor-hint">— назва жирним шрифтом</small></span>
+          </label>
+          <label className="top3-row" style={{ fontWeight: 700 }}>
+            <button type="button" className={`chk${b.done ? ' on' : ''}`} onClick={() => set('done', !b.done)} aria-label="Готово">
+              {b.done && <Icon name="check" size={14} stroke={4} />}
+            </button>
+            Готово
+          </label>
+        </div>
         {error && <p role="alert" style={{ color: 'var(--danger-fg)', fontWeight: 700, margin: '0 0 12px' }}>{error}</p>}
         <div className="modal-actions">
           <button type="submit" className="pill pill-lime grow">{isNew ? 'Додати блок' : 'Зберегти'}</button>

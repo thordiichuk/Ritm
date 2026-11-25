@@ -19,6 +19,8 @@ export interface Block {
   done: boolean;
   subtasks: Subtask[];
   note?: string;
+  /** важливе — показується жирним шрифтом */
+  priority?: boolean;
 }
 
 export type TaskLocation = 'inbox' | 'someday';
@@ -30,6 +32,8 @@ export interface Task {
   done: boolean;
   location: TaskLocation;
   createdAt: number;
+  /** важливе — показується жирним шрифтом */
+  priority?: boolean;
 }
 
 export type HabitColor = 'peach' | 'mint' | 'sky' | 'lilac' | 'lime';

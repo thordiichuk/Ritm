@@ -48,12 +48,10 @@ test.describe('тема «Нотатки»', () => {
     expect(await page.evaluate(pseudo('.sched .blk.done h4', '::before', 'content'))).toContain('✓');
   });
 
-  test('дії працюють так само: вода й топ-3', async ({ page }) => {
-    await open(page, 'today', { theme: 'notes' });
+  test('дії працюють так само: вода на сторінці звичок', async ({ page }) => {
+    await open(page, 'habits', { theme: 'notes' });
     await page.getByRole('button', { name: 'Склянка 6' }).click();
     await expect(page.getByText('1,5 / 2 л')).toBeVisible();
-    await page.getByRole('button', { name: 'Позначити' }).first().click();
-    await expect(page.getByRole('button', { name: 'Виконано' })).toHaveCount(2);
   });
 
   test('на телефоні — та сама нижня панель', async ({ page }) => {

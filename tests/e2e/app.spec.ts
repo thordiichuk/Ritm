@@ -28,13 +28,41 @@ test.describe('Сьогодні (комп\'ютер)', () => {
     await expect(page.getByText('6 з 10 блоків')).toBeVisible();
   });
 
-  test('вода, топ-3 і шаблон дня', async ({ page }) => {
+  test('на «Сьогодні» немає «Топ-3» і води; вода — на сторінці звичок', async ({ page }) => {
     await open(page, 'today');
+    await expect(page.getByText('Топ-3')).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Склянка 8' })).toHaveCount(0);
+    await page.goto('/#/habits');
     await page.getByRole('button', { name: 'Склянка 8' }).click();
     await expect(page.getByText('2 / 2 л')).toBeVisible();
-    await page.getByRole('button', { name: 'Позначити' }).first().click();
-    await expect(page.getByRole('button', { name: 'Виконано' })).toHaveCount(2);
+  });
 
+  test('важлива задача — жирним; лишається важливою й у розкладі', async ({ page }) => {
+    await open(page, 'today');
+    await page.getByLabel('Нова задача').fill('Дзвінок лікарю');
+    await page.getByRole('button', { name: 'Важливе', exact: true }).click();
+    await page.getByLabel('Нова задача').press('Enter');
+    const chip = page.getByRole('button', { name: /Дзвінок лікарю/ });
+    await expect(chip).toHaveClass(/prio/);
+    expect(await chip.evaluate((e) => getComputedStyle(e).fontWeight)).toBe('800');
+    await chip.click();
+    await page.getByRole('button', { name: 'У розклад' }).click();
+    const h4 = page.locator('.sched h4', { hasText: 'Дзвінок лікарю' });
+    await expect(h4).toHaveClass(/prio-text/);
+  });
+
+  test('редактор блоку: категорії з емодзі й позначка «Важливе»', async ({ page }) => {
+    await open(page, 'today');
+    await page.locator('.sched h4', { hasText: 'Спортзал' }).click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog.getByRole('radio', { name: /Здоров'я/ })).toContainText('🏃');
+    await dialog.getByRole('button', { name: 'Важливе' }).click();
+    await dialog.getByRole('button', { name: 'Зберегти' }).click();
+    await expect(page.locator('.sched h4', { hasText: 'Спортзал' })).toHaveClass(/prio-text/);
+  });
+
+  test('шаблон дня', async ({ page }) => {
+    await open(page, 'today');
     await page.getByRole('button', { name: 'Шаблон дня' }).click();
     await page.getByRole('menuitem', { name: /Зберегти/ }).click();
     await page.getByRole('button', { name: 'Наступний день' }).click();

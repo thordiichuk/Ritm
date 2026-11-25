@@ -145,7 +145,16 @@
 [data-theme='notes'] .tile { background: transparent; border: 0; border-radius: 0; box-shadow: none; }
 [data-theme='notes'] .wrap { gap: 0; padding: 0; }
 /* сіра смуга рейки — на всю висоту сторінки (сама рейка закріплена на екрані) */
-[data-theme='notes'] .wrap { background: linear-gradient(to right, var(--n-side-bg) 88px, var(--n-side-border) 88px 89px, transparent 89px); }
+@media (min-width: 1101px) {
+  [data-theme='notes'] .wrap { background: linear-gradient(to right, var(--n-side-bg) 88px, var(--n-side-border) 88px 89px, transparent 89px); }
+}
+@media (max-width: 1100px) {
+  [data-theme='notes'] .rail {
+    background: var(--n-side-bg) !important; border-bottom: 1px solid var(--n-side-border) !important;
+    position: static !important; height: auto !important;
+  }
+  [data-theme='notes'] .wrap > main { padding: 8px 16px 40px; }
+}
 [data-theme='notes'] .rail { border-radius: 0; border: 0; background: transparent; top: 0; height: 100vh; }
 [data-theme='notes'] .wrap > main { gap: 0; padding: 8px 32px 48px; }
 [data-theme='notes'] .wrap > aside { gap: 0; padding: 8px 24px 48px; border-left: 1px solid var(--n-list-border); }
@@ -248,3 +257,8 @@
 /* вибір теми в налаштуваннях — без сірих карток */
 [data-theme='notes'] .theme-opt { background: transparent; border: 1px solid var(--n-table-line); }
 [data-theme='notes'] .theme-opt[aria-checked='true'] { border: 2px solid var(--n-yellow-text); }
+
+@media (max-width: 759px) {
+  [data-theme='notes'] .week-grid { gap: 0; }
+  [data-theme='notes'] .week-col + .week-col { border-left: 0; border-top: 1px solid var(--n-table-line); }
+}

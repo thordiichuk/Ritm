@@ -118,7 +118,7 @@
 
 .inbox { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .ib {
-  background: var(--c-surface-2); border-radius: var(--r-pill); padding: 10px 14px; font-size: 14px; font-weight: 700;
+  background: var(--c-surface-2); border-radius: var(--r-pill); padding: 10px 14px; font-size: 14px; font-weight: 600;
   border: 0; color: var(--c-text); cursor: grab; display: inline-flex; align-items: center; gap: 6px;
 }
 .ib:hover { background: var(--c-ash); }
@@ -126,6 +126,11 @@
 .ib:active { cursor: grabbing; }
 .ib-add { width: 100%; display: flex; gap: 8px; margin-top: 12px; }
 .ib-add input { flex: 1; min-height: 44px; border-radius: var(--r-pill); font-size: 14px; }
+.ib-prio {
+  flex: none; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--c-check-border); background: transparent;
+  color: var(--c-muted); font-size: 18px; font-weight: 900; padding: 0; cursor: pointer;
+}
+.ib-prio.on { background: var(--check-bg); border-color: var(--check-bg); color: var(--check-fg); }
 .ib-add select { min-height: 44px; border-radius: var(--r-pill); border: 0; background: var(--c-surface-2); color: var(--c-text); padding: 0 12px; font-weight: 700; }
 
 .energy { display: flex; gap: 6px; margin-top: 14px; }
@@ -166,3 +171,10 @@
   scrollbar-width: none; overscroll-behavior: contain;
 }
 .phone-scroll::-webkit-scrollbar { display: none; }
+
+/* тиждень на телефоні: дні одне під одним, а не сім колонок, що не вміщаються */
+@media (max-width: 759px) {
+  .week-grid { grid-template-columns: 1fr; gap: 10px; }
+  .week-col { min-height: 0; }
+  .week-col .wb { white-space: normal; }
+}
