@@ -189,3 +189,9 @@
 .untimed-add { display: flex; align-items: center; gap: 12px; }
 .untimed-input { min-height: 40px; background: transparent; padding: 0; border-radius: 0; font-weight: 600; }
 .untimed-input:focus { outline: none; border-bottom: 2px solid var(--focus-ring); }
+
+.untimed-dur { flex: none; font-size: 13px; font-weight: 700; color: var(--c-muted); white-space: nowrap; }
+.untimed-sel {
+  flex: none; min-height: 36px; border: 0; border-radius: var(--r-pill); background: var(--c-surface-2);
+  color: var(--c-text); font: inherit; font-size: 13px; font-weight: 700; padding: 0 10px;
+}

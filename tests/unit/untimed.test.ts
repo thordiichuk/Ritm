@@ -25,7 +25,13 @@ describe('завдання без часу', () => {
     expect(freeMinutes(s, D, 7 * 60)).toBe(freeMinutes(without, D, 7 * 60));
   });
 
-  it('не рахуються в «куди йде час»', () => {
+  it('без тривалості не рахуються в «куди йде час»', () => {
     expect(timeByCategory(s, [D]).work).toBe(60 + 60);
+  });
+
+  it('з указаною тривалістю — рахуються саме нею, а не годинами start/end', () => {
+    const withDur = state([blk('a', 600, 660), blk('t', 600, 900, { untimed: true, duration: 45, category: 'health' })]);
+    expect(timeByCategory(withDur, [D]).health).toBe(45);
+    expect(freeMinutes(withDur, D, 7 * 60)).toBe(freeMinutes(state([blk('a', 600, 660)]), D, 7 * 60)); // вільний час — як і без нього
   });
 });

@@ -95,6 +95,13 @@ export function durationLabel(min: number): string {
 }
 
 /** Українська множина: plural(21, ['день','дні','днів']) */
+/** «15 хв», «1 год», «1,5 год» */
+export function minutesShort(m: number): string {
+  if (m < 60) return `${m} хв`;
+  const h = m / 60;
+  return `${Number.isInteger(h) ? h : String(Math.round(h * 10) / 10).replace('.', ',')} год`;
+}
+
 export function plural(n: number, forms: [string, string, string]): string {
   const a = Math.abs(n) % 100;
   const b = a % 10;

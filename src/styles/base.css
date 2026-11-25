@@ -184,3 +184,4 @@ input[type='date'].input, input[type='time'].input {
 }
 
 .editor-untimed { margin: 0 0 16px; font-weight: 700; }
+.field > span .editor-hint { text-transform: none; letter-spacing: 0; }
