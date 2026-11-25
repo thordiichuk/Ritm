@@ -126,14 +126,15 @@ export function planRate(s: AppState, days: ISODate[]) {
 export function timeByCategory(s: AppState, days: ISODate[]): Record<Category, number> {
   const set = new Set(days);
   const out = { work: 0, health: 0, study: 0, personal: 0, errands: 0 } as Record<Category, number>;
-  for (const b of s.blocks) if (set.has(b.date) && !b.untimed) out[b.category] += b.end - b.start;
+  // завдання без часу — лише якщо людина вказала тривалість
+  for (const b of s.blocks) if (set.has(b.date)) out[b.category] += b.untimed ? (b.duration ?? 0) : b.end - b.start;
   return out;
 }
 
 /** Кількість помодоро в блоці (25 + 5) */
 export function sessionsInBlock(b: Block, s: AppState): number {
-  if (b.untimed) return 1;
   const cycle = s.settings.workMin + s.settings.breakMin;
+  if (b.untimed) return Math.max(1, Math.round((b.duration ?? 0) / cycle));
   return Math.max(1, Math.round((b.end - b.start) / cycle));
 }
 

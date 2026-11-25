@@ -23,6 +23,8 @@ export interface Block {
   priority?: boolean;
   /** завдання на день без конкретної години: start/end зберігаються, але не використовуються */
   untimed?: boolean;
+  /** для завдання без часу: скільки хвилин воно займає (необов'язково) — йде в статистику */
+  duration?: number;
 }
 
 export type TaskLocation = 'inbox' | 'someday';

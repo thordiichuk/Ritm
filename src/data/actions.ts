@@ -96,7 +96,7 @@ export function blockToInbox(blockId: string, from: ISODate) {
     const b = d.blocks.find((x) => x.id === blockId);
     if (!b) return;
     d.blocks = d.blocks.filter((x) => x.id !== blockId);
-    d.tasks.push({ id: uid(), title: b.title, minutes: b.untimed ? 30 : b.end - b.start, done: false, location: 'inbox', createdAt: Date.now(), ...(b.priority ? { priority: true } : {}) });
+    d.tasks.push({ id: uid(), title: b.title, minutes: b.untimed ? b.duration ?? 30 : b.end - b.start, done: false, location: 'inbox', createdAt: Date.now(), ...(b.priority ? { priority: true } : {}) });
     ensureReview(d, from).handled[blockId] = 'inbox';
   });
 }

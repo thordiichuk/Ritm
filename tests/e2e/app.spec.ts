@@ -205,4 +205,23 @@ test.describe('Завдання без часу', () => {
     await page.goto('/#/week');
     await expect(page.locator('.week-col.today .wb', { hasText: 'Записатися до лікаря' })).toHaveText('Записатися до лікаря'); // без години
   });
+
+  test('тривалість завдання без часу потрапляє в статистику', async ({ page }) => {
+    const errandsHours = async () => {
+      await page.goto('/#/stats');
+      await page.getByRole('tab', { name: 'Тиждень' }).click();
+      const t = await page.locator('.legend span', { hasText: 'Справи' }).first().textContent();
+      return Number(t!.replace(/[^\d,]/g, '').replace(',', '.'));
+    };
+    await open(page, 'today');
+    const before = await errandsHours();
+    await page.goto('/#/today');
+    const list = page.getByRole('region', { name: 'Без часу' });
+    await list.getByLabel('Тривалість завдання').selectOption('120');
+    await list.getByLabel('Нове завдання без часу').fill('Прибрати квартиру');
+    await list.getByLabel('Нове завдання без часу').press('Enter');
+    await expect(list.locator('.untimed-dur', { hasText: '2 год' })).toBeVisible();
+    expect(await errandsHours()).toBeCloseTo(before + 2, 5);
+  });
+
 });

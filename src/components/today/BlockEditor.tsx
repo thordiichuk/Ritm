@@ -5,7 +5,8 @@ import type { Block, Category } from '../../data/types';
 import { CATEGORIES, CATEGORY_META } from '../../data/selectors';
 import { deleteBlock, saveBlock } from '../../data/actions';
 import { uid } from '../../data/store';
-import { hhmm, parseHHMM } from '../../lib/date';
+import { hhmm, minutesShort, parseHHMM } from '../../lib/date';
+import { DURATIONS } from './Untimed';
 import { navigate } from '../../lib/router';
 
 export function BlockEditor({ block, isNew, onClose }: { block: Block; isNew: boolean; onClose: () => void }) {
@@ -41,6 +42,15 @@ export function BlockEditor({ block, isNew, onClose }: { block: Block; isNew: bo
           </button>
           <span>Без конкретного часу <small className="editor-hint">— просто завдання на цей день</small></span>
         </label>
+        {b.untimed && (
+          <label className="field">
+            <span>Тривалість <small className="editor-hint">— для статистики, необов’язково</small></span>
+            <select className="input" value={b.duration ?? 0} onChange={(e) => set('duration', Number(e.target.value) || undefined)}>
+              <option value={0}>Не вказано</option>
+              {DURATIONS.map((m) => <option key={m} value={m}>{minutesShort(m)}</option>)}
+            </select>
+          </label>
+        )}
         {!b.untimed && (
         <div className="row2">
           <label className="field">
