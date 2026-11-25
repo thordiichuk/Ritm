@@ -68,8 +68,8 @@ export function TaskComposer({ date }: { date: string }) {
           <b aria-hidden="true">!</b><span className="composer-chip-text" aria-hidden="true"> Важливе</span>
         </button>
         <select className="composer-chip composer-sel" value={duration} onChange={(e) => setDuration(Number(e.target.value))} aria-label="Тривалість">
-          <option value={0}>⏱ час</option>
-          {DURATIONS.map((m) => <option key={m} value={m}>⏱ {minutesShort(m)}</option>)}
+          <option value={0}>час</option>
+          {DURATIONS.map((m) => <option key={m} value={m}>{minutesShort(m)}</option>)}
         </select>
       </div>
     </form>
